@@ -1,11 +1,13 @@
 package com.requests;
 
-public interface IRequest<E> {
+public interface IRequest {
 
     IRequest nextRequest();
     IRequestResponder nextResponder();
-    E payload();
+    String path();
+    Object payload();
     String type();
-    void setPayload(E newPayload);
+    void setPayload(Object newPayload);
+    void processNext(Object payload);
 
 }
