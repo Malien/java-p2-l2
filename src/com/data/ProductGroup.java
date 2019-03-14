@@ -38,4 +38,8 @@ public class ProductGroup {
     public void add(Product product){
         products.add(product);
     }
+
+    public Product[] getProducts(){
+        return (Product[]) products.toArray();
+    }
 }
