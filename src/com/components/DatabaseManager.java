@@ -58,22 +58,17 @@ public class DatabaseManager implements Runnable, IRequestResponder {
 
     private ProductGroup[] getProductGroups() throws InvalidRequestException, IOException {
         ArrayList<ProductGroup> groups = new ArrayList<>();
-        File folder = new File(workspacePath);
-        File[] folderContents = folder.listFiles();
-        if (folderContents == null) return null;
-
         for (File file : workspaceFiles()){
             groups.add(getProductGroup(file));
         }
-
-        return (ProductGroup[]) groups.toArray();
+        return groups.toArray(new ProductGroup[groups.size()]);
     }
 
     private ProductGroup getProductGroup(File file) throws IOException {
         FileInputStream fileStream = new FileInputStream(file);
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length()-5));
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length()-4));
         while (true){
             try {
                 int amount = data.readInt();
@@ -93,7 +88,7 @@ public class DatabaseManager implements Runnable, IRequestResponder {
 
     private ProductGroup getProductGroup(String path) throws InvalidRequestException, IOException {
         String[] pathArgs = path.split("/");
-        if (pathArgs.length != 1) throw new InvalidRequestException("Path provided in invalid format");
+        if (pathArgs.length != 2) throw new InvalidRequestException("Path provided in invalid format");
 
         try{
             File groupFile = new File(workspacePath + "/" + pathArgs[0] + ".prg");
@@ -104,37 +99,34 @@ public class DatabaseManager implements Runnable, IRequestResponder {
     }
 
     private void setProductGroup(String path, ProductGroup group) throws IOException{
-        String[] pathArgs = path.split("/");
-        if (pathArgs.length != 1) throw new InvalidRequestException("Path provided in invalid format");
+        String filename = path.substring(1);
 
         File found = null;
         for (File file : workspaceFiles()){
-            if (file.getName().equals(pathArgs[0] + ".prg")) {
+            if (file.getName().equals(filename + ".prg")) {
                 found = file;
             }
         }
 
-        //TODO: Write something more efficient than deleting and recreating whole file
-        if (found != null){
-            found.delete();
-        }
+        //TODO: Write something more efficient than just deleting and recreating whole file (path isn't used properly btw)
         if (group == null){
+            found.delete();
             return;
         }
         if (found == null) {
-            found = new File(workspacePath + "/" + pathArgs[0] + ".prg");
+            found = new File(workspacePath + "/" + filename + ".prg");
+            found.createNewFile();
         }
-        found.createNewFile();
 
+        DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
         for (Product product : group.getProducts()){
-            DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
             stream.writeInt(product.getCount());
             stream.writeFloat((float) product.getPrice());
             stream.writeUTF(product.getName());
             stream.writeUTF(product.getManufacturer());
             stream.writeUTF(product.getDescription());
-            stream.close();
         }
+        stream.close();
     }
 
     @Override
@@ -156,7 +148,7 @@ public class DatabaseManager implements Runnable, IRequestResponder {
                         }
                         break;
                     case "set":
-                        if (request.path().startsWith("/") && request.path().split("/").length == 1){
+                        if (request.path().split("/").length == 2){
                             setProductGroup(request.path(), (ProductGroup) request.payload());
                         }
                         break;
@@ -172,7 +164,7 @@ public class DatabaseManager implements Runnable, IRequestResponder {
                                 +" contains type that can't be processed. How could this happen?");
                 }
             }
-        } catch (InvalidRequestException e) {
+        } catch (RuntimeException e){
             log.error(e.toString());
             throw e;
         } catch (Exception e){
