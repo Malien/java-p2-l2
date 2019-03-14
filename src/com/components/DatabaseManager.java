@@ -43,6 +43,12 @@ public class DatabaseManager implements Runnable, IRequestResponder {
         return instance;
     }
 
+    private File[] workspaceFiles(){
+        FileFilter filter = (File pathname) -> pathname.getName().endsWith(".prg") && pathname.isFile();
+        File workspaceFolder = new File(workspacePath);
+        return workspaceFolder.listFiles(filter);
+    }
+
     private void changeDir(String path) throws InvalidRequestException {
         if (path == null) throw new InvalidRequestException("Dir change requested, but no path provided");
         File wrksp = new File(path);
@@ -56,10 +62,8 @@ public class DatabaseManager implements Runnable, IRequestResponder {
         File[] folderContents = folder.listFiles();
         if (folderContents == null) return null;
 
-        for (File file : folderContents){
-            if (file.getName().endsWith(".prg") && file.isFile()){
-                groups.add(getProductGroup(file));
-            }
+        for (File file : workspaceFiles()){
+            groups.add(getProductGroup(file));
         }
 
         return (ProductGroup[]) groups.toArray();
@@ -97,6 +101,31 @@ public class DatabaseManager implements Runnable, IRequestResponder {
         } catch (FileNotFoundException e) {
             return null;
         }
+    }
+
+    private void setProductGroup(String path, ProductGroup group) throws IOException{
+        String[] pathArgs = path.split("/");
+        if (pathArgs.length != 1) throw new InvalidRequestException("Path provided in invalid format");
+
+        File found = null;
+        for (File file : workspaceFiles()){
+            if (file.getName().equals(pathArgs[0] + ".prg")) {
+                found = file;
+            }
+        }
+
+        if (found == null){
+            found = new File(workspacePath + "/" + pathArgs[0] + ".prg");
+            found.createNewFile();
+        }
+
+        if (group == null){
+            found.delete();
+            return;
+        }
+
+        //TODO:writing to file
+
     }
 
     @Override
