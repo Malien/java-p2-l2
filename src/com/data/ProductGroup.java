@@ -9,6 +9,7 @@ public class ProductGroup {
 
     public ProductGroup(String name) {
         this.name = name;
+        this.products = new ArrayList<>();
     }
 
     public String getName() {

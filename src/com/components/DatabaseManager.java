@@ -114,18 +114,27 @@ public class DatabaseManager implements Runnable, IRequestResponder {
             }
         }
 
-        if (found == null){
-            found = new File(workspacePath + "/" + pathArgs[0] + ".prg");
-            found.createNewFile();
-        }
-
-        if (group == null){
+        //TODO: Write something more efficient than deleting and recreating whole file
+        if (found != null){
             found.delete();
+        }
+        if (group == null){
             return;
         }
+        if (found == null) {
+            found = new File(workspacePath + "/" + pathArgs[0] + ".prg");
+        }
+        found.createNewFile();
 
-        //TODO:writing to file
-
+        for (Product product : group.getProducts()){
+            DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
+            stream.writeInt(product.getCount());
+            stream.writeFloat((float) product.getPrice());
+            stream.writeUTF(product.getName());
+            stream.writeUTF(product.getManufacturer());
+            stream.writeUTF(product.getDescription());
+            stream.close();
+        }
     }
 
     @Override
@@ -147,8 +156,9 @@ public class DatabaseManager implements Runnable, IRequestResponder {
                         }
                         break;
                     case "set":
-                        Thread.sleep(2000);
-                        log.info(request.path());
+                        if (request.path().startsWith("/") && request.path().split("/").length == 1){
+                            setProductGroup(request.path(), (ProductGroup) request.payload());
+                        }
                         break;
                     case "add":
                         Thread.sleep(2500);
@@ -162,6 +172,9 @@ public class DatabaseManager implements Runnable, IRequestResponder {
                                 +" contains type that can't be processed. How could this happen?");
                 }
             }
+        } catch (InvalidRequestException e) {
+            log.error(e.toString());
+            throw e;
         } catch (Exception e){
             log.error(e.toString());
         }
