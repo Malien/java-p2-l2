@@ -8,29 +8,29 @@ public class DatabaseRequest implements IRequest {
     private IRequestResponder nextResponder;
     private IRequest next;
 
-//    /**
-//     * Constructor for requesting database entries
-//     * @param payload payload to be processed by the database.
-//     * @param type type of the request.
-//     *             "get" for retrieving database entry
-//     *             "set" for replacing database entry
-//     *             "add" for appending entry to database
-//     * @param path path at which request should be operated upon
-//     * @param next request to be formed. If data needs to be redirected or consecutive call
-//     *             should be made after this one
-//     * @param nextResponder next responder to which next request should be forwarded to
-//     */
-//    public DatabaseRequest(@Nullable Object payload,
-//                           String type,
-//                           String path,
-//                           @Nullable IRequest next,
-//                           @Nullable IRequestResponder nextResponder) {
-//        this.next = next;
-//        this.payload = payload;
-//        this.type = type;
-//        this.path = path;
-//        this.nextResponder = nextResponder;
-//    }
+    /**
+     * Constructor for requesting database entries
+     * @param payload payload to be processed by the database.
+     * @param type type of the request.
+     *             "get" for retrieving database entry
+     *             "set" for replacing database entry
+     *             "add" for appending entry to database
+     * @param path path at which request should be operated upon
+     * @param next request to be formed. If data needs to be redirected or consecutive call
+     *             should be made after this one
+     * @param nextResponder next responder to which next request should be forwarded to
+     */
+    private DatabaseRequest(Object payload,
+                           String type,
+                           String path,
+                           IRequest next,
+                           IRequestResponder nextResponder) {
+        this.next = next;
+        this.payload = payload;
+        this.type = type;
+        this.path = path;
+        this.nextResponder = nextResponder;
+    }
 
     /**
      * Constructor for database "get" request
@@ -87,6 +87,15 @@ public class DatabaseRequest implements IRequest {
      */
     public static DatabaseRequest add(Object payload, String path){
         return new DatabaseRequest(payload, "add", path);
+    }
+
+    /**
+     * Create database request to change working directory
+     * @param path path to which change working directory
+     * @return created request
+     */
+    public static DatabaseRequest changeDir(String path){
+        return new DatabaseRequest(null, "change", path, null, null);
     }
 
     @Override
