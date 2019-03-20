@@ -84,22 +84,18 @@ public class DatabaseManager implements Runnable {
     }
 
     private ProductGroup getProductGroup(String path) throws IOException {
-        String[] pathArgs = path.split("/");
-
         try{
-            File groupFile = new File(workspacePath + "/" + pathArgs[0] + ".prg");
+            File groupFile = new File(workspacePath + "/" + path + ".prg");
             return getProductGroup(groupFile);
         } catch (FileNotFoundException e) {
             return null;
         }
     }
 
-    private void setProductGroup(String path, ProductGroup group) throws IOException{
-        String filename = path.substring(1);
-
+    private boolean setProductGroup(String path, ProductGroup group) throws IOException{
         File found = null;
         for (File file : workspaceFiles()){
-            if (file.getName().equals(filename + ".prg")) {
+            if (file.getName().equals(path + ".prg")) {
                 found = file;
             }
         }
@@ -107,10 +103,10 @@ public class DatabaseManager implements Runnable {
         //TODO: Write something more efficient than just deleting and recreating whole file (path isn't used properly btw)
         if (group == null){
             found.delete();
-            return;
+            return true;
         }
         if (found == null) {
-            found = new File(workspacePath + "/" + filename + ".prg");
+            found = new File(workspacePath + "/" + path + ".prg");
             found.createNewFile();
         }
 
@@ -123,6 +119,7 @@ public class DatabaseManager implements Runnable {
             stream.writeUTF(product.getDescription());
         }
         stream.close();
+        return true;
     }
 
     @Override
@@ -132,15 +129,22 @@ public class DatabaseManager implements Runnable {
                 DatabaseRequest request = queue.take();
                 switch (request.type()){
                     case DatabaseRequest.GET:
+                        request.callback().call(getProductGroup(request.path()));
+                        break;
+                    case DatabaseRequest.GET_ALL:
+                        request.callback().call(getProductGroups());
                         break;
                     case DatabaseRequest.SET:
+                        request.callback().call(setProductGroup(request.payload().getName(), request.payload()));
                         break;
                     case DatabaseRequest.SET_PATH:
+                        request.callback().call(changeDir(request.path()));
                         break;
                     case DatabaseRequest.DELETE:
+                        request.callback().call(setProductGroup(request.payload().getName(), null));
                         break;
                 }
-            } catch (InterruptedException e){
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
