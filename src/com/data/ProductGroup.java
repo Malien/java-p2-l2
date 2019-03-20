@@ -41,6 +41,6 @@ public class ProductGroup {
     }
 
     public Product[] getProducts(){
-        return products.toArray(new Product[products.size()]);
+        return products.toArray(new Product[0]);
     }
 }
