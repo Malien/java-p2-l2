@@ -1,18 +1,15 @@
 package com.requests;
 
-import javafx.util.Callback;
-
 /**
  * Interface for async-like queue object
- * @param <T> type of parameter to process or to be returned to callback
- * @param <R> callback responder type
+ * @param <T> type of parameter to process
  */
-public interface IRequest<T, R> {
+public interface IRequest<T> {
 
     String path();
     T payload();
     byte type();
-    Callback<R, T> callback();
+    Callback callback();
 
     IRequest EMPTY = new IRequest() {
         private Object payload;
