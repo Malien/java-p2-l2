@@ -4,10 +4,13 @@ import com.data.ProductGroup;
 
 /**
  * Request queue item inside of DatabaseManager queue
+ * @param <R> the callback argument type
  */
-public class DatabaseRequest implements IRequest<ProductGroup> {
+public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
 
-    public static final byte GET = 0;
+    public static final byte GET = -1;
+    public static final byte GET_ALL = -2;
+
     public static final byte SET = 1;
     public static final byte SET_PATH = 2;
     public static final byte DELETE = 3;
@@ -15,9 +18,9 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
     private ProductGroup payload;
     private String path;
     private byte type;
-    private Callback callback;
+    private Callback<R> callback;
 
-    private DatabaseRequest(ProductGroup payload, String path, byte type, Callback callback) {
+    private DatabaseRequest(ProductGroup payload, String path, byte type, Callback<R> callback) {
         this.payload = payload;
         this.path = path;
         this.type = type;
@@ -30,8 +33,17 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param callback callback to call after entry is retrieved
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest get(String path, Callback<ProductGroup> callback){
-        return new DatabaseRequest(null, path, GET, callback);
+    public DatabaseRequest<ProductGroup> get(String path, Callback<ProductGroup> callback){
+        return new DatabaseRequest<>(null, path, GET, callback);
+    }
+
+    /**
+     * Create get all request
+     * @param callback callback to call after entries are retrieved
+     * @return newly created DatabaseRequest object
+     */
+    public DatabaseRequest<ProductGroup[]> getAll(Callback<ProductGroup[]> callback){
+        return new DatabaseRequest<>(null, null, GET_ALL, callback);
     }
 
     /**
@@ -40,8 +52,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param callback callback to call after entry is added
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest set(ProductGroup payload, Callback<ProductGroup> callback){
-        return new DatabaseRequest(payload, null, SET, callback);
+    public DatabaseRequest<Boolean> set(ProductGroup payload, Callback<Boolean> callback){
+        return new DatabaseRequest<>(payload, null, SET, callback);
     }
 
     /**
@@ -49,8 +61,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param payload product group to be saved
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest set(ProductGroup payload){
-        return new DatabaseRequest(payload, null, SET, null);
+    public DatabaseRequest<Void> set(ProductGroup payload){
+        return new DatabaseRequest<>(payload, null, SET, null);
     }
 
     /**
@@ -59,8 +71,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param callback callback to respond to bool value when path is set (true if operation successful)
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest setPath(String path, Callback<Boolean> callback){
-        return new DatabaseRequest(null, path, SET_PATH, callback);
+    public DatabaseRequest<Boolean> setPath(String path, Callback<Boolean> callback){
+        return new DatabaseRequest<>(null, path, SET_PATH, callback);
     }
 
     /**
@@ -68,8 +80,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param path path to be set
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest setPath(String path){
-        return new DatabaseRequest(null, path, SET_PATH, null);
+    public DatabaseRequest<Void> setPath(String path){
+        return new DatabaseRequest<>(null, path, SET_PATH, null);
     }
 
     /**
@@ -78,8 +90,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param callback callback to be called when operation is finished
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest delete(String path, Callback<Boolean> callback) {
-        return new DatabaseRequest(null, path, DELETE, callback);
+    public DatabaseRequest<Boolean> delete(String path, Callback<Boolean> callback) {
+        return new DatabaseRequest<>(null, path, DELETE, callback);
     }
 
     /**
@@ -87,8 +99,8 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
      * @param path group name to be deleted
      * @return newly created DatabaseRequest object
      */
-    public DatabaseRequest delete(String path) {
-        return new DatabaseRequest(null, path, DELETE, null);
+    public DatabaseRequest<Void> delete(String path) {
+        return new DatabaseRequest<>(null, path, DELETE, null);
     }
 
     @Override
@@ -97,7 +109,7 @@ public class DatabaseRequest implements IRequest<ProductGroup> {
     }
 
     @Override
-    public Callback callback() {
+    public Callback<R> callback() {
         return callback;
     }
 
