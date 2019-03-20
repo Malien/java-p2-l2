@@ -52,4 +52,42 @@ public interface IRequest<T, R> {
         }
     };
 
+    IRequest EMPTY = new IRequest() {
+        private Object payload;
+        @Override
+        public IRequest nextRequest() {
+            return null;
+        }
+
+        @Override
+        public IRequestResponder nextResponder() {
+            return null;
+        }
+
+        @Override
+        public String path() {
+            return null;
+        }
+
+        @Override
+        public Object payload() {
+            return payload;
+        }
+
+        @Override
+        public String type() {
+            return null;
+        }
+
+        @Override
+        public void setPayload(Object newPayload) {
+            this.payload = newPayload;
+        }
+
+        @Override
+        public void processNext(Object payload) {
+
+        }
+    };
+
 }
