@@ -25,7 +25,7 @@ public class DatabaseManager implements Runnable {
      */
 
     private static final DatabaseManager instance = new DatabaseManager();
-    private Thread dataThread = new Thread(this);
+    private Thread dataThread = new Thread(this, "DatabaseManager");
     private Logger log = new Logger("DatabaseManager");
     private String workspacePath = "/";
 
@@ -46,9 +46,11 @@ public class DatabaseManager implements Runnable {
         return workspaceFolder.listFiles(filter);
     }
 
-    private void changeDir(String path) throws RuntimeException{
+    private boolean changeDir(String path){
         File wrksp = new File(path);
+        if (!wrksp.isDirectory()) return false;
         workspacePath = path;
+        return true;
     }
 
     private ProductGroup[] getProductGroups() throws IOException {
@@ -125,6 +127,22 @@ public class DatabaseManager implements Runnable {
 
     @Override
     public void run() {
-
+        while(dataThread.isAlive()){
+            try{
+                DatabaseRequest request = queue.take();
+                switch (request.type()){
+                    case DatabaseRequest.GET:
+                        break;
+                    case DatabaseRequest.SET:
+                        break;
+                    case DatabaseRequest.SET_PATH:
+                        break;
+                    case DatabaseRequest.DELETE:
+                        break;
+                }
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
