@@ -1,124 +1,81 @@
 package com.requests;
 
-public class DatabaseRequest implements IRequest {
+import com.data.ProductGroup;
+import javafx.util.Callback;
 
-    private Object payload;
+/**
+ * Request queue item inside of DatabaseManager queue
+ * @param <R> type of callback responder
+ */
+public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
+
+    public static final byte GET = 0;
+    public static final byte SET = 1;
+    public static final byte SET_PATH = 2;
+
+    private ProductGroup payload;
     private String path;
-    private String type;
-    private IRequestResponder nextResponder;
-    private IRequest next;
+    private byte type;
+    private Callback<R, ProductGroup> callback;
 
-//    /**
-//     * Constructor for requesting database entries
-//     * @param payload payload to be processed by the database.
-//     * @param type type of the request.
-//     *             "get" for retrieving database entry
-//     *             "set" for replacing database entry
-//     *             "add" for appending entry to database
-//     * @param path path at which request should be operated upon
-//     * @param next request to be formed. If data needs to be redirected or consecutive call
-//     *             should be made after this one
-//     * @param nextResponder next responder to which next request should be forwarded to
-//     */
-//    public DatabaseRequest(@Nullable Object payload,
-//                           String type,
-//                           String path,
-//                           @Nullable IRequest next,
-//                           @Nullable IRequestResponder nextResponder) {
-//        this.next = next;
-//        this.payload = payload;
-//        this.type = type;
-//        this.path = path;
-//        this.nextResponder = nextResponder;
-//    }
-
-    /**
-     * Constructor for database "get" request
-     * @param path path at which request should be operated upon
-     * @param next request to be formed after completion. If data needs to be redirected or consecutive call
-     *             should be made after this one
-     * @param nextResponder next responder to which next request should be forwarded to.
-     */
-    private DatabaseRequest(String path, IRequest next, IRequestResponder nextResponder) {
-        this.next = next;
-        this.type = "get";
-        this.path = path;
-        this.nextResponder = nextResponder;
-    }
-
-    /**
-     * Constructor for database "set" and "add" request
-     * @param payload payload to be processed by the database.
-     * @param type type of the request.
-     *             "set" for replacing database entry
-     *             "add" for appending entry to database
-     * @param path path at which request should be operated upon
-     */
-    private DatabaseRequest(Object payload, String type, String path) {
+    private DatabaseRequest(ProductGroup payload, String path, byte type, Callback<R, ProductGroup> callback) {
         this.payload = payload;
-        this.type = type;
         this.path = path;
+        this.type = type;
+        this.callback = callback;
     }
 
     /**
-     * Create database "get" request
-     * @param path path at which request should be operated upon
-     * @param next request to be formed after completion. If data needs to be redirected or consecutive call
-     *             should be made after this one
-     * @param nextResponder next responder to which next request should be forwarded to.
+     * Create get request
+     * @param path path to entry
+     * @param callback callback to call after entry is retrieved
+     * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest get(String path, IRequest next, IRequestResponder nextResponder){
-        return new DatabaseRequest(path, next, nextResponder);
+    public DatabaseRequest get(String path, Callback<R, ProductGroup> callback){
+        return new DatabaseRequest(null, path, GET, callback);
     }
 
     /**
-     * Create database "set" request for a product
-     * @param payload product payload to be processed by the database.
-     * @param path path at which request should be operated upon
+     * Create set request with callback
+     * @param payload product group to be saved
+     * @param callback callback to call after entry is added
+     * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest set(Object payload, String path){
-        return new DatabaseRequest(payload, "set", path);
+    public DatabaseRequest set(ProductGroup payload, Callback<R, ProductGroup> callback){
+        return new DatabaseRequest(payload, null, SET, callback);
     }
 
     /**
-     * Create database "add" request for a product
-     * @param payload product payload to be processed by the database.
-     * @param path path at which request should be operated upon
+     * Create set request
+     * @param payload product group to be saved
+     * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest add(Object payload, String path){
-        return new DatabaseRequest(payload, "add", path);
+    public DatabaseRequest set(ProductGroup payload){
+        return new DatabaseRequest(payload, null, SET, null);
+    }
+
+    /**
+     * Create set path request
+     * @param path path to be set
+     * @return newly created DatabaseRequest object
+     */
+    public DatabaseRequest setPath(String path){
+        return new DatabaseRequest(null, path, SET_PATH, null);
     }
 
     @Override
-    public void processNext(Object payload){
-        IRequest nextReq = this.nextRequest();
-        nextReq.setPayload(payload);
-        nextResponder().respond(nextReq);
-    }
-
-    @Override
-    public IRequest nextRequest() {
-        return next;
-    }
-
-    @Override
-    public Object payload() {
+    public ProductGroup payload() {
         return payload;
     }
 
     @Override
-    public void setPayload(Object newPayload) {
-        payload = newPayload;
+    public Callback<R, ProductGroup> callback() {
+        return callback;
     }
 
     @Override
-    public String type() {
+    public byte type() {
         return type;
-    }
-
-    @Override
-    public IRequestResponder nextResponder() {
-        return nextResponder;
     }
 
     @Override
