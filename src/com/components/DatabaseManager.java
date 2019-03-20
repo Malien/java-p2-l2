@@ -1,5 +1,7 @@
 package com.components;
 
+import com.data.Product;
+import com.data.ProductGroup;
 import com.requests.DatabaseRequest;
 import com.util.Logger;
 
@@ -44,31 +46,24 @@ public class DatabaseManager implements Runnable {
         return workspaceFolder.listFiles(filter);
     }
 
-    private void changeDir(String path) throws InvalidRequestException {
-        if (path == null) throw new InvalidRequestException("Dir change requested, but no path provided");
+    private void changeDir(String path) throws RuntimeException{
         File wrksp = new File(path);
-        if (!wrksp.isDirectory()) throw new InvalidRequestException("Provided workspace path is not a directory");
         workspacePath = path;
     }
 
-    private ProductGroup[] getProductGroups() throws InvalidRequestException, IOException {
+    private ProductGroup[] getProductGroups() throws IOException {
         ArrayList<ProductGroup> groups = new ArrayList<>();
-        File folder = new File(workspacePath);
-        File[] folderContents = folder.listFiles();
-        if (folderContents == null) return null;
-
         for (File file : workspaceFiles()){
             groups.add(getProductGroup(file));
         }
-
-        return (ProductGroup[]) groups.toArray();
+        return groups.toArray(new ProductGroup[0]);
     }
 
     private ProductGroup getProductGroup(File file) throws IOException {
         FileInputStream fileStream = new FileInputStream(file);
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length()-5));
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length()-4));
         while (true){
             try {
                 int amount = data.readInt();
@@ -86,9 +81,8 @@ public class DatabaseManager implements Runnable {
         return group;
     }
 
-    private ProductGroup getProductGroup(String path) throws InvalidRequestException, IOException {
+    private ProductGroup getProductGroup(String path) throws IOException {
         String[] pathArgs = path.split("/");
-        if (pathArgs.length != 1) throw new InvalidRequestException("Path provided in invalid format");
 
         try{
             File groupFile = new File(workspacePath + "/" + pathArgs[0] + ".prg");
@@ -99,28 +93,34 @@ public class DatabaseManager implements Runnable {
     }
 
     private void setProductGroup(String path, ProductGroup group) throws IOException{
-        String[] pathArgs = path.split("/");
-        if (pathArgs.length != 1) throw new InvalidRequestException("Path provided in invalid format");
+        String filename = path.substring(1);
 
         File found = null;
         for (File file : workspaceFiles()){
-            if (file.getName().equals(pathArgs[0] + ".prg")) {
+            if (file.getName().equals(filename + ".prg")) {
                 found = file;
             }
         }
 
-        if (found == null){
-            found = new File(workspacePath + "/" + pathArgs[0] + ".prg");
-            found.createNewFile();
-        }
-
+        //TODO: Write something more efficient than just deleting and recreating whole file (path isn't used properly btw)
         if (group == null){
             found.delete();
             return;
         }
+        if (found == null) {
+            found = new File(workspacePath + "/" + filename + ".prg");
+            found.createNewFile();
+        }
 
-        //TODO:writing to file
-
+        DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
+        for (Product product : group.getProducts()){
+            stream.writeInt(product.getCount());
+            stream.writeFloat((float) product.getPrice());
+            stream.writeUTF(product.getName());
+            stream.writeUTF(product.getManufacturer());
+            stream.writeUTF(product.getDescription());
+        }
+        stream.close();
     }
 
     @Override
