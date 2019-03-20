@@ -167,7 +167,7 @@ public class DatabaseManager implements Runnable {
                         request.callback().call(changeDir(request.path()));
                         break;
                     case DatabaseRequest.DELETE:
-                        request.callback().call(setProductGroup(request.payload().getName(), null));
+                        request.callback().call(setProductGroup(request.path(), null));
                         break;
                 }
             } catch (Exception e){
