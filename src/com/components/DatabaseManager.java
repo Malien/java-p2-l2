@@ -2,6 +2,7 @@ package com.components;
 
 import com.data.Product;
 import com.data.ProductGroup;
+import com.requests.Callback;
 import com.requests.DatabaseRequest;
 import com.util.Logger;
 
@@ -120,6 +121,31 @@ public class DatabaseManager implements Runnable {
         }
         stream.close();
         return true;
+    }
+
+    public void get(String path, Callback<ProductGroup> callback) throws InterruptedException{
+        queue.put(DatabaseRequest.get(path, callback));
+    }
+    public void getAll(Callback<ProductGroup[]> callback) throws InterruptedException{
+        queue.put(DatabaseRequest.getAll(callback));
+    }
+    public void set(ProductGroup group, Callback<Boolean> callback) throws InterruptedException{
+        queue.put(DatabaseRequest.set(group, callback));
+    }
+    public void set(ProductGroup group) throws InterruptedException{
+        queue.put(DatabaseRequest.set(group));
+    }
+    public void setPath(String path, Callback<Boolean> callback) throws InterruptedException{
+        queue.put(DatabaseRequest.setPath(path, callback));
+    }
+    public void setPath(String path) throws InterruptedException{
+        queue.put(DatabaseRequest.setPath(path));
+    }
+    public void delete(String path, Callback<Boolean> callback) throws InterruptedException{
+        queue.put(DatabaseRequest.delete(path, callback));
+    }
+    public void delete(String path) throws InterruptedException{
+        queue.put(DatabaseRequest.delete(path));
     }
 
     @Override
