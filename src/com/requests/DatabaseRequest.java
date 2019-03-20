@@ -4,9 +4,8 @@ import com.data.ProductGroup;
 
 /**
  * Request queue item inside of DatabaseManager queue
- * @param <R> type of callback responder
  */
-public class DatabaseRequest<R> implements IRequest<ProductGroup> {
+public class DatabaseRequest implements IRequest<ProductGroup> {
 
     public static final byte GET = 0;
     public static final byte SET = 1;
