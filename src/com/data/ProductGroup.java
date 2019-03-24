@@ -9,6 +9,7 @@ public class ProductGroup {
 
     public ProductGroup(String name) {
         this.name = name;
+        this.products = new ArrayList<>();
     }
 
     public String getName() {
@@ -40,6 +41,6 @@ public class ProductGroup {
     }
 
     public Product[] getProducts(){
-        return (Product[]) products.toArray();
+        return products.toArray(new Product[0]);
     }
 }
