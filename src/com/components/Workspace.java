@@ -1,15 +1,25 @@
 package com.components;
 
-import com.data.ProductGroup;
-import com.util.Logger;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.ui.MainFrame;
+import com.ui.WelcomeFrame;
+import mdlaf.MaterialLookAndFeel;
 
-import java.util.Arrays;
+import javax.swing.*;
 
-public class Workspace extends Application {
+public class Workspace {
 
-    @Override
+    public static void main(String[] args) {
+        /*try{
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());
+        }catch (UnsupportedLookAndFeelException e){
+            e.printStackTrace();
+        }*/
+        MainFrame frame = new MainFrame();
+        frame.setVisible(true);
+    }
+
+    //Depreciated code:
+    /*@Override
     public void start(Stage primaryStage) throws Exception {
         DatabaseManager manager = DatabaseManager.getInstance();
         Logger log = new Logger("Workspace");
@@ -20,8 +30,6 @@ public class Workspace extends Application {
         manager.getAll((ProductGroup[] a) -> {
             log.info(Arrays.toString(a));
         });
-
-        //TODO: set up application
-    }
+    }*/
   
 }

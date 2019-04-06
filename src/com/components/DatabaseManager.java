@@ -37,17 +37,17 @@ public class DatabaseManager implements Runnable {
         dataThread.start();
     }
 
-    public static DatabaseManager getInstance(){
+    public static DatabaseManager getInstance() {
         return instance;
     }
 
-    private File[] workspaceFiles(){
+    private File[] workspaceFiles() {
         FileFilter filter = (File pathname) -> pathname.getName().endsWith(".prg") && pathname.isFile();
         File workspaceFolder = new File(workspacePath);
         return workspaceFolder.listFiles(filter);
     }
 
-    private boolean changeDir(String path){
+    private boolean changeDir(String path) {
         File wrksp = new File(path);
         if (!wrksp.isDirectory()) return false;
         workspacePath = path;
@@ -56,7 +56,7 @@ public class DatabaseManager implements Runnable {
 
     private ProductGroup[] getProductGroups() throws IOException {
         ArrayList<ProductGroup> groups = new ArrayList<>();
-        for (File file : workspaceFiles()){
+        for (File file : workspaceFiles()) {
             groups.add(getProductGroup(file));
         }
         return groups.toArray(new ProductGroup[0]);
@@ -66,8 +66,8 @@ public class DatabaseManager implements Runnable {
         FileInputStream fileStream = new FileInputStream(file);
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length()-4));
-        while (true){
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4));
+        while (true) {
             try {
                 int amount = data.readInt();
                 float price = data.readFloat();
@@ -85,7 +85,7 @@ public class DatabaseManager implements Runnable {
     }
 
     private ProductGroup getProductGroup(String path) throws IOException {
-        try{
+        try {
             File groupFile = new File(workspacePath + "/" + path + ".prg");
             return getProductGroup(groupFile);
         } catch (FileNotFoundException e) {
@@ -93,16 +93,16 @@ public class DatabaseManager implements Runnable {
         }
     }
 
-    private boolean setProductGroup(String path, ProductGroup group) throws IOException{
+    private boolean setProductGroup(String path, ProductGroup group) throws IOException {
         File found = null;
-        for (File file : workspaceFiles()){
+        for (File file : workspaceFiles()) {
             if (file.getName().equals(path + ".prg")) {
                 found = file;
             }
         }
 
         //TODO: Write something more efficient than just deleting and recreating whole file (path isn't used properly btw)
-        if (group == null){
+        if (group == null) {
             found.delete();
             return true;
         }
@@ -112,7 +112,7 @@ public class DatabaseManager implements Runnable {
         }
 
         DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
-        for (Product product : group.getProducts()){
+        for (Product product : group.getProducts()) {
             stream.writeInt(product.getCount());
             stream.writeFloat((float) product.getPrice());
             stream.writeUTF(product.getName());
@@ -123,37 +123,44 @@ public class DatabaseManager implements Runnable {
         return true;
     }
 
-    public void get(String path, Callback<ProductGroup> callback) throws InterruptedException{
+    public void get(String path, Callback<ProductGroup> callback) throws InterruptedException {
         queue.put(DatabaseRequest.get(path, callback));
     }
-    public void getAll(Callback<ProductGroup[]> callback) throws InterruptedException{
+
+    public void getAll(Callback<ProductGroup[]> callback) throws InterruptedException {
         queue.put(DatabaseRequest.getAll(callback));
     }
-    public void set(ProductGroup group, Callback<Boolean> callback) throws InterruptedException{
+
+    public void set(ProductGroup group, Callback<Boolean> callback) throws InterruptedException {
         queue.put(DatabaseRequest.set(group, callback));
     }
-    public void set(ProductGroup group) throws InterruptedException{
+
+    public void set(ProductGroup group) throws InterruptedException {
         queue.put(DatabaseRequest.set(group));
     }
-    public void setPath(String path, Callback<Boolean> callback) throws InterruptedException{
+
+    public void setPath(String path, Callback<Boolean> callback) throws InterruptedException {
         queue.put(DatabaseRequest.setPath(path, callback));
     }
-    public void setPath(String path) throws InterruptedException{
+
+    public void setPath(String path) throws InterruptedException {
         queue.put(DatabaseRequest.setPath(path));
     }
-    public void delete(String path, Callback<Boolean> callback) throws InterruptedException{
+
+    public void delete(String path, Callback<Boolean> callback) throws InterruptedException {
         queue.put(DatabaseRequest.delete(path, callback));
     }
-    public void delete(String path) throws InterruptedException{
+
+    public void delete(String path) throws InterruptedException {
         queue.put(DatabaseRequest.delete(path));
     }
 
     @Override
     public void run() {
-        while(dataThread.isAlive()){
-            try{
+        while (dataThread.isAlive()) {
+            try {
                 DatabaseRequest request = queue.take();
-                switch (request.type()){
+                switch (request.type()) {
                     case DatabaseRequest.GET:
                         request.callback().call(getProductGroup(request.path()));
                         break;
@@ -170,7 +177,7 @@ public class DatabaseManager implements Runnable {
                         request.callback().call(setProductGroup(request.path(), null));
                         break;
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

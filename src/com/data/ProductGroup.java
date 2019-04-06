@@ -28,19 +28,19 @@ public class ProductGroup {
                 '}';
     }
 
-    public Product get(int index){
+    public Product get(int index) {
         return products.get(index);
     }
 
-    public void set(int index, Product product){
+    public void set(int index, Product product) {
         products.set(index, product);
     }
 
-    public void add(Product product){
+    public void add(Product product) {
         products.add(product);
     }
 
-    public Product[] getProducts(){
+    public Product[] getProducts() {
         return products.toArray(new Product[0]);
     }
 }
