@@ -3,6 +3,8 @@ package com.ui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JPanel mainPanel;
@@ -14,10 +16,9 @@ public class MainFrame extends JFrame {
     private JButton editItemButton;
     private JButton removeItemButton;
     private JButton itemDescButton;
-    private JTextField addItemValTextFieldTextField;
+    private JTextField addItemValTextField;
     private JButton addItemPlusButton;
     private JButton addItemMinusButton;
-    private JPanel menuBarPanel;
     private JLabel currentGroupLabel;
     private JButton writeOffPlusButton;
     private JButton writeOffMinusButton;
@@ -27,11 +28,140 @@ public class MainFrame extends JFrame {
     private JButton exitButton;
     private JTextField searchMenuTextField;
     private JButton searchMenuButton;
+    private JMenuItem dataBaseMenuItem;
+    private JMenuItem statisticsWarehouseMenuItem;
+    private JMenuItem helpMenuItem;
+    private JMenuItem statisticsGroupMenuItem;
+    private JMenuItem countWarehousePriceMenuItem;
+    private JMenuItem countGroupPriceMenuItem;
 
     public MainFrame() {
         setupMenuBar();
         setupTable();
+        addButtonListeners();
+        addMenuListeners();
         setupFrame();
+    }
+
+    private void addMenuListeners() {
+        dataBaseMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        statisticsWarehouseMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });;
+        helpMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });;
+        statisticsGroupMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });;
+        countWarehousePriceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });;
+        countGroupPriceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });;
+    }
+
+    @SuppressWarnings("Duplicates")
+    private void addButtonListeners() {
+        choseGroupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        editGroupsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        addItemsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        addItemPlusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        addItemMinusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        writeOffItemsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        writeOffPlusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        writeOffMinusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        editItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        removeItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        itemDescButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        currentGroupDescButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+        searchMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
     }
 
     private void setupTable() {
@@ -50,11 +180,12 @@ public class MainFrame extends JFrame {
         // menuBar.add(exitButton);
 
         this.setJMenuBar(menuBar);
+
     }
 
     private void addDataBaseMenu() {
         JMenu dataBaseMenu = new JMenu("База даних");
-        JMenuItem dataBaseMenuItem = new JMenuItem("sample");
+        dataBaseMenuItem = new JMenuItem("sample");
         dataBaseMenu.add(dataBaseMenuItem);
         menuBar.add(dataBaseMenu);
     }
@@ -78,7 +209,7 @@ public class MainFrame extends JFrame {
     private void addHelpMenu() {
         JMenu helpMenu = new JMenu("Довідка");
         menuBar.add(helpMenu);
-        JMenuItem helpMenuItem = new JMenuItem("sample");
+        helpMenuItem = new JMenuItem("sample");
         helpMenu.add(helpMenuItem);
     }
 
@@ -87,16 +218,16 @@ public class MainFrame extends JFrame {
 
         JMenu showSubmenu = new JMenu("Показати товари");
         statisticsMenu.add(showSubmenu);
-        JMenuItem statisticsWarehouseMenuItem = new JMenuItem("На складі");
+        statisticsWarehouseMenuItem = new JMenuItem("На складі");
         showSubmenu.add(statisticsWarehouseMenuItem);
-        JMenuItem statisticsGroupMenuItem = new JMenuItem("У групі");
+        statisticsGroupMenuItem = new JMenuItem("У групі");
         showSubmenu.add(statisticsGroupMenuItem);
 
         JMenu countPriceSubmenu = new JMenu("Порахувати");
         statisticsMenu.add(countPriceSubmenu);
-        JMenuItem countWarehousePriceMenuItem = new JMenuItem("На складі");
+        countWarehousePriceMenuItem = new JMenuItem("На складі");
         countPriceSubmenu.add(countWarehousePriceMenuItem);
-        JMenuItem countGroupPriceMenuItem = new JMenuItem("У групі");
+        countGroupPriceMenuItem = new JMenuItem("У групі");
         countPriceSubmenu.add(countGroupPriceMenuItem);
 
         menuBar.add(statisticsMenu);
