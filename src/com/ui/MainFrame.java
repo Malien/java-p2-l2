@@ -56,124 +56,67 @@ public class MainFrame extends JFrame {
     }
 
     private void addMenuListeners() {
-        dataBaseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        dataBaseMenuItem.addActionListener(actionEvent -> {
 
-            }
         });
-        statisticsWarehouseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        statisticsWarehouseMenuItem.addActionListener(actionEvent -> {
 
-            }
-        });;
-        helpMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        });
+        helpMenuItem.addActionListener(actionEvent -> {
 
-            }
-        });;
-        statisticsGroupMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        });
+        statisticsGroupMenuItem.addActionListener(actionEvent -> {
 
-            }
-        });;
-        countWarehousePriceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        });
+        countWarehousePriceMenuItem.addActionListener(actionEvent -> {
 
-            }
-        });;
-        countGroupPriceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        });
+        countGroupPriceMenuItem.addActionListener(actionEvent -> {
 
-            }
-        });;
+        });
     }
 
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
-        choseGroupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        choseGroupButton.addActionListener(actionEvent -> {
 
-            }
         });
-        editGroupsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
-                editGroupsFrame.setVisible(true);
-            }
+        editGroupsButton.addActionListener(actionEvent -> {
+            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
+            editGroupsFrame.setVisible(true);
         });
-        addItemsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemsButton.addActionListener(actionEvent -> {
 
-            }
         });
-        addItemPlusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemPlusButton.addActionListener(actionEvent -> {
 
-            }
         });
-        addItemMinusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemMinusButton.addActionListener(actionEvent -> {
 
-            }
         });
-        writeOffItemsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        writeOffItemsButton.addActionListener(actionEvent -> {
 
-            }
         });
-        writeOffPlusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        writeOffPlusButton.addActionListener(actionEvent -> {
 
-            }
         });
-        writeOffMinusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        writeOffMinusButton.addActionListener(actionEvent -> {
 
-            }
         });
-        editItemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        editItemButton.addActionListener(actionEvent -> {
 
-            }
         });
-        removeItemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        removeItemButton.addActionListener(actionEvent -> {
 
-            }
         });
-        itemDescButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        itemDescButton.addActionListener(actionEvent -> {
 
-            }
         });
-        currentGroupDescButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        currentGroupDescButton.addActionListener(actionEvent -> {
 
-            }
         });
-        searchMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        searchMenuButton.addActionListener(actionEvent -> {
 
-            }
         });
     }
 
