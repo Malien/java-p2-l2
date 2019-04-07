@@ -28,6 +28,8 @@ public class DescFrame extends JFrame {
     }
 
     private void addListeners() {
-
+        exitButton.addActionListener(e -> {
+            dispose();
+        });
     }
 }

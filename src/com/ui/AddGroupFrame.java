@@ -1,20 +1,27 @@
 package com.ui;
 
+import com.data.FrontBackConnection;
+import com.data.ProductGroup;
+import com.util.NameChecker;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AddGroupFrame extends JFrame {
     private JPanel mainPanel;
     private JButton submitButton;
     private JTextField groupNameTextField;
     private JTextField groupDescTextField;
+    private FrontBackConnection conn;
+    private EditGroupsFrame parentFrame;
 
-    AddGroupFrame(){
-        this.setPreferredSize(new Dimension(300,300));
+    AddGroupFrame(EditGroupsFrame parentFrame, FrontBackConnection conn) {
+        this.conn = conn;
+        this.parentFrame=parentFrame;
+        this.setPreferredSize(new Dimension(300, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setup();
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -22,15 +29,21 @@ public class AddGroupFrame extends JFrame {
     }
 
     private void addListeners() {
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        submitButton.addActionListener(e -> {
+            if (NameChecker.check(groupNameTextField.getText())) {
+                conn.getGroupList().add(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
+                dispose();
+            } else
+                JOptionPane.showMessageDialog(null, "Помилка в імені групи", "Помилка!",
+                        JOptionPane.ERROR_MESSAGE);
+        });
 
+        //TODO: KOSTYL, NADO FIXIT PAZANY
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                parentFrame.listModel.addElement(conn.getGroupList().get(conn.getGroupList().size()-1).getName());
             }
         });
-    }
-
-    private void setup(){
-
     }
 }

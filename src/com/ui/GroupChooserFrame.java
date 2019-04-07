@@ -5,16 +5,16 @@ import com.data.FrontBackConnection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GroupChooserFrame extends JFrame {
     private FrontBackConnection conn;
     private JButton submitButton;
     private JTable table;
     private JPanel mainPanel;
+    private MainFrame parentFrame;
 
-    GroupChooserFrame(FrontBackConnection conn) {
+    GroupChooserFrame(MainFrame parentFrame, FrontBackConnection conn) {
+        this.parentFrame = parentFrame;
         this.conn = conn;
         this.setPreferredSize(new Dimension(320, 300));
         this.setMinimumSize(new Dimension(320, 300));
@@ -27,11 +27,9 @@ public class GroupChooserFrame extends JFrame {
     }
 
     private void addListeners() {
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        submitButton.addActionListener(e -> {
+            parentFrame.setCurrentGroup(conn.getGroupList().get(table.getSelectedRow()));
+            dispose();
         });
     }
 

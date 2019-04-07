@@ -67,7 +67,7 @@ public class DatabaseManager implements Runnable {
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
         //TODO: fix for changed ProductGroup constructor needed
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4));
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4),"some xepHya");
         while (true) {
             try {
                 int amount = data.readInt();

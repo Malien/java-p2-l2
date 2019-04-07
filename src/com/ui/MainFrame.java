@@ -30,7 +30,6 @@ public class MainFrame extends JFrame {
     private JScrollPane tableScrollPane;
     private JTable table;
     private JMenuBar menuBar;
-    private JButton exitButton;
     private JTextField searchMenuTextField;
     private JButton searchMenuButton;
     private JMenuItem dataBaseMenuItem;
@@ -46,7 +45,6 @@ public class MainFrame extends JFrame {
         this.conn = conn;
         addTestGroupList();
         setupMenuBar();
-        setupTable();
         addButtonListeners();
         addMenuListeners();
         setupFrame();
@@ -63,136 +61,105 @@ public class MainFrame extends JFrame {
 
     @SuppressWarnings("Duplicates")
     private void addMenuListeners() {
-        dataBaseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        dataBaseMenuItem.addActionListener(e ->  {
 
-            }
         });
-        statisticsWarehouseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        statisticsWarehouseMenuItem.addActionListener(e -> {
+
         });
-        helpMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        helpMenuItem.addActionListener(e ->  {
+
         });
-        statisticsGroupMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        statisticsGroupMenuItem.addActionListener(e ->  {
+
         });
-        countWarehousePriceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        countWarehousePriceMenuItem.addActionListener(e ->  {
+
         });
-        countGroupPriceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        countGroupPriceMenuItem.addActionListener(e ->  {
+
         });
     }
 
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
-        choseGroupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        choseGroupButton.addActionListener(e -> {
+            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this,conn);
+            groupChooserFrame.setVisible(true);
+        });
 
-            }
+        editGroupsButton.addActionListener(e -> {
+            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
+            editGroupsFrame.setVisible(true);
         });
-        editGroupsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
-                editGroupsFrame.setVisible(true);
-            }
-        });
-        addItemsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
-        });
-        addItemPlusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemsButton.addActionListener(e -> {
 
-            }
         });
-        addItemMinusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
-        });
-        writeOffItemsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemPlusButton.addActionListener(e -> {
 
-            }
         });
-        writeOffPlusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
-        });
-        writeOffMinusButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        addItemMinusButton.addActionListener(e ->  {
 
-            }
         });
-        editItemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
-        });
-        removeItemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        writeOffItemsButton.addActionListener(e -> {
 
-            }
         });
-        itemDescButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-              //  if(currentGroup!=null)
+
+        writeOffPlusButton.addActionListener(e -> {
+
+        });
+
+        writeOffMinusButton.addActionListener(e ->  {
+
+        });
+
+        editItemButton.addActionListener(e ->  {
+
+        });
+
+        removeItemButton.addActionListener(e -> {
+
+        });
+
+        itemDescButton.addActionListener(e ->  {
+                //  if(currentGroup!=null)
              /*   ProductGroup productGroupIndex =
                 DescFrame descFrame = new DescFrame("Група:" + productGroupIndex.getName()
                         ,productGroupIndex.getDesc());
                 descFrame.setVisible(true);*/
-            }
         });
-        currentGroupDescButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-               /* Product productGroupIndex = table.getSelectedRow().;
-                DescFrame descFrame = new DescFrame("Група:" + productGroupIndex.getName()
-                        ,productGroupIndex.getDesc());
-                descFrame.setVisible(true);*/
-            }
-        });
-        searchMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
 
-            }
+        currentGroupDescButton.addActionListener(e ->  {
+
+        });
+
+        searchMenuButton.addActionListener(e ->  {
+
         });
     }
 
     private void setupTable() {
-        table.setModel(new DefaultTableModel());
+        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
+        String[][] data = new String[currentGroup.getProducts().length][4];
+
+        for (int i = 0; i < currentGroup.getProducts().length; i++) {
+            Product tempProduct = currentGroup.get(i);
+            data[i][0]=tempProduct.getName();
+            data[i][1]=tempProduct.getManufacturer();
+            data[i][2]=String.valueOf(tempProduct.getCount());
+            data[i][3]=String.valueOf(tempProduct.getPrice());
+        }
+
+        table.setModel(new DefaultTableModel(data,column));
         tableScrollPane.add(table);
     }
 
@@ -261,5 +228,12 @@ public class MainFrame extends JFrame {
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
+    }
+
+    void setCurrentGroup(ProductGroup group) {
+        currentGroup = group;
+        //TODO: cleanup and remove test
+        System.out.println(currentGroup);
+        setupTable();
     }
 }

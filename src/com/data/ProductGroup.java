@@ -1,12 +1,13 @@
 package com.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductGroup {
 
     private String name;
     private String desc;
-    private ArrayList<Product> products;
+    private List<Product> products;
 
     public ProductGroup(String name, String desc) {
         this.name = name;
@@ -23,19 +24,11 @@ public class ProductGroup {
     }
 
     public String getDesc() {
-        return name;
+        return desc;
     }
 
-    public void setDesc(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductGroup{" +
-                "name='" + name + '\'' +
-                ", products=" + products +
-                '}';
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Product get(int index) {
@@ -50,7 +43,8 @@ public class ProductGroup {
         products.add(product);
     }
 
+    //TODO: Potential bug here:
     public Product[] getProducts() {
-        return products.toArray(new Product[0]);
+        return products.toArray(new Product[products.size()]);
     }
 }
