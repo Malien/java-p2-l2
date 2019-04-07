@@ -1,5 +1,9 @@
 package com.ui;
 
+import com.data.FrontBackConnection;
+import com.data.Product;
+import com.data.ProductGroup;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -34,8 +38,16 @@ public class MainFrame extends JFrame {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem countWarehousePriceMenuItem;
     private JMenuItem countGroupPriceMenuItem;
+    private FrontBackConnection conn;
 
-    public MainFrame() {
+    public MainFrame(FrontBackConnection conn) {
+        this.conn = conn;
+        conn.getGroupList().add(new ProductGroup("first group"));
+        conn.getGroupList().add(new ProductGroup("second group"));
+        conn.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+        conn.getGroupList().get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+        conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+        conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
         setupMenuBar();
         setupTable();
         addButtonListeners();
@@ -93,7 +105,8 @@ public class MainFrame extends JFrame {
         editGroupsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
+                editGroupsFrame.setVisible(true);
             }
         });
         addItemsButton.addActionListener(new ActionListener() {

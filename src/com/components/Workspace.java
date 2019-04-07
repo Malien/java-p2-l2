@@ -1,20 +1,13 @@
 package com.components;
 
+import com.data.FrontBackConnection;
 import com.ui.MainFrame;
-import com.ui.WelcomeFrame;
-import mdlaf.MaterialLookAndFeel;
-
-import javax.swing.*;
 
 public class Workspace {
 
     public static void main(String[] args) {
-        /*try{
-            UIManager.setLookAndFeel(new MaterialLookAndFeel());
-        }catch (UnsupportedLookAndFeelException e){
-            e.printStackTrace();
-        }*/
-        MainFrame frame = new MainFrame();
+        FrontBackConnection conn = new FrontBackConnection();
+        MainFrame frame = new MainFrame(conn);
         frame.setVisible(true);
     }
 
