@@ -28,6 +28,7 @@ public class MainFrame extends JFrame {
     private JButton writeOffMinusButton;
     private JTextField writeOffValTextField;
     private JScrollPane tableScrollPane;
+    private JTable table;
     private JMenuBar menuBar;
     private JButton exitButton;
     private JTextField searchMenuTextField;
@@ -39,6 +40,7 @@ public class MainFrame extends JFrame {
     private JMenuItem countWarehousePriceMenuItem;
     private JMenuItem countGroupPriceMenuItem;
     private FrontBackConnection conn;
+    private ProductGroup currentGroup;
 
     public MainFrame(FrontBackConnection conn) {
         this.conn = conn;
@@ -51,14 +53,15 @@ public class MainFrame extends JFrame {
     }
 
     private void addTestGroupList() {
-        conn.getGroupList().add(new ProductGroup("first group","fdfd"));
-        conn.getGroupList().add(new ProductGroup("second group",""));
+        conn.getGroupList().add(new ProductGroup("first group", "fdfd"));
+        conn.getGroupList().add(new ProductGroup("second group", ""));
         conn.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
         conn.getGroupList().get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
         conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
         conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
     }
 
+    @SuppressWarnings("Duplicates")
     private void addMenuListeners() {
         dataBaseMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -71,31 +74,31 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
 
             }
-        });;
+        });
         helpMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
             }
-        });;
+        });
         statisticsGroupMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
             }
-        });;
+        });
         countWarehousePriceMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
             }
-        });;
+        });
         countGroupPriceMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
             }
-        });;
+        });
     }
 
     @SuppressWarnings("Duplicates")
@@ -164,13 +167,20 @@ public class MainFrame extends JFrame {
         itemDescButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+              //  if(currentGroup!=null)
+             /*   ProductGroup productGroupIndex =
+                DescFrame descFrame = new DescFrame("Група:" + productGroupIndex.getName()
+                        ,productGroupIndex.getDesc());
+                descFrame.setVisible(true);*/
             }
         });
         currentGroupDescButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+               /* Product productGroupIndex = table.getSelectedRow().;
+                DescFrame descFrame = new DescFrame("Група:" + productGroupIndex.getName()
+                        ,productGroupIndex.getDesc());
+                descFrame.setVisible(true);*/
             }
         });
         searchMenuButton.addActionListener(new ActionListener() {
@@ -182,7 +192,7 @@ public class MainFrame extends JFrame {
     }
 
     private void setupTable() {
-        JTable table = new JTable(new DefaultTableModel());
+        table.setModel(new DefaultTableModel());
         tableScrollPane.add(table);
     }
 
