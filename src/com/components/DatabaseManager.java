@@ -18,7 +18,7 @@ public class DatabaseManager implements Runnable {
         group2.prg -- product group 2
 
     .prg file structure:
-    |Product|Product|... EOF
+    String(description)|Product|Product|... EOF
 
     Product
     parameters: ||  amount ||  price  ||   name    |  0x0   || manufacturer |  0x0   || description |  0x0   ||
@@ -66,8 +66,9 @@ public class DatabaseManager implements Runnable {
         FileInputStream fileStream = new FileInputStream(file);
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
+        String groupDescription = data.readUTF();
         //TODO: fix for changed ProductGroup constructor needed
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4),"some xepHya");
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4),groupDescription);
         while (true) {
             try {
                 int amount = data.readInt();
@@ -113,6 +114,7 @@ public class DatabaseManager implements Runnable {
         }
 
         DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
+        stream.writeUTF(group.getDesc());
         for (Product product : group.getProducts()) {
             stream.writeInt(product.getCount());
             stream.writeFloat((float) product.getPrice());

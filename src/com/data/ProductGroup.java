@@ -44,7 +44,8 @@ public class ProductGroup {
     }
 
     //TODO: Potential bug here:
+    // You saw nothing! There is none here! -- Yaroslav
     public Product[] getProducts() {
-        return products.toArray(new Product[products.size()]);
+        return products.toArray(new Product[0]);
     }
 }
