@@ -10,9 +10,9 @@ public class FrontBackConnection {
         return groupList;
     }
 
-    boolean addGroup(String name) {
+    boolean addGroup(String name,String desc) {
         if (groupNameIsUnique(name)) {
-            groupList.add(new ProductGroup(name));
+            groupList.add(new ProductGroup(name,desc));
             return true;
         }
         return false;

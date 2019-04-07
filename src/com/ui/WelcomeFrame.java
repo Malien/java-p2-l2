@@ -26,9 +26,6 @@ public class WelcomeFrame extends JFrame {
         pathComboBox.setEditable(true);
         String pathCacheTest = "test1";
         pathComboBox.addItem(pathCacheTest);
-        //TODO: For Andrew
-        // - add all previous path locations to the combo box
-        // - add method for adding and removing path cache
     }
 
     private void setupFrame() {
