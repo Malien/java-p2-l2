@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class ProductGroup {
 
     private String name;
+    private String desc;
     private ArrayList<Product> products;
 
-    public ProductGroup(String name) {
+    public ProductGroup(String name, String desc) {
         this.name = name;
+        this.desc = desc;
         this.products = new ArrayList<>();
     }
 
@@ -17,6 +19,14 @@ public class ProductGroup {
     }
 
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return name;
+    }
+
+    public void setDesc(String name) {
         this.name = name;
     }
 

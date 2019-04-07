@@ -1,8 +1,6 @@
 package com.ui;
 
 import com.data.FrontBackConnection;
-import com.data.Product;
-import com.data.ProductGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +17,8 @@ public class EditGroupsFrame extends JFrame {
 
     EditGroupsFrame(FrontBackConnection conn) {
         this.conn = conn;
-        this.setPreferredSize(new Dimension(300, 300));
+        this.setPreferredSize(new Dimension(320, 300));
+        this.setMinimumSize(new Dimension(320, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup();
         this.add(mainPanel);
@@ -39,7 +38,8 @@ public class EditGroupsFrame extends JFrame {
         editSelectedGroupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SubmenuEditGroupFrame editGroupsFrame = new SubmenuEditGroupFrame(conn.getGroupList().get(list.getSelectedIndex()));
+                editGroupsFrame.setVisible(true);
             }
         });
         removeSelectedGroupButton.addActionListener(new ActionListener() {
@@ -52,7 +52,6 @@ public class EditGroupsFrame extends JFrame {
 
     private void setup() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
-
 
         for (int i = 0; i < conn.getGroupList().size(); i++) {
             listModel.addElement(conn.getGroupList().get(i).getName());
