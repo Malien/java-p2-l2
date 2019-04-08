@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.DataBaseFunctions;
+import com.data.Cache;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +12,10 @@ public class EditGroupsFrame extends JFrame {
     private JButton removeSelectedGroupButton;
     private JButton editSelectedGroupButton;
     JList list;
-    private DataBaseFunctions conn;
+    private Cache conn;
     public DefaultListModel<String> listModel = new DefaultListModel<>();
 
-    EditGroupsFrame(DataBaseFunctions conn) {
+    EditGroupsFrame(Cache conn) {
         this.conn = conn;
         this.setPreferredSize(new Dimension(350, 300));
         this.setMinimumSize(new Dimension(350, 300));

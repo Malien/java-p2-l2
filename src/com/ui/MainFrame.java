@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.DataBaseFunctions;
+import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
 
@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements Reloader{
     private JPanel mainPanel;
     private JButton choseGroupButton;
     private JButton editGroupsButton;
@@ -36,12 +36,13 @@ public class MainFrame extends JFrame {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem countWarehousePriceMenuItem;
     private JMenuItem countGroupPriceMenuItem;
-    private DataBaseFunctions conn;
+    private Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
 
-    public MainFrame(DataBaseFunctions conn) {
-        this.conn = conn;
+    public MainFrame(Cache cache) {
+        this.cache = cache;
+        this.cache.setUI(this);
         addTestGroupList();
         setupMenuBar();
         addButtonListeners();
@@ -49,13 +50,18 @@ public class MainFrame extends JFrame {
         setupFrame();
     }
 
+    @Override
+    public void reload() {
+        //TODO: if this method is called view should be refreshed with new data from cache
+    }
+
     private void addTestGroupList() {
-        conn.getGroupList().add(new ProductGroup("first group", "fdfd"));
-        conn.getGroupList().add(new ProductGroup("second group", ""));
-        conn.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        conn.getGroupList().get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        conn.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
+        cache.getGroupList().add(new ProductGroup("first group", "fdfd"));
+        cache.getGroupList().add(new ProductGroup("second group", ""));
+        cache.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+        cache.getGroupList().get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+        cache.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+        cache.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
     }
 
     @SuppressWarnings("Duplicates")
@@ -88,12 +94,12 @@ public class MainFrame extends JFrame {
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
         choseGroupButton.addActionListener(e -> {
-            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, conn);
+            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, cache);
             groupChooserFrame.setVisible(true);
         });
 
         editGroupsButton.addActionListener(e -> {
-            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(conn);
+            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(cache);
             editGroupsFrame.setVisible(true);
         });
 
@@ -125,7 +131,7 @@ public class MainFrame extends JFrame {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this,currentGroup, currentGroup.get(table.getSelectedRow()),conn);
+                            new EditProductDialog(this,currentGroup, currentGroup.get(table.getSelectedRow()), cache);
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");

@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.DataBaseFunctions;
+import com.data.Cache;
 import com.data.ProductGroup;
 import com.util.StringRegExChecker;
 
@@ -12,10 +12,10 @@ public class AddGroupDialog extends JDialog {
     private JButton submitButton;
     private JTextField groupNameTextField;
     private JTextField groupDescTextField;
-    private DataBaseFunctions conn;
+    private Cache conn;
     private EditGroupsFrame parentFrame;
 
-    AddGroupDialog(EditGroupsFrame parentFrame, DataBaseFunctions conn) {
+    AddGroupDialog(EditGroupsFrame parentFrame, Cache conn) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
 
         this.conn = conn;

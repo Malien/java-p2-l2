@@ -2,6 +2,7 @@ package com.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductGroup {
 
@@ -49,5 +50,18 @@ public class ProductGroup {
 
     public void remove(int index){
         products.remove(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductGroup that = (ProductGroup) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

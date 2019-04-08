@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.DataBaseFunctions;
+import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
 import com.util.StringRegExChecker;
@@ -17,9 +17,9 @@ public class EditProductDialog extends JDialog {
     private JTextField productManufacturerTextField;
     private JTextField productPriceTextField;
     private JTextArea productDescTextArea;
-    private DataBaseFunctions conn;
+    private Cache conn;
 
-    EditProductDialog(MainFrame parentFrame, ProductGroup currentGroup, Product currentProduct, DataBaseFunctions conn) {
+    EditProductDialog(MainFrame parentFrame, ProductGroup currentGroup, Product currentProduct, Cache conn) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.conn = conn;
         this.parentFrame = parentFrame;
