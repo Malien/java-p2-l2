@@ -4,10 +4,9 @@ import com.components.IDatabase;
 import com.ui.Reloader;
 import com.util.Logger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+
 
 public class Cache implements Reloader, Iterable<ProductGroup>{
 
@@ -17,11 +16,11 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     private Logger log = new Logger("Cache");
 
     //TODO: get rid of this one
-    public List<ProductGroup> getGroupList() {
+    /*public List<ProductGroup> getGroupList() {
         return new ArrayList<>(cache.values());
-    }
+    }*/
 
-    public Cache(){}
+    public Cache() {}
 
     public Cache(IDatabase db){
         this.db = db;
@@ -86,7 +85,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      * Deletes group in cache witch has the same name as one provided
      * @param group group to be deleted
      */
-    public void delete(ProductGroup group){
+    public void remove(ProductGroup group){
         db.delete(group.getName());
         cache.remove(group.getName());
     }
@@ -95,7 +94,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      * Deletes group in cache witch has the provided name
      * @param group name of the group to be deleted
      */
-    public void delete(String group) {
+    public void remove(String group) {
         db.delete(group);
         cache.remove(group);
     }

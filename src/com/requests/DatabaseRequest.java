@@ -85,7 +85,7 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
     }
 
     /**
-     * Create delete request with callback
+     * Create remove request with callback
      * @param path group name to be deleted
      * @param callback callback to be called when operation is finished
      * @return newly created DatabaseRequest object
@@ -95,7 +95,7 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
     }
 
     /**
-     * Create delete request
+     * Create remove request
      * @param path group name to be deleted
      * @return newly created DatabaseRequest object
      */

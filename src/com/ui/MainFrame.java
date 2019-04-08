@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class MainFrame extends JFrame implements Reloader{
+public class MainFrame extends JFrame implements Reloader {
     private JPanel mainPanel;
     private JButton choseGroupButton;
     private JButton editGroupsButton;
@@ -56,17 +56,14 @@ public class MainFrame extends JFrame implements Reloader{
     }
 
     private void addTestGroupList() {
-        //FIXME: This is no longer gonna work. Use cache.set(group) instead
-        //       Make sure that workspace folder is set before using that (use db.setPath(path))
-        cache.getGroupList().add(new ProductGroup("first group", "fdfd"));
-        cache.getGroupList().add(new ProductGroup("second group", ""));
-        cache.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        cache.getGroupList().get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        cache.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        cache.getGroupList().get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
+        cache.set(new ProductGroup("first group", "fdfd"));
+        cache.set(new ProductGroup("second group", ""));
+        cache.get("first group").add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+        cache.get("first group").add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+        cache.get("second group").add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+        cache.get("second group").add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
     }
 
-    @SuppressWarnings("Duplicates")
     private void addMenuListeners() {
         dataBaseMenuItem.addActionListener(e -> {
 
@@ -93,7 +90,6 @@ public class MainFrame extends JFrame implements Reloader{
         });
     }
 
-    @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
         choseGroupButton.addActionListener(e -> {
             GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, cache);
@@ -133,7 +129,7 @@ public class MainFrame extends JFrame implements Reloader{
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this,currentGroup, currentGroup.get(table.getSelectedRow()), cache);
+                            new EditProductDialog(this, currentGroup, currentGroup.get(table.getSelectedRow()), cache);
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -263,7 +259,6 @@ public class MainFrame extends JFrame implements Reloader{
 
     void setCurrentGroup(ProductGroup group) {
         currentGroup = group;
-        //TODO: cleanup and remove test
         System.out.println(currentGroup);
         refreshTableModel();
         currentGroupLabel.setText("Поточна група: " + currentGroup.getName());

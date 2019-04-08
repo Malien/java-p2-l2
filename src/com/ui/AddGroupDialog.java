@@ -12,13 +12,13 @@ public class AddGroupDialog extends JDialog {
     private JButton submitButton;
     private JTextField groupNameTextField;
     private JTextField groupDescTextField;
-    private Cache conn;
+    private Cache cache;
     private EditGroupsFrame parentFrame;
 
-    AddGroupDialog(EditGroupsFrame parentFrame, Cache conn) {
+    AddGroupDialog(EditGroupsFrame parentFrame, Cache cache) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
 
-        this.conn = conn;
+        this.cache = cache;
         this.parentFrame = parentFrame;
 
         this.setPreferredSize(new Dimension(300, 300));
@@ -32,15 +32,15 @@ public class AddGroupDialog extends JDialog {
     private void addListeners() {
         submitButton.addActionListener(e -> {
             String newGroupName = groupNameTextField.getText();
-            if (conn.groupNameIsUnique(newGroupName)) {
+            if (cache.groupNameIsUnique(newGroupName)) {
                 if (StringRegExChecker.checkName(groupNameTextField.getText())) {
-                    conn.getGroupList().add(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
+                    cache.set(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
                     dispose();
                     parentFrame.listRefresh();
                 } else
                     JOptionPane.showMessageDialog(null, "Помилка в імені групи", "Помилка!",
                             JOptionPane.ERROR_MESSAGE);
-            }else
+            } else
                 JOptionPane.showMessageDialog(null, "Група з ім'ям вже існує!", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);
         });
