@@ -7,8 +7,6 @@ import com.data.ProductGroup;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JPanel mainPanel;
@@ -40,6 +38,7 @@ public class MainFrame extends JFrame {
     private JMenuItem countGroupPriceMenuItem;
     private FrontBackConnection conn;
     private ProductGroup currentGroup;
+    private DefaultTableModel tableModel;
 
     public MainFrame(FrontBackConnection conn) {
         this.conn = conn;
@@ -61,7 +60,7 @@ public class MainFrame extends JFrame {
 
     @SuppressWarnings("Duplicates")
     private void addMenuListeners() {
-        dataBaseMenuItem.addActionListener(e ->  {
+        dataBaseMenuItem.addActionListener(e -> {
 
         });
 
@@ -69,19 +68,19 @@ public class MainFrame extends JFrame {
 
         });
 
-        helpMenuItem.addActionListener(e ->  {
+        helpMenuItem.addActionListener(e -> {
 
         });
 
-        statisticsGroupMenuItem.addActionListener(e ->  {
+        statisticsGroupMenuItem.addActionListener(e -> {
 
         });
 
-        countWarehousePriceMenuItem.addActionListener(e ->  {
+        countWarehousePriceMenuItem.addActionListener(e -> {
 
         });
 
-        countGroupPriceMenuItem.addActionListener(e ->  {
+        countGroupPriceMenuItem.addActionListener(e -> {
 
         });
     }
@@ -89,7 +88,7 @@ public class MainFrame extends JFrame {
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
         choseGroupButton.addActionListener(e -> {
-            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this,conn);
+            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, conn);
             groupChooserFrame.setVisible(true);
         });
 
@@ -106,7 +105,7 @@ public class MainFrame extends JFrame {
 
         });
 
-        addItemMinusButton.addActionListener(e ->  {
+        addItemMinusButton.addActionListener(e -> {
 
         });
 
@@ -118,49 +117,73 @@ public class MainFrame extends JFrame {
 
         });
 
-        writeOffMinusButton.addActionListener(e ->  {
+        writeOffMinusButton.addActionListener(e -> {
 
         });
 
-        editItemButton.addActionListener(e ->  {
-
+        editItemButton.addActionListener(e -> {
+            if (currentGroup != null) {
+                if (table.getSelectedRow() != -1) {
+                    EditProductDialog editProductDialog =
+                            new EditProductDialog(this,currentGroup.get(table.getSelectedRow()));
+                    editProductDialog.setVisible(true);
+                } else
+                    JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
 
         removeItemButton.addActionListener(e -> {
-
+            if (currentGroup != null) {
+                if (table.getSelectedRow() != -1) {
+                    currentGroup.remove(table.getSelectedRow());
+                    refreshTableModel();
+                } else
+                    JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
 
-        itemDescButton.addActionListener(e ->  {
-                //  if(currentGroup!=null)
-             /*   ProductGroup productGroupIndex =
-                DescFrame descFrame = new DescFrame("Група:" + productGroupIndex.getName()
-                        ,productGroupIndex.getDesc());
-                descFrame.setVisible(true);*/
+        itemDescButton.addActionListener(e -> {
+            if (currentGroup != null) {
+                if (table.getSelectedRow() != -1) {
+                    Product currentProduct = currentGroup.get(table.getSelectedRow());
+                    DescFrame descFrame = new DescFrame("Товар: " + currentProduct.getName(),
+                            currentProduct.getDescription());
+                    descFrame.setVisible(true);
+                } else
+                    JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
 
-        currentGroupDescButton.addActionListener(e ->  {
-
+        currentGroupDescButton.addActionListener(e -> {
+            if (currentGroup != null) {
+                DescFrame descFrame = new DescFrame("Група: " + currentGroup.getName(), currentGroup.getDesc());
+                descFrame.setVisible(true);
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
 
-        searchMenuButton.addActionListener(e ->  {
+        searchMenuButton.addActionListener(e -> {
 
         });
     }
 
-    private void setupTable() {
+    //FIXME: Costyl
+    private void refreshTableModel() {
         String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
         String[][] data = new String[currentGroup.getProducts().length][4];
 
         for (int i = 0; i < currentGroup.getProducts().length; i++) {
             Product tempProduct = currentGroup.get(i);
-            data[i][0]=tempProduct.getName();
-            data[i][1]=tempProduct.getManufacturer();
-            data[i][2]=String.valueOf(tempProduct.getCount());
-            data[i][3]=String.valueOf(tempProduct.getPrice());
+            data[i][0] = tempProduct.getName();
+            data[i][1] = tempProduct.getManufacturer();
+            data[i][2] = String.valueOf(tempProduct.getCount());
+            data[i][3] = String.valueOf(tempProduct.getPrice());
         }
-
-        table.setModel(new DefaultTableModel(data,column));
-        tableScrollPane.add(table);
+        tableModel = new DefaultTableModel(data, column);
+        table.setModel(tableModel);
     }
 
     private void setupMenuBar() {
@@ -234,6 +257,7 @@ public class MainFrame extends JFrame {
         currentGroup = group;
         //TODO: cleanup and remove test
         System.out.println(currentGroup);
-        setupTable();
+        refreshTableModel();
+        currentGroupLabel.setText("Поточна група: " + currentGroup.getName());
     }
 }

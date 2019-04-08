@@ -43,9 +43,11 @@ public class ProductGroup {
         products.add(product);
     }
 
-    //TODO: Potential bug here:
-    // You saw nothing! There is none here! -- Yaroslav
     public Product[] getProducts() {
         return products.toArray(new Product[0]);
+    }
+
+    public void remove(int index){
+        products.remove(index);
     }
 }

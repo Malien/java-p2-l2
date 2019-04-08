@@ -29,8 +29,10 @@ public class EditGroupsFrame extends JFrame {
 
     private void addListeners() {
         addGroupButton.addActionListener(e -> {
-            AddGroupFrame addGroupFrame = new AddGroupFrame(this, conn);
-            addGroupFrame.setVisible(true);
+            //FIXME: Bug found if you close the window with entering any info the last group will duplicate on the
+            // screen
+            AddGroupDialog addGroupDialog = new AddGroupDialog(this, conn);
+            addGroupDialog.setVisible(true);
         });
 
         editSelectedGroupButton.addActionListener(e -> {

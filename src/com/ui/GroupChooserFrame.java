@@ -1,6 +1,8 @@
 package com.ui;
 
 import com.data.FrontBackConnection;
+import com.data.Product;
+import com.data.ProductGroup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,8 +30,11 @@ public class GroupChooserFrame extends JFrame {
 
     private void addListeners() {
         submitButton.addActionListener(e -> {
-            parentFrame.setCurrentGroup(conn.getGroupList().get(table.getSelectedRow()));
-            dispose();
+            if (table.getSelectedRow() != -1) {
+                parentFrame.setCurrentGroup(conn.getGroupList().get(table.getSelectedRow()));
+                dispose();
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
     }
 

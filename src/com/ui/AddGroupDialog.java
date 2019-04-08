@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AddGroupFrame extends JFrame {
+public class AddGroupDialog extends JDialog {
     private JPanel mainPanel;
     private JButton submitButton;
     private JTextField groupNameTextField;
@@ -17,7 +17,8 @@ public class AddGroupFrame extends JFrame {
     private FrontBackConnection conn;
     private EditGroupsFrame parentFrame;
 
-    AddGroupFrame(EditGroupsFrame parentFrame, FrontBackConnection conn) {
+    AddGroupDialog(EditGroupsFrame parentFrame, FrontBackConnection conn) {
+        super(parentFrame,ModalityType.APPLICATION_MODAL);
         this.conn = conn;
         this.parentFrame=parentFrame;
         this.setPreferredSize(new Dimension(300, 300));

@@ -60,7 +60,7 @@ public class FrontBackConnection {
         return false;
     }
 
-    boolean editProduct(String name, String description, String manufacturer, int count, double price, Product prod) {
+    /*boolean editProduct(String name, String description, String manufacturer, int count, double price, Product prod) {
         if (prod.getName().equals(name)) {
             prod.setCount(count);
             prod.setDescription(description);
@@ -76,7 +76,7 @@ public class FrontBackConnection {
             return true;
         }
         return false;
-    }
+    }*/
 
     private boolean prodNameIsUnique(String name) {
         for (ProductGroup g : groupList) {
