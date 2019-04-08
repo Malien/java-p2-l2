@@ -4,13 +4,14 @@ import com.components.IDatabase;
 import com.ui.Reloader;
 import com.util.Logger;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 
 public class Cache implements Reloader, Iterable<ProductGroup>{
 
-    private HashMap<String, ProductGroup> cache = new HashMap<>();
+    private ArrayList<ProductGroup> cache = new ArrayList<>();
     private Reloader ui;
     private IDatabase db;
     private Logger log = new Logger("Cache");
@@ -47,10 +48,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
-            cache = new HashMap<>();
-            for (ProductGroup group : groups) {
-                cache.put(group.getName(), group);
-            }
+            cache = new ArrayList<>(Arrays.asList(groups));
             ui.reload();
         });
     }
@@ -63,12 +61,12 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
         this.db = db;
     }
 
-    public HashMap<String, ProductGroup> getCache() {
+    public ArrayList<ProductGroup> getCache() {
         return cache;
     }
 
-    public ProductGroup get(String groupName) {
-        return cache.get(groupName);
+    public ProductGroup get(int index) {
+        return cache.get(index);
     }
 
     /**
@@ -78,7 +76,9 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      */
     public void set(ProductGroup group){
         db.set(group);
-        cache.put(group.getName(), group);
+        int index = cache.indexOf(group);
+        if (index == -1) cache.add(group);
+        else cache.set(index, group);
     }
 
     /**
@@ -87,16 +87,16 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      */
     public void remove(ProductGroup group){
         db.delete(group.getName());
-        cache.remove(group.getName());
+        cache.remove(cache.indexOf(group));
     }
 
     /**
      * Deletes group in cache witch has the provided name
-     * @param group name of the group to be deleted
+     * @param index name of the group to be deleted
      */
-    public void remove(String group) {
-        db.delete(group);
-        cache.remove(group);
+    public void remove(int index) {
+        db.delete(cache.get(index).getName());
+        cache.remove(index);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      */
     @Override
     public Iterator<ProductGroup> iterator() {
-        return cache.values().iterator();
+        return cache.iterator();
     }
 
     /**
@@ -114,7 +114,10 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
      * @return
      */
     public boolean groupNameIsUnique(String name) {
-        return !cache.containsKey(name);
+        for (ProductGroup group : this) {
+            if (group.getName().equals(name)) return false;
+        }
+        return true;
     }
 
     public boolean prodNameIsUnique(String name) {
