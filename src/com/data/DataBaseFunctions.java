@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseFunctions {
+    private static DataBaseFunctions uniqueInstance = new DataBaseFunctions();
+
+
+    public static DataBaseFunctions getInstance() {
+        return uniqueInstance;
+    }
+
+
     private List<ProductGroup> groupList = new ArrayList<>();
 
     public List<ProductGroup> getGroupList() {
