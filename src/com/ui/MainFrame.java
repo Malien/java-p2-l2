@@ -56,6 +56,8 @@ public class MainFrame extends JFrame implements Reloader{
     }
 
     private void addTestGroupList() {
+        //FIXME: This is no longer gonna work. Use cache.set(group) instead
+        //       Make sure that workspace folder is set before using that (use db.setPath(path))
         cache.getGroupList().add(new ProductGroup("first group", "fdfd"));
         cache.getGroupList().add(new ProductGroup("second group", ""));
         cache.getGroupList().get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));

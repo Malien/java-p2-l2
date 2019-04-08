@@ -16,6 +16,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     private IDatabase db;
     private Logger log = new Logger("Cache");
 
+    //TODO: get rid of this one
     public List<ProductGroup> getGroupList() {
         return new ArrayList<>(cache.values());
     }
@@ -63,14 +64,40 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
         this.db = db;
     }
 
+    public HashMap<String, ProductGroup> getCache() {
+        return cache;
+    }
+
+    public ProductGroup get(String groupName) {
+        return cache.get(groupName);
+    }
+
+    /**
+     * Replaces group in cache to one with the same name as provided one
+     * If no such group is present adds new group
+     * @param group group to added or to be replaced with
+     */
     public void set(ProductGroup group){
         db.set(group);
         cache.put(group.getName(), group);
     }
 
+    /**
+     * Deletes group in cache witch has the same name as one provided
+     * @param group group to be deleted
+     */
     public void delete(ProductGroup group){
         db.delete(group.getName());
         cache.remove(group.getName());
+    }
+
+    /**
+     * Deletes group in cache witch has the provided name
+     * @param group name of the group to be deleted
+     */
+    public void delete(String group) {
+        db.delete(group);
+        cache.remove(group);
     }
 
     /**
