@@ -20,6 +20,13 @@ public class Product {
         return name;
     }
 
+    public void productRefactor(String name, String description, String manufacturer, double price) {
+        this.name = name;
+        this.description = description;
+        this.manufacturer = manufacturer;
+        this.price = price;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

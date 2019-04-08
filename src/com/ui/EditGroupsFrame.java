@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.FrontBackConnection;
+import com.data.DataBaseFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,16 +11,16 @@ public class EditGroupsFrame extends JFrame {
     private JButton addGroupButton;
     private JButton removeSelectedGroupButton;
     private JButton editSelectedGroupButton;
-    private JList list;
-    private FrontBackConnection conn;
-    public DefaultListModel<String> listModel;
+    JList list;
+    private DataBaseFunctions conn;
+    public DefaultListModel<String> listModel = new DefaultListModel<>();
 
-    EditGroupsFrame(FrontBackConnection conn) {
+    EditGroupsFrame(DataBaseFunctions conn) {
         this.conn = conn;
-        this.setPreferredSize(new Dimension(320, 300));
-        this.setMinimumSize(new Dimension(320, 300));
+        this.setPreferredSize(new Dimension(350, 300));
+        this.setMinimumSize(new Dimension(350, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        listSetup();
+        listRefresh();
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -29,8 +29,6 @@ public class EditGroupsFrame extends JFrame {
 
     private void addListeners() {
         addGroupButton.addActionListener(e -> {
-            //FIXME: Bug found if you close the window with entering any info the last group will duplicate on the
-            // screen
             AddGroupDialog addGroupDialog = new AddGroupDialog(this, conn);
             addGroupDialog.setVisible(true);
         });
@@ -47,23 +45,21 @@ public class EditGroupsFrame extends JFrame {
         removeSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
                 conn.getGroupList().remove(list.getSelectedIndex());
-                //TODO: Need urgent fix, but I dunno how to auto-refresh JList (it has only addElement() method and
-                // works not as JTable or JTree with models
-                dispose();
+                listRefresh();
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як видалити її");
         });
     }
 
-    public void listSetup() {
-        listModel = new DefaultListModel<>();
+    //FIXME: Need fix, but I dunno how to auto-refresh JList
+    public void listRefresh() {
+        String[] listData = new String[conn.getGroupList().size()];
 
         for (int i = 0; i < conn.getGroupList().size(); i++) {
-            listModel.addElement(conn.getGroupList().get(i).getName());
+            listData[i] = conn.getGroupList().get(i).getName();
         }
 
-        list.setModel(listModel);
+        list.setListData(listData);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
     }
 }

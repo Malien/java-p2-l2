@@ -1,21 +1,19 @@
 package com.ui;
 
-import com.data.FrontBackConnection;
-import com.data.Product;
-import com.data.ProductGroup;
+import com.data.DataBaseFunctions;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class GroupChooserFrame extends JFrame {
-    private FrontBackConnection conn;
+    private DataBaseFunctions conn;
     private JButton submitButton;
     private JTable table;
     private JPanel mainPanel;
     private MainFrame parentFrame;
 
-    GroupChooserFrame(MainFrame parentFrame, FrontBackConnection conn) {
+    GroupChooserFrame(MainFrame parentFrame, DataBaseFunctions conn) {
         this.parentFrame = parentFrame;
         this.conn = conn;
         this.setPreferredSize(new Dimension(320, 300));

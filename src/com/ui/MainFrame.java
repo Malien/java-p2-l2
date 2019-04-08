@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.data.FrontBackConnection;
+import com.data.DataBaseFunctions;
 import com.data.Product;
 import com.data.ProductGroup;
 
@@ -36,11 +36,11 @@ public class MainFrame extends JFrame {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem countWarehousePriceMenuItem;
     private JMenuItem countGroupPriceMenuItem;
-    private FrontBackConnection conn;
+    private DataBaseFunctions conn;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
 
-    public MainFrame(FrontBackConnection conn) {
+    public MainFrame(DataBaseFunctions conn) {
         this.conn = conn;
         addTestGroupList();
         setupMenuBar();
@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this,currentGroup.get(table.getSelectedRow()));
+                            new EditProductDialog(this,currentGroup, currentGroup.get(table.getSelectedRow()),conn);
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -171,7 +171,7 @@ public class MainFrame extends JFrame {
     }
 
     //FIXME: Costyl
-    private void refreshTableModel() {
+    public void refreshTableModel() {
         String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
         String[][] data = new String[currentGroup.getProducts().length][4];
 
