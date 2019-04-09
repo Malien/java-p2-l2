@@ -30,7 +30,8 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuBar menuBar;
     private JTextField searchMenuTextField;
     private JButton searchMenuButton;
-    private JMenuItem dataBaseMenuItem;
+    private JMenuItem reloadMenuItem;
+    private JMenuItem changeWorkspaceMenuItem;
     private JMenuItem statisticsWarehouseMenuItem;
     private JMenuItem helpMenuItem;
     private JMenuItem statisticsGroupMenuItem;
@@ -43,6 +44,7 @@ public class MainFrame extends JFrame implements Reloader {
     public MainFrame(Cache cache) {
         this.cache = cache;
         this.cache.setUI(this);
+        this.currentGroup = new ProductGroup("null", "empty group");
         addTestGroupList();
         setupMenuBar();
         addButtonListeners();
@@ -54,31 +56,39 @@ public class MainFrame extends JFrame implements Reloader {
     @Override
     public void reload() {
         String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
-        String[][] data = new String[currentGroup.getProducts().length][4];
+        int index = cache.indexOf(currentGroup);
+        if (index != -1) {
+            currentGroup = cache.get(index);
+            String[][] data = new String[currentGroup.getProducts().length][4];
 
-        for (int i = 0; i < currentGroup.getProducts().length; i++) {
-            Product tempProduct = currentGroup.get(i);
-            data[i][0] = tempProduct.getName();
-            data[i][1] = tempProduct.getManufacturer();
-            data[i][2] = String.valueOf(tempProduct.getCount());
-            data[i][3] = String.valueOf(tempProduct.getPrice());
+            for (int i = 0; i < currentGroup.getProducts().length; i++) {
+                Product tempProduct = currentGroup.get(i);
+                data[i][0] = tempProduct.getName();
+                data[i][1] = tempProduct.getManufacturer();
+                data[i][2] = String.valueOf(tempProduct.getCount());
+                data[i][3] = String.valueOf(tempProduct.getPrice());
+            }
+            tableModel = new DefaultTableModel(data, column);
+            table.setModel(tableModel);
         }
-        tableModel = new DefaultTableModel(data, column);
-        table.setModel(tableModel);
     }
 
     private void addTestGroupList() {
-        /*cache.set(new ProductGroup("first group", "fdfd"));
-        cache.set(new ProductGroup("second group", ""));
-        cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        cache.get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));*/
+//        cache.set(new ProductGroup("first group", "fdfd"));
+//        cache.set(new ProductGroup("second group", ""));
+//        cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+//        cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+//        cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+//        cache.get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
     }
 
     private void addMenuListeners() {
-        dataBaseMenuItem.addActionListener(e -> {
+        reloadMenuItem.addActionListener(e -> {
+            cache.reload();
+        });
 
+        changeWorkspaceMenuItem.addActionListener( e -> {
+            //TODO: ask user new workspace path
         });
 
         statisticsWarehouseMenuItem.addActionListener(e -> {
@@ -197,8 +207,10 @@ public class MainFrame extends JFrame implements Reloader {
 
     private void addDataBaseMenu() {
         JMenu dataBaseMenu = new JMenu("База даних");
-        dataBaseMenuItem = new JMenuItem("sample");
-        dataBaseMenu.add(dataBaseMenuItem);
+        reloadMenuItem = new JMenuItem("Reload");
+        changeWorkspaceMenuItem = new JMenuItem("Change workspace...");
+        dataBaseMenu.add(reloadMenuItem);
+        dataBaseMenu.add(changeWorkspaceMenuItem);
         menuBar.add(dataBaseMenu);
     }
 

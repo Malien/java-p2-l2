@@ -16,11 +16,6 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     private IDatabase db;
     private Logger log = new Logger("Cache");
 
-    //TODO: get rid of this one
-    /*public List<ProductGroup> getGroupList() {
-        return new ArrayList<>(cache.values());
-    }*/
-
     public Cache() {}
 
     public Cache(IDatabase db){
@@ -39,17 +34,18 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
 
     @Override
     public void reload() {
-        if (ui == null) {
-            log.error("Tried to reload, but ui is not found");
-            return;
-        }
         if (db == null) {
             log.error("Tried to reload, but database manager is not found");
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
             cache = new ArrayList<>(Arrays.asList(groups));
-            ui.reload();
+            if (ui != null) {
+                ui.reload();
+            }
+            else {
+                log.warn("Ui component is not connected. Ui won't be refreshed");
+            }
         });
     }
 
@@ -97,6 +93,10 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     public void remove(int index) {
         db.delete(cache.get(index).getName());
         cache.remove(index);
+    }
+
+    public int indexOf(ProductGroup group){
+        return cache.indexOf(group);
     }
 
     /**

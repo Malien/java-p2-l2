@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Workspace" type="Application" factoryName="Application" singleton="false">
+  <configuration default="false" name="Workspace" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="com.components.Workspace" />
     <module name="L2" />
     <method v="2">
