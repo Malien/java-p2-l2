@@ -9,4 +9,9 @@ public class StringRegExChecker {
         Matcher matcher = pattern.matcher(toCheck);
         return matcher.matches();
     }
+    public static boolean checkDouble(String toCheck){
+        Pattern pattern = Pattern.compile("[\\d]+[.]?[\\d]+");
+        Matcher matcher = pattern.matcher(toCheck);
+        return matcher.matches();
+    }
 }

@@ -92,7 +92,7 @@
               <text value="&lt;html&gt;&lt;center&gt;Редагувати&lt;br&gt;групи&lt;/center&gt;&lt;/html&gt;"/>
             </properties>
           </component>
-          <component id="37e45" class="javax.swing.JButton" binding="writeOffItemsButton">
+          <component id="37e45" class="javax.swing.JButton" binding="writeOffButton">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <minimum-size width="113" height="40"/>
@@ -111,7 +111,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="add09" class="javax.swing.JTextField" binding="addItemValTextField">
+              <component id="add09" class="javax.swing.JTextField" binding="addItemValTextField" custom-create="true">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <minimum-size width="45" height="20"/>
@@ -130,7 +130,9 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="+"/>
                 </properties>
               </component>
               <component id="79c24" class="javax.swing.JButton" binding="addItemMinusButton">
@@ -141,7 +143,8 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="-"/>
                 </properties>
               </component>
             </children>
@@ -169,7 +172,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="97bab" class="javax.swing.JTextField" binding="writeOffValTextField">
+              <component id="97bab" class="javax.swing.JTextField" binding="writeOffValTextField" custom-create="true">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <minimum-size width="45" height="20"/>
@@ -188,7 +191,8 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="+"/>
                 </properties>
               </component>
               <component id="4758d" class="javax.swing.JButton" binding="writeOffMinusButton">
@@ -199,7 +203,8 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="-"/>
                 </properties>
               </component>
             </children>
@@ -240,7 +245,7 @@
               </component>
             </children>
           </grid>
-          <grid id="20fec" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="20fec" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="5" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -250,7 +255,7 @@
             <children>
               <component id="8af0d" class="javax.swing.JButton" binding="editItemButton">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="113" height="40"/>
                     <preferred-size width="113" height="40"/>
                   </grid>
@@ -261,12 +266,12 @@
               </component>
               <hspacer id="eae82">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
               <component id="da596" class="javax.swing.JButton" binding="removeItemButton">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="113" height="40"/>
                     <preferred-size width="113" height="40"/>
                   </grid>
@@ -277,13 +282,24 @@
               </component>
               <component id="40172" class="javax.swing.JButton" binding="itemDescButton">
                 <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="95" height="40"/>
                     <preferred-size width="95" height="40"/>
                   </grid>
                 </constraints>
                 <properties>
                   <text value="&lt;html&gt;&lt;center&gt;Опис&lt;br&gt;товару&lt;/center&gt;&lt;/html&gt;"/>
+                </properties>
+              </component>
+              <component id="21922" class="javax.swing.JButton" binding="addProductButton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="113" height="40"/>
+                    <preferred-size width="113" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&lt;center&gt;Додати&lt;br&gt;товар&lt;/center&gt;&lt;/html&gt;"/>
                 </properties>
               </component>
             </children>
