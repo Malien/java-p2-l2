@@ -17,11 +17,9 @@ public class EditProductDialog extends JDialog {
     private JTextField productManufacturerTextField;
     private JTextField productPriceTextField;
     private JTextArea productDescTextArea;
-    private Cache conn;
 
-    EditProductDialog(MainFrame parentFrame, ProductGroup currentGroup, Product currentProduct, Cache conn) {
+    EditProductDialog(MainFrame parentFrame, ProductGroup currentGroup, Product currentProduct) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
-        this.conn = conn;
         this.parentFrame = parentFrame;
         this.currentProduct = currentProduct;
         setupTextFields();
@@ -40,7 +38,7 @@ public class EditProductDialog extends JDialog {
                 currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
                         productManufacturerTextField.getText(), Double.parseDouble(productPriceTextField.getText()));
                 dispose();
-                parentFrame.refreshTableModel();
+                parentFrame.reload();
             } else
                 JOptionPane.showMessageDialog(null, "Помилка в імені товару", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);

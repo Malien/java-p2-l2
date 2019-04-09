@@ -48,20 +48,32 @@ public class MainFrame extends JFrame implements Reloader {
         addButtonListeners();
         addMenuListeners();
         setupFrame();
+        this.cache.reload();
     }
 
     @Override
     public void reload() {
-        //TODO: if this method is called view should be refreshed with new data from cache
+        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
+        String[][] data = new String[currentGroup.getProducts().length][4];
+
+        for (int i = 0; i < currentGroup.getProducts().length; i++) {
+            Product tempProduct = currentGroup.get(i);
+            data[i][0] = tempProduct.getName();
+            data[i][1] = tempProduct.getManufacturer();
+            data[i][2] = String.valueOf(tempProduct.getCount());
+            data[i][3] = String.valueOf(tempProduct.getPrice());
+        }
+        tableModel = new DefaultTableModel(data, column);
+        table.setModel(tableModel);
     }
 
     private void addTestGroupList() {
-        cache.set(new ProductGroup("first group", "fdfd"));
+        /*cache.set(new ProductGroup("first group", "fdfd"));
         cache.set(new ProductGroup("second group", ""));
-        cache.get("first group").add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        cache.get("first group").add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        cache.get("second group").add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        cache.get("second group").add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
+        cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+        cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+        cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+        cache.get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));*/
     }
 
     private void addMenuListeners() {
@@ -129,7 +141,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this, currentGroup, currentGroup.get(table.getSelectedRow()), cache);
+                            new EditProductDialog(this, currentGroup, currentGroup.get(table.getSelectedRow()));
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -141,7 +153,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     currentGroup.remove(table.getSelectedRow());
-                    refreshTableModel();
+                    reload();
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
             } else
@@ -172,22 +184,6 @@ public class MainFrame extends JFrame implements Reloader {
         searchMenuButton.addActionListener(e -> {
 
         });
-    }
-
-    //FIXME: Costyl
-    public void refreshTableModel() {
-        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
-        String[][] data = new String[currentGroup.getProducts().length][4];
-
-        for (int i = 0; i < currentGroup.getProducts().length; i++) {
-            Product tempProduct = currentGroup.get(i);
-            data[i][0] = tempProduct.getName();
-            data[i][1] = tempProduct.getManufacturer();
-            data[i][2] = String.valueOf(tempProduct.getCount());
-            data[i][3] = String.valueOf(tempProduct.getPrice());
-        }
-        tableModel = new DefaultTableModel(data, column);
-        table.setModel(tableModel);
     }
 
     private void setupMenuBar() {
@@ -260,7 +256,7 @@ public class MainFrame extends JFrame implements Reloader {
     void setCurrentGroup(ProductGroup group) {
         currentGroup = group;
         System.out.println(currentGroup);
-        refreshTableModel();
+        reload();
         currentGroupLabel.setText("Поточна група: " + currentGroup.getName());
     }
 }

@@ -29,7 +29,7 @@ public class GroupChooserFrame extends JFrame {
     private void addListeners() {
         submitButton.addActionListener(e -> {
             if (table.getSelectedRow() != -1) {
-                parentFrame.setCurrentGroup(cache.getGroupList().get(table.getSelectedRow()));
+                parentFrame.setCurrentGroup(cache.get(table.getSelectedRow()));
                 dispose();
             } else
                 JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
@@ -38,11 +38,11 @@ public class GroupChooserFrame extends JFrame {
 
     private void setup() {
         String[] column = {"Назва", "Опис"};
-        String[][] data = new String[cache.getGroupList().size()][2];
+        String[][] data = new String[cache.getCache().size()][2];
 
-        for (int i = 0; i < cache.getGroupList().size(); i++) {
-            data[i][0] = cache.getGroupList().get(i).getName();
-            data[i][1] = cache.getGroupList().get(i).getDesc();
+        for (int i = 0; i < cache.getCache().size(); i++) {
+            data[i][0] = cache.get(i).getName();
+            data[i][1] = cache.get(i).getDesc();
         }
 
         DefaultTableModel model = new DefaultTableModel(data, column) {

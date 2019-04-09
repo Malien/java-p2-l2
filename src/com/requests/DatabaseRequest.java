@@ -61,8 +61,8 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
      * @param payload product group to be saved
      * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest<Void> set(ProductGroup payload){
-        return new DatabaseRequest<>(payload, null, SET, Callback.VOID);
+    public static DatabaseRequest<Boolean> set(ProductGroup payload){
+        return new DatabaseRequest<>(payload, null, SET, Callback.BOOLEAN);
     }
 
     /**
@@ -80,8 +80,8 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
      * @param path path to be set
      * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest<Void> setPath(String path){
-        return new DatabaseRequest<>(null, path, SET_PATH, Callback.VOID);
+    public static DatabaseRequest<Boolean> setPath(String path){
+        return new DatabaseRequest<>(null, path, SET_PATH, Callback.BOOLEAN);
     }
 
     /**
@@ -99,8 +99,8 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
      * @param path group name to be deleted
      * @return newly created DatabaseRequest object
      */
-    public static DatabaseRequest<Void> delete(String path) {
-        return new DatabaseRequest<>(null, path, DELETE, Callback.VOID);
+    public static DatabaseRequest<Boolean> delete(String path) {
+        return new DatabaseRequest<>(null, path, DELETE, Callback.BOOLEAN);
     }
 
     @Override

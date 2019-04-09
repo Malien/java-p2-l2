@@ -12,11 +12,11 @@ public class EditGroupsFrame extends JFrame {
     private JButton removeSelectedGroupButton;
     private JButton editSelectedGroupButton;
     JList list;
-    private Cache conn;
+    private Cache cache;
     public DefaultListModel<String> listModel = new DefaultListModel<>();
 
-    EditGroupsFrame(Cache conn) {
-        this.conn = conn;
+    EditGroupsFrame(Cache cache) {
+        this.cache = cache;
         this.setPreferredSize(new Dimension(350, 300));
         this.setMinimumSize(new Dimension(350, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -29,14 +29,14 @@ public class EditGroupsFrame extends JFrame {
 
     private void addListeners() {
         addGroupButton.addActionListener(e -> {
-            AddGroupDialog addGroupDialog = new AddGroupDialog(this, conn);
+            AddGroupDialog addGroupDialog = new AddGroupDialog(this, cache);
             addGroupDialog.setVisible(true);
         });
 
         editSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
-                System.out.println(conn.getGroupList().get(list.getSelectedIndex()));
-                SubmenuEditGroupFrame editGroupsFrame = new SubmenuEditGroupFrame(conn.getGroupList().get(list.getSelectedIndex()));
+                System.out.println(cache.get(list.getSelectedIndex()));
+                SubmenuEditGroupFrame editGroupsFrame = new SubmenuEditGroupFrame(cache.get(list.getSelectedIndex()));
                 editGroupsFrame.setVisible(true);
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як редагувати її");
@@ -44,7 +44,7 @@ public class EditGroupsFrame extends JFrame {
 
         removeSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
-                conn.getGroupList().remove(list.getSelectedIndex());
+                cache.remove(list.getSelectedIndex());
                 listRefresh();
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як видалити її");
@@ -52,11 +52,11 @@ public class EditGroupsFrame extends JFrame {
     }
 
     //FIXME: Need fix, but I dunno how to auto-refresh JList
-    public void listRefresh() {
-        String[] listData = new String[conn.getGroupList().size()];
+    void listRefresh() {
+        String[] listData = new String[cache.getCache().size()];
 
-        for (int i = 0; i < conn.getGroupList().size(); i++) {
-            listData[i] = conn.getGroupList().get(i).getName();
+        for (int i = 0; i < cache.getCache().size(); i++) {
+            listData[i] = cache.get(i).getName();
         }
 
         list.setListData(listData);
