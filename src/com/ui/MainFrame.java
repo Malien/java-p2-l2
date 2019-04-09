@@ -3,6 +3,7 @@ package com.ui;
 import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
+import com.util.UIConstants;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,6 +11,7 @@ import java.awt.*;
 
 public class MainFrame extends JFrame implements Reloader {
     private JPanel mainPanel;
+
     private JButton choseGroupButton;
     private JButton editGroupsButton;
     private JButton addItemsButton;
@@ -18,18 +20,17 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton editItemButton;
     private JButton removeItemButton;
     private JButton itemDescButton;
-    private JTextField addItemValTextField;
     private JButton addItemPlusButton;
     private JButton addItemMinusButton;
-    private JLabel currentGroupLabel;
     private JButton writeOffPlusButton;
     private JButton writeOffMinusButton;
-    private JTextField writeOffValTextField;
-    private JScrollPane tableScrollPane;
-    private JTable table;
-    private JMenuBar menuBar;
-    private JTextField searchMenuTextField;
     private JButton searchMenuButton;
+
+    private JTextField addItemValTextField;
+    private JTextField writeOffValTextField;
+    private JTextField searchMenuTextField;
+
+    private JMenuBar menuBar;
     private JMenuItem reloadMenuItem;
     private JMenuItem changeWorkspaceMenuItem;
     private JMenuItem statisticsWarehouseMenuItem;
@@ -37,6 +38,10 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem countWarehousePriceMenuItem;
     private JMenuItem countGroupPriceMenuItem;
+
+    private JScrollPane tableScrollPane;
+    private JTable table;
+    private JLabel currentGroupLabel;
     private Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
@@ -46,11 +51,63 @@ public class MainFrame extends JFrame implements Reloader {
         this.cache.setUI(this);
         this.currentGroup = new ProductGroup("null", "empty group");
         addTestGroupList();
+        setupUILook();
         setupMenuBar();
         addButtonListeners();
         addMenuListeners();
         setupFrame();
         this.cache.reload();
+    }
+
+    @SuppressWarnings("Duplicates")
+    private void setupUILook() {
+        choseGroupButton.setBackground(UIConstants.MaterialBlue);
+        choseGroupButton.setForeground(Color.WHITE);
+        choseGroupButton.setBorderPainted(false);
+
+        editGroupsButton.setBackground(UIConstants.MaterialBlue);
+        editGroupsButton.setForeground(Color.WHITE);
+        editGroupsButton.setBorderPainted(false);
+
+        addItemsButton.setBackground(UIConstants.MaterialBlue);
+        addItemsButton.setForeground(Color.WHITE);
+        addItemsButton.setBorderPainted(false);
+
+        writeOffItemsButton.setBackground(UIConstants.MaterialBlue);
+        writeOffItemsButton.setForeground(Color.WHITE);
+        writeOffItemsButton.setBorderPainted(false);
+
+        currentGroupDescButton.setBackground(UIConstants.MaterialBlue);
+        currentGroupDescButton.setForeground(Color.WHITE);
+        currentGroupDescButton.setBorderPainted(false);
+
+        editItemButton.setBackground(UIConstants.MaterialBlue);
+        editItemButton.setForeground(Color.WHITE);
+        editItemButton.setBorderPainted(false);
+
+        removeItemButton.setBackground(UIConstants.MaterialBlue);
+        removeItemButton.setForeground(Color.WHITE);
+        removeItemButton.setBorderPainted(false);
+
+        itemDescButton.setBackground(UIConstants.MaterialBlue);
+        itemDescButton.setForeground(Color.WHITE);
+        itemDescButton.setBorderPainted(false);
+
+        addItemPlusButton.setBackground(UIConstants.MaterialBlue);
+        addItemPlusButton.setForeground(Color.WHITE);
+        addItemPlusButton.setBorderPainted(false);
+
+        addItemMinusButton.setBackground(UIConstants.MaterialBlue);
+        addItemMinusButton.setForeground(Color.WHITE);
+        addItemMinusButton.setBorderPainted(false);
+
+        writeOffPlusButton.setBackground(UIConstants.MaterialBlue);
+        writeOffPlusButton.setForeground(Color.WHITE);
+        writeOffPlusButton.setBorderPainted(false);
+
+        writeOffMinusButton.setBackground(UIConstants.MaterialBlue);
+        writeOffMinusButton.setForeground(Color.WHITE);
+        writeOffMinusButton.setBorderPainted(false);
     }
 
     @Override
@@ -184,7 +241,7 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         currentGroupDescButton.addActionListener(e -> {
-            if (currentGroup != null) {
+            if (!currentGroup.getName().equals("null")) {
                 DescFrame descFrame = new DescFrame("Група: " + currentGroup.getName(), currentGroup.getDesc());
                 descFrame.setVisible(true);
             } else
