@@ -251,8 +251,11 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                     if (!writeOffValTextField.getText().equals("")) {
                         int temp = Integer.parseInt(writeOffValTextField.getText());
-                        currentGroup.get(table.getSelectedRow()).setCount(temp);
-                        reload();
+                        if(temp<=currentProduct.getCount()) {
+                            currentGroup.get(table.getSelectedRow()).setCount(temp);
+                            reload();
+                        }else
+                            JOptionPane.showMessageDialog(null, "Ви ввели невірну кількість товару при списанні");
                     } else
                         JOptionPane.showMessageDialog(null, "Ви нічого не ввели в поле!");
                 } else
@@ -285,8 +288,11 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                     if (!writeOffValTextField.getText().equals("")) {
                         int temp = Integer.parseInt(addItemValTextField.getText());
-                        currentGroup.get(table.getSelectedRow()).setCount(temp);
-                        reload();
+                        if(temp>=currentProduct.getCount()) {
+                            currentGroup.get(table.getSelectedRow()).setCount(temp);
+                            reload();
+                        }else
+                            JOptionPane.showMessageDialog(null, "Ви ввели невірну кількість товару при його доданні");
                     } else
                         JOptionPane.showMessageDialog(null, "Ви нічого не ввели в поле!");
                 } else
