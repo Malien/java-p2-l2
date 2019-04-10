@@ -24,8 +24,6 @@ public class AddItemDialog extends JDialog {
         this.cache = cache;
         this.parentFrame = parentFrame;
 
-        productCountTextField.setText(parentFrame.getAddItemValTextField().getText());
-
         this.setPreferredSize(new Dimension(300, 400));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.add(mainPanel);
