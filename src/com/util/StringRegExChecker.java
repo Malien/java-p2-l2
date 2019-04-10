@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 
 public class StringRegExChecker {
     public static boolean checkName(String toCheck){
-        Pattern pattern = Pattern.compile("[a-zA-Zа-яА-Яа-яА-Я_'`]+\\s*\\d*");
+        //"12 подвигів Геракла" name may start with digits "єіїґ" must be acceptable
+        Pattern pattern = Pattern.compile("([А-Яа-яА-ЯєіїґЄІЇҐ\\d\\w])+([а-яА-Яа-яА-Я`'єіїґЄІЇҐ\\d\\w]*\\s*)*");
         Matcher matcher = pattern.matcher(toCheck);
         return matcher.matches();
     }

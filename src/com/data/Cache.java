@@ -14,7 +14,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     private ArrayList<ProductGroup> cache = new ArrayList<>();
     private Reloader ui;
     private IDatabase db;
-    private Logger log = new Logger("Cache");
+    private Logger log = new Logger(Cache.class.getName());
 
     public Cache() {}
 
@@ -39,7 +39,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
-            cache = new ArrayList<>(Arrays.asList(groups));
+            cache = new ArrayList(Arrays.asList(groups));
             if (ui != null) {
                 ui.reload();
             }
@@ -129,16 +129,24 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
         return true;
     }
 
-    //goods search
-    public Product findProductByName(String name) throws Exception {
+    /**
+     *
+     * @param name
+     * @return arrayList of 2 elements: 1st is group, 2nd is product
+     * @throws Exception
+     */
+    public ArrayList findProductByName(String name) throws Exception {
         for(ProductGroup group : this){
             for (Product product : group.getProducts()) {
                 if (product.getName().equals(name)) {
-                    return product;
+                    ArrayList dangerous = new ArrayList();
+                    dangerous.add(group);
+                    dangerous.add(product);
+                    return dangerous;
                 }
             }
-        };
-        throw new Exception("productNotFoundException");
+        }
+        throw new Exception("ProductNotFound!");
     }
 
 }

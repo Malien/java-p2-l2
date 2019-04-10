@@ -9,9 +9,13 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
 
 public class MainFrame extends JFrame implements Reloader {
     private JPanel mainPanel;
@@ -51,6 +55,7 @@ public class MainFrame extends JFrame implements Reloader {
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
     private Product currentProduct;
+    private JMenu searchMenu;
 
     public JTextField getAddItemValTextField() {
         return addItemValTextField;
@@ -70,7 +75,7 @@ public class MainFrame extends JFrame implements Reloader {
         addButtonListeners();
         addMenuListeners();
         setupFrame();
-        this.cache.reload();
+        //this.cache.reload();
     }
 
     @SuppressWarnings("Duplicates")
@@ -158,12 +163,12 @@ public class MainFrame extends JFrame implements Reloader {
     }
 
     private void addTestGroupList() {
-        //   cache.set(new ProductGroup("first group", "fdfd"));
-        // cache.set(new ProductGroup("second group", ""));
-        //  cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        //  cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        //  cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        //  cache.get(1).add(new Product("product 2.1", "desc for 2.2", "manufacturer", 4, 23));
+          cache.set(new ProductGroup("first group", "fdfd"));
+          cache.set(new ProductGroup("second group", "someDesk"));
+          cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
+          cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
+          cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
+          cache.get(1).add(new Product("product 2.2", "desc for 2.2", "manufacturer", 4, 23));
     }
 
     private void addMenuListeners() {
@@ -340,7 +345,27 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         searchMenuButton.addActionListener(e -> {
-
+            String productName = searchMenuTextField.getText();
+            try {
+                ArrayList risky = cache.findProductByName(productName);
+                ProductGroup foundGroup = (ProductGroup) risky.get(0);
+                Product foundProduct = (Product) risky.get(1);
+                this.setCurrentGroup(foundGroup);
+                table.setRowSelectionInterval(foundGroup.indexOf(foundProduct), foundGroup.indexOf(foundProduct));
+            }catch (Exception exc) {
+                JOptionPane.showMessageDialog(null, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+//TODO think about focus
+        searchMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                searchMenuTextField.requestFocusInWindow();
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {}
+            @Override
+            public void menuCanceled(MenuEvent e) {}
         });
     }
 
@@ -363,12 +388,14 @@ public class MainFrame extends JFrame implements Reloader {
     }
 
     private void addSearchMenu() {
-        JMenu searchMenu = new JMenu("Пошук");
+        searchMenu = new JMenu("Пошук");
+        searchMenu.setMnemonic('g');
         JPanel searchMenuPanel = new JPanel();
         searchMenuPanel.setPreferredSize(new Dimension(200, 25));
         searchMenuPanel.setLayout(new BorderLayout());
         searchMenuTextField = new JTextField();
-        searchMenuButton = new JButton("ОК");
+        searchMenuButton = new JButton("Find");
+        searchMenuButton.setMnemonic('f');
         //(int top, int left, int bottom, int right);
         searchMenuButton.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         searchMenuPanel.add(searchMenuTextField, BorderLayout.CENTER);

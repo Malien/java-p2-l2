@@ -33,7 +33,7 @@ public class AddGroupDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newGroupName = groupNameTextField.getText();
             if (cache.groupNameIsUnique(newGroupName)) {
-                if (StringRegExChecker.checkName(groupNameTextField.getText())) {
+                if (StringRegExChecker.checkName(newGroupName)) {
                     cache.set(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
                     dispose();
                     parentFrame.listRefresh();

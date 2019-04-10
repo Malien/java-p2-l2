@@ -52,6 +52,10 @@ public class ProductGroup {
         products.remove(index);
     }
 
+    public int indexOf(Product product){
+        return products.indexOf(product);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
