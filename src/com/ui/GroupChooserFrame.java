@@ -51,6 +51,7 @@ public class GroupChooserFrame extends JFrame {
                 return false;
             }
         };
+
         table.setModel(model);
     }
 }

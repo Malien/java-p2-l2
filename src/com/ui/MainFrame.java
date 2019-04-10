@@ -52,14 +52,6 @@ public class MainFrame extends JFrame implements Reloader {
     private DefaultTableModel tableModel;
     private Product currentProduct;
 
-    public JTextField getAddItemValTextField() {
-        return addItemValTextField;
-    }
-
-    public JTextField getWriteOffValTextField() {
-        return writeOffValTextField;
-    }
-
     public MainFrame(Cache cache) {
         this.cache = cache;
         this.cache.setUI(this);
@@ -305,7 +297,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this, currentGroup, currentGroup.get(table.getSelectedRow()));
+                            new EditProductDialog(this, currentGroup.get(table.getSelectedRow()));
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -439,15 +431,6 @@ public class MainFrame extends JFrame implements Reloader {
                 ev.consume();
                 return;
             }
-
-            Long getNumber() {
-                Long result = null;
-                String text = getText();
-                if (text != null && !"".equals(text)) {
-                    result = Long.valueOf(text);
-                }
-                return result;
-            }
         };
 
 
@@ -463,15 +446,6 @@ public class MainFrame extends JFrame implements Reloader {
                 }
                 ev.consume();
                 return;
-            }
-
-            Long getNumber() {
-                Long result = null;
-                String text = getText();
-                if (text != null && !"".equals(text)) {
-                    result = Long.valueOf(text);
-                }
-                return result;
             }
         };
     }

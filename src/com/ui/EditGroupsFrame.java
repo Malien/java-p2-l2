@@ -51,7 +51,6 @@ public class EditGroupsFrame extends JFrame {
         });
     }
 
-    //FIXME: Need fix, but I dunno how to auto-refresh JList
     void listRefresh() {
         String[] listData = new String[cache.getCache().size()];
 
