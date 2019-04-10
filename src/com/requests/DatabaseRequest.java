@@ -62,7 +62,7 @@ public class DatabaseRequest<R> implements IRequest<ProductGroup, R> {
      * @return newly created DatabaseRequest object
      */
     public static DatabaseRequest<Boolean> set(ProductGroup payload){
-        return new DatabaseRequest(payload, null, SET, Callback.BOOLEAN);
+        return new DatabaseRequest<>(payload, null, SET, Callback.BOOLEAN);
     }
 
     /**

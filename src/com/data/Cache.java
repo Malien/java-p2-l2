@@ -39,12 +39,12 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
-            cache = new ArrayList(Arrays.asList(groups));
+            cache = new ArrayList<>(Arrays.asList(groups));
             if (ui != null) {
                 ui.reload();
             }
             else {
-                log.warn("Ui component is not connected. Ui won't be refreshed");
+                log.warn("UI component is not connected. Ui won't be refreshed");
             }
         });
     }
@@ -148,5 +148,4 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
         }
         throw new Exception("ProductNotFound!");
     }
-
 }
