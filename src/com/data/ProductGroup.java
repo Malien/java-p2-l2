@@ -1,12 +1,14 @@
 package com.data;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ProductGroup {
 
     private String name;
     private String desc;
-    private ArrayList<Product> products;
+    private List<Product> products;
 
     public ProductGroup(String name, String desc) {
         this.name = name;
@@ -23,19 +25,11 @@ public class ProductGroup {
     }
 
     public String getDesc() {
-        return name;
+        return desc;
     }
 
-    public void setDesc(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductGroup{" +
-                "name='" + name + '\'' +
-                ", products=" + products +
-                '}';
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Product get(int index) {
@@ -52,5 +46,22 @@ public class ProductGroup {
 
     public Product[] getProducts() {
         return products.toArray(new Product[0]);
+    }
+
+    public void remove(int index){
+        products.remove(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductGroup that = (ProductGroup) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

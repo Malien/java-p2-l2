@@ -18,8 +18,6 @@ public class WelcomeFrame extends JFrame {
     }
 
     private void setupButtons() {
-        //TODO: For Yaroslav
-        // - change font of text in both buttons
     }
 
     private void setupComboBox() {

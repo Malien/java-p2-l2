@@ -1,26 +1,26 @@
 package com.ui;
 
-import com.data.FrontBackConnection;
+import com.data.Cache;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class EditGroupsFrame extends JFrame {
     private JPanel mainPanel;
     private JButton addGroupButton;
     private JButton removeSelectedGroupButton;
     private JButton editSelectedGroupButton;
-    private JList list;
-    private FrontBackConnection conn;
+    JList list;
+    private Cache cache;
+    public DefaultListModel<String> listModel = new DefaultListModel<>();
 
-    EditGroupsFrame(FrontBackConnection conn) {
-        this.conn = conn;
-        this.setPreferredSize(new Dimension(320, 300));
-        this.setMinimumSize(new Dimension(320, 300));
+    EditGroupsFrame(Cache cache) {
+        this.cache = cache;
+        this.setPreferredSize(new Dimension(350, 300));
+        this.setMinimumSize(new Dimension(350, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setup();
+        listRefresh();
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -28,35 +28,38 @@ public class EditGroupsFrame extends JFrame {
     }
 
     private void addListeners() {
-        addGroupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddGroupFrame addGroupFrame = new AddGroupFrame();
-                addGroupFrame.setVisible(true);
-            }
+        addGroupButton.addActionListener(e -> {
+            AddGroupDialog addGroupDialog = new AddGroupDialog(this, cache);
+            addGroupDialog.setVisible(true);
         });
-        editSelectedGroupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SubmenuEditGroupFrame editGroupsFrame = new SubmenuEditGroupFrame(conn.getGroupList().get(list.getSelectedIndex()));
-                editGroupsFrame.setVisible(true);
-            }
-        });
-        removeSelectedGroupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
+        editSelectedGroupButton.addActionListener(e -> {
+            if (list.getSelectedIndex() != -1) {
+                System.out.println(cache.get(list.getSelectedIndex()));
+                SubmenuEditGroupFrame editGroupsFrame = new SubmenuEditGroupFrame(cache.get(list.getSelectedIndex()));
+                editGroupsFrame.setVisible(true);
+            } else
+                JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як редагувати її");
+        });
+
+        removeSelectedGroupButton.addActionListener(e -> {
+            if (list.getSelectedIndex() != -1) {
+                cache.remove(list.getSelectedIndex());
+                listRefresh();
+            } else
+                JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як видалити її");
         });
     }
 
-    private void setup() {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+    //FIXME: Need fix, but I dunno how to auto-refresh JList
+    void listRefresh() {
+        String[] listData = new String[cache.getCache().size()];
 
-        for (int i = 0; i < conn.getGroupList().size(); i++) {
-            listModel.addElement(conn.getGroupList().get(i).getName());
+        for (int i = 0; i < cache.getCache().size(); i++) {
+            listData[i] = cache.get(i).getName();
         }
 
-        list.setModel(listModel);
+        list.setListData(listData);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 }

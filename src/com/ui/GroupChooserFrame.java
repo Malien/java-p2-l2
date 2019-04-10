@@ -1,21 +1,21 @@
 package com.ui;
 
-import com.data.FrontBackConnection;
+import com.data.Cache;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GroupChooserFrame extends JFrame {
-    private FrontBackConnection conn;
+    private Cache cache;
     private JButton submitButton;
     private JTable table;
     private JPanel mainPanel;
+    private MainFrame parentFrame;
 
-    GroupChooserFrame(FrontBackConnection conn) {
-        this.conn = conn;
+    GroupChooserFrame(MainFrame parentFrame, Cache cache) {
+        this.parentFrame = parentFrame;
+        this.cache = cache;
         this.setPreferredSize(new Dimension(320, 300));
         this.setMinimumSize(new Dimension(320, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -27,21 +27,22 @@ public class GroupChooserFrame extends JFrame {
     }
 
     private void addListeners() {
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        submitButton.addActionListener(e -> {
+            if (table.getSelectedRow() != -1) {
+                parentFrame.setCurrentGroup(cache.get(table.getSelectedRow()));
+                dispose();
+            } else
+                JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
     }
 
     private void setup() {
         String[] column = {"Назва", "Опис"};
-        String[][] data = new String[conn.getGroupList().size()][2];
+        String[][] data = new String[cache.getCache().size()][2];
 
-        for (int i = 0; i < conn.getGroupList().size(); i++) {
-            data[i][0] = conn.getGroupList().get(i).getName();
-            data[i][1] = conn.getGroupList().get(i).getDesc();
+        for (int i = 0; i < cache.getCache().size(); i++) {
+            data[i][0] = cache.get(i).getName();
+            data[i][1] = cache.get(i).getDesc();
         }
 
         DefaultTableModel model = new DefaultTableModel(data, column) {

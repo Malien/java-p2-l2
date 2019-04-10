@@ -5,12 +5,13 @@ import com.data.ProductGroup;
 import com.requests.Callback;
 import com.requests.DatabaseRequest;
 import com.util.Logger;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class DatabaseManager implements Runnable {
+public class DatabaseManager implements Runnable, IDatabase {
 
     /* ****File structure****
     workspacePath:
@@ -18,7 +19,7 @@ public class DatabaseManager implements Runnable {
         group2.prg -- product group 2
 
     .prg file structure:
-    |Product|Product|... EOF
+    String(description)|Product|Product|... EOF
 
     Product
     parameters: ||  amount ||  price  ||   name    |  0x0   || manufacturer |  0x0   || description |  0x0   ||
@@ -66,8 +67,9 @@ public class DatabaseManager implements Runnable {
         FileInputStream fileStream = new FileInputStream(file);
         DataInputStream data = new DataInputStream(fileStream);
         String filename = file.getName();
+        String groupDescription = data.readUTF();
         //TODO: fix for changed ProductGroup constructor needed
-        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4));
+        ProductGroup group = new ProductGroup(filename.substring(0, filename.length() - 4),groupDescription);
         while (true) {
             try {
                 int amount = data.readInt();
@@ -113,6 +115,7 @@ public class DatabaseManager implements Runnable {
         }
 
         DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
+        stream.writeUTF(group.getDesc());
         for (Product product : group.getProducts()) {
             stream.writeInt(product.getCount());
             stream.writeFloat((float) product.getPrice());
@@ -124,36 +127,68 @@ public class DatabaseManager implements Runnable {
         return true;
     }
 
-    public void get(String path, Callback<ProductGroup> callback) throws InterruptedException {
-        queue.put(DatabaseRequest.get(path, callback));
+    public void get(String path, Callback<ProductGroup> callback){
+        try {
+            queue.put(DatabaseRequest.get(path, callback));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void getAll(Callback<ProductGroup[]> callback) throws InterruptedException {
-        queue.put(DatabaseRequest.getAll(callback));
+    public void getAll(Callback<ProductGroup[]> callback){
+        try {
+            queue.put(DatabaseRequest.getAll(callback));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void set(ProductGroup group, Callback<Boolean> callback) throws InterruptedException {
-        queue.put(DatabaseRequest.set(group, callback));
+    public void set(ProductGroup group, Callback<Boolean> callback){
+        try {
+            queue.put(DatabaseRequest.set(group, callback));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void set(ProductGroup group) throws InterruptedException {
-        queue.put(DatabaseRequest.set(group));
+    public void set(ProductGroup group){
+        try {
+            queue.put(DatabaseRequest.set(group));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void setPath(String path, Callback<Boolean> callback) throws InterruptedException {
-        queue.put(DatabaseRequest.setPath(path, callback));
+    public void setPath(String path, Callback<Boolean> callback){
+        try {
+            queue.put(DatabaseRequest.setPath(path, callback));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void setPath(String path) throws InterruptedException {
-        queue.put(DatabaseRequest.setPath(path));
+    public void setPath(String path){
+        try {
+            queue.put(DatabaseRequest.setPath(path));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public void delete(String path, Callback<Boolean> callback) throws InterruptedException {
-        queue.put(DatabaseRequest.delete(path, callback));
+    public void delete(String path, Callback<Boolean> callback){
+        try {
+            queue.put(DatabaseRequest.delete(path, callback));
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public void delete(String path) throws InterruptedException {
-        queue.put(DatabaseRequest.delete(path));
+    public void delete(String path){
+        try {
+            queue.put(DatabaseRequest.delete(path));
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
