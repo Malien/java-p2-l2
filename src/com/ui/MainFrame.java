@@ -59,12 +59,20 @@ public class MainFrame extends JFrame implements Reloader {
         this.currentGroup = new ProductGroup("null", "empty group");
         this.setResizable(false);
         addTestGroupList();
-        setupUILook();
+        if (!System.getProperty("os.name").equals("Mac OS X")) {
+            setupUILook();
+        }
+        setupMargins();
         setupMenuBar();
         addButtonListeners();
         addMenuListeners();
         setupFrame();
         //this.cache.reload();
+    }
+
+    private void setupMargins() {
+        productNumberPlusButton.setMargin(new Insets(0, 0, 1, 0));
+        productNumberMinusButton.setMargin(new Insets(0, 0, 1, 1));
     }
 
     @SuppressWarnings("Duplicates")
@@ -109,15 +117,13 @@ public class MainFrame extends JFrame implements Reloader {
         itemDescButton.setForeground(Color.WHITE);
         itemDescButton.setBorderPainted(false);
 
-        productNumberPlusButton.setBackground(UIConstants.MaterialBlue);
-        productNumberPlusButton.setForeground(Color.WHITE);
-        productNumberPlusButton.setBorderPainted(false);
-        productNumberPlusButton.setMargin(new Insets(0, 0, 1, 0));
-
         productNumberMinusButton.setBackground(UIConstants.MaterialBlue);
         productNumberMinusButton.setForeground(Color.WHITE);
         productNumberMinusButton.setBorderPainted(false);
-        productNumberMinusButton.setMargin(new Insets(0, 0, 1, 1));
+
+        productNumberPlusButton.setBackground(UIConstants.MaterialBlue);
+        productNumberPlusButton.setForeground(Color.WHITE);
+        productNumberPlusButton.setBorderPainted(false);
     }
 
     @Override

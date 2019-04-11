@@ -9,6 +9,7 @@ public class WelcomeFrame extends JFrame {
     private JPanel welcomePanel;
     private JComboBox pathComboBox;
     private JButton quitButton;
+    private JButton button1;
     ArrayList<String> pathCache;
 
     public WelcomeFrame() {
