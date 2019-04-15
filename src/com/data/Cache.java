@@ -7,6 +7,8 @@ import com.util.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 public class Cache implements Reloader, Iterable<ProductGroup>{
@@ -132,17 +134,14 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
     /**
      *
      * @param name
-     * @return arrayList of 2 elements: 1st is group, 2nd is product
+     * @return tuple of 2 elements: 1st is group, 2nd is product
      * @throws Exception
      */
-    public ArrayList findProductByName(String name) throws Exception {
+    public Tuple findProductByName(String name) throws Exception {
         for(ProductGroup group : this){
             for (Product product : group.getProducts()) {
                 if (product.getName().equals(name)) {
-                    ArrayList dangerous = new ArrayList();
-                    dangerous.add(group);
-                    dangerous.add(product);
-                    return dangerous;
+                   return new Tuple(group, product);
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.ui;
 import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
+import com.data.Tuple;
 import com.util.UIConstants;
 
 import javax.swing.*;
@@ -35,13 +36,16 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuBar menuBar;
     private JMenuItem reloadMenuItem;
     private JMenuItem changeWorkspaceMenuItem;
-    private JMenuItem statisticsWarehouseMenuItem;
+    private JMenuItem statisticsMainStorageMenuItem;
     private JMenuItem helpMenuItem;
     private JMenuItem statisticsGroupMenuItem;
-    private JMenuItem countWarehousePriceMenuItem;
-    private JMenuItem countGroupPriceMenuItem;
+    private JMenuItem showStorageStatistics;
+    private JMenu showGroupStatistics;
+ //   private JMenuItem countWarehousePriceMenuItem;
+ //   private JMenuItem countGroupPriceMenuItem;
 
     private JScrollPane tableScrollPane;
+    private JList allGroupsList;
     private JTable table;
     private JLabel currentGroupLabel;
     private JButton addProductButton;
@@ -160,27 +164,16 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         changeWorkspaceMenuItem.addActionListener(e -> {
+            System.out.println("changeWorkspaceMenuItem");
             //TODO: ask user new workspace path
         });
 
-        statisticsWarehouseMenuItem.addActionListener(e -> {
-
-        });
-
         helpMenuItem.addActionListener(e -> {
-
+            System.out.println("helpMenuItem");
         });
 
-        statisticsGroupMenuItem.addActionListener(e -> {
-
-        });
-
-        countWarehousePriceMenuItem.addActionListener(e -> {
-
-        });
-
-        countGroupPriceMenuItem.addActionListener(e -> {
-
+        showStorageStatistics.addActionListener(e -> {
+            System.out.println("showStorageStatistics");
         });
 
         numberChangeTextField.addKeyListener(new KeyAdapter() {
@@ -199,6 +192,23 @@ public class MainFrame extends JFrame implements Reloader {
                         JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
                 }
                 else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) e.consume();
+            }
+        });
+
+        showGroupStatistics.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                allGroupsList.setListData(cache.getCache().toArray(new ProductGroup[0]));
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
             }
         });
     }
@@ -348,9 +358,9 @@ public class MainFrame extends JFrame implements Reloader {
         searchMenuButton.addActionListener(e -> {
             String productName = searchMenuTextField.getText();
             try {
-                ArrayList risky = cache.findProductByName(productName);
-                ProductGroup foundGroup = (ProductGroup) risky.get(0);
-                Product foundProduct = (Product) risky.get(1);
+                Tuple productInfo = cache.findProductByName(productName);
+                ProductGroup foundGroup = (ProductGroup) productInfo.first;
+                Product foundProduct = (Product) productInfo.second;
                 this.setCurrentGroup(foundGroup);
                 table.setRowSelectionInterval(foundGroup.indexOf(foundProduct), foundGroup.indexOf(foundProduct));
             } catch (Exception exc) {
@@ -403,7 +413,6 @@ public class MainFrame extends JFrame implements Reloader {
         searchMenuTextField = new JTextField();
         searchMenuButton = new JButton("Find");
         searchMenuButton.setMnemonic('f');
-        //(int top, int left, int bottom, int right);
         searchMenuButton.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         searchMenuPanel.add(searchMenuTextField, BorderLayout.CENTER);
         searchMenuPanel.add(searchMenuButton, BorderLayout.EAST);
@@ -422,19 +431,19 @@ public class MainFrame extends JFrame implements Reloader {
     private void addStatisticsMenu() {
         JMenu statisticsMenu = new JMenu("Статистика");
 
-        JMenu showSubmenu = new JMenu("Показати товари");
-        statisticsMenu.add(showSubmenu);
-        statisticsWarehouseMenuItem = new JMenuItem("На складі");
-        showSubmenu.add(statisticsWarehouseMenuItem);
-        statisticsGroupMenuItem = new JMenuItem("У групі");
-        showSubmenu.add(statisticsGroupMenuItem);
+        showStorageStatistics = new JMenuItem("На складі");
+        showGroupStatistics = new JMenu("У групі...");
 
-        JMenu countPriceSubmenu = new JMenu("Порахувати");
-        statisticsMenu.add(countPriceSubmenu);
-        countWarehousePriceMenuItem = new JMenuItem("На складі");
-        countPriceSubmenu.add(countWarehousePriceMenuItem);
-        countGroupPriceMenuItem = new JMenuItem("У групі");
-        countPriceSubmenu.add(countGroupPriceMenuItem);
+        statisticsMenu.add(showStorageStatistics);
+        statisticsMenu.add(showGroupStatistics);
+
+        allGroupsList = new JList(cache.getCache().toArray(new ProductGroup[0]));
+        JScrollPane scroll = new JScrollPane(allGroupsList);
+        scroll.setPreferredSize(new Dimension(120, 200));
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        showGroupStatistics.add(scroll);
 
         menuBar.add(statisticsMenu);
     }
