@@ -46,6 +46,7 @@ public class StorageStatistics extends JFrame{
         initTable.getColumnModel().getColumn(0).setPreferredWidth(250);
     }
 
+    @SuppressWarnings("Duplicates")
     private void fillWithInfo (String[][] content){
         int counter = 0;
         ArrayList<ProductGroup> groups = cache.getCache();

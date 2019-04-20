@@ -1,5 +1,6 @@
 package com.ui;
 
+import com.data.Cache;
 import com.data.ProductGroup;
 import com.util.StringRegExChecker;
 
@@ -13,23 +14,28 @@ public class SubmenuEditGroupFrame extends JFrame {
     private JButton saveChangesButton;
     private JTextField nameTextField;
     private JTextArea descTextArea;
+    private Cache cache;
+    private EditGroupsFrame parentFrame;
 
-    SubmenuEditGroupFrame(ProductGroup productGroup) {
+    SubmenuEditGroupFrame(JFrame parentFrame, Cache cache, ProductGroup productGroup) {
         this.productGroup = productGroup;
-        this.setPreferredSize(new Dimension(300, 300));
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.cache = cache;
+        setPreferredSize(new Dimension(300, 300));
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup();
-        this.add(mainPanel);
-        this.pack();
-        this.setLocationRelativeTo(null);
+        add(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
         addListeners();
     }
 
     private void addListeners() {
         saveChangesButton.addActionListener(e -> {
             if (StringRegExChecker.checkName(nameTextField.getText())) {
-                productGroup.setName(nameTextField.getText());
-                productGroup.setDesc(descTextArea.getText());
+                cache.remove(productGroup);
+                cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText()));
+                cache.reload();
+                parentFrame.listRefresh();
                 dispose();
             } else
                 JOptionPane.showMessageDialog(null, "Помилка в імені групи", "Помилка!",

@@ -21,11 +21,11 @@ public class AddGroupDialog extends JDialog {
         this.cache = cache;
         this.parentFrame = parentFrame;
 
-        this.setPreferredSize(new Dimension(300, 300));
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.add(mainPanel);
-        this.pack();
-        this.setLocationRelativeTo(null);
+        setPreferredSize(new Dimension(300, 300));
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        add(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
         addListeners();
     }
 

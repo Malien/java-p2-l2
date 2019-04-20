@@ -4,7 +4,7 @@ import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
 import com.data.Tuple;
-import com.util.UIConstants;
+import com.util.StringRegExChecker;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -28,8 +28,6 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton editItemButton;
     private JButton removeItemButton;
     private JButton itemDescButton;
-    private JButton productNumberPlusButton;
-    private JButton productNumberMinusButton;
     private JButton searchMenuButton;
 
     private JTextField searchMenuTextField;
@@ -63,21 +61,16 @@ public class MainFrame extends JFrame implements Reloader {
         if (!System.getProperty("os.name").equals("Mac OS X")) {
             setupUILook();
         }
-        setupMargins();
         setupMenuBar();
         addButtonListeners();
         addMenuListeners();
         setupFrame();
     }
 
-    private void setupMargins() {
-        productNumberPlusButton.setMargin(new Insets(0, 0, 1, 0));
-        productNumberMinusButton.setMargin(new Insets(0, 0, 1, 1));
-    }
 
     @SuppressWarnings("Duplicates")
     private void setupUILook() {
-        choseGroupButton.setBackground(UIConstants.MaterialBlue);
+       /* choseGroupButton.setBackground(UIConstants.MaterialBlue);
         choseGroupButton.setForeground(Color.WHITE);
         choseGroupButton.setBorderPainted(false);
 
@@ -115,15 +108,7 @@ public class MainFrame extends JFrame implements Reloader {
 
         itemDescButton.setBackground(UIConstants.MaterialBlue);
         itemDescButton.setForeground(Color.WHITE);
-        itemDescButton.setBorderPainted(false);
-
-        productNumberMinusButton.setBackground(UIConstants.MaterialBlue);
-        productNumberMinusButton.setForeground(Color.WHITE);
-        productNumberMinusButton.setBorderPainted(false);
-
-        productNumberPlusButton.setBackground(UIConstants.MaterialBlue);
-        productNumberPlusButton.setForeground(Color.WHITE);
-        productNumberPlusButton.setBorderPainted(false);
+        itemDescButton.setBorderPainted(false);*/
     }
 
     @Override
@@ -171,17 +156,18 @@ public class MainFrame extends JFrame implements Reloader {
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
                 char c = e.getKeyChar();
-                if (c == KeyEvent.VK_ENTER){
+                if (c == KeyEvent.VK_ENTER) {
                     if (!currentGroup.getName().equals("null")) {
                         if (table.getSelectedRow() != -1) {
                             currentGroup.get(table.getSelectedRow()).setCount(Integer.valueOf(numberChangeTextField.getText()));
-                            cache.reload();
+                            cache.set(currentGroup);
+                            reload();
                         } else
                             JOptionPane.showMessageDialog(null, "Виберіть товар!");
                     } else
                         JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-                }
-                else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) e.consume();
+                } else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE))
+                    e.consume();
             }
         });
 
@@ -190,30 +176,41 @@ public class MainFrame extends JFrame implements Reloader {
             public void menuSelected(MenuEvent e) {
                 allGroupsList.setListData(cache.getCache().toArray(new ProductGroup[0]));
             }
+
             @Override
-            public void menuDeselected(MenuEvent e) {}
+            public void menuDeselected(MenuEvent e) {
+            }
+
             @Override
-            public void menuCanceled(MenuEvent e) {}
+            public void menuCanceled(MenuEvent e) {
+            }
         });
         allGroupsList.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ShowGroupStatistics sgs = new ShowGroupStatistics((ProductGroup) allGroupsList.getSelectedValue());
             }
+
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
+
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
         });
     }
 
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
-
         choseGroupButton.addActionListener(e -> {
             GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, cache);
             groupChooserFrame.setVisible(true);
@@ -232,44 +229,16 @@ public class MainFrame extends JFrame implements Reloader {
                 JOptionPane.showMessageDialog(null, "Виберіть спочатку групу!");
         });
 
-        productNumberPlusButton.addActionListener(e -> {
-            if (!currentGroup.getName().equals("null")) {
-                if (table.getSelectedRow() != -1) {
-                    int selectedRow = table.getSelectedRow();
-                    currentGroup.get(table.getSelectedRow()).incrementCount();
-                    currentGroup.get(table.getSelectedRow()).addProduced(1);
-                    cache.reload();
-                    table.setRowSelectionInterval(selectedRow, selectedRow);
-                } else
-                    JOptionPane.showMessageDialog(null, "Виберіть товар!");
-            } else
-                JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-        });
-
-        productNumberMinusButton.addActionListener(e -> {
-            if (!currentGroup.getName().equals("null")) {
-                if (table.getSelectedRow() != -1) {
-                    if (currentGroup.get(table.getSelectedRow()).getCount() != 0) {
-                        int selectedRow = table.getSelectedRow();
-                        currentGroup.get(table.getSelectedRow()).decrementCount();
-                        currentGroup.get(table.getSelectedRow()).addSold(1);
-                        cache.reload();
-                        table.setRowSelectionInterval(selectedRow, selectedRow);
-                    }
-                } else
-                    JOptionPane.showMessageDialog(null, "Виберіть товар!");
-            } else
-                JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-        });
-
         addItemsButton.addActionListener(e -> {
             if (!currentGroup.getName().equals("null")) {
                 if (table.getSelectedRow() != -1) {
-                            currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
-                    currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
-                    currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
-                    cache.reload();
-
+                    if (StringRegExChecker.checkIntegerWithoutZero(numberChangeTextField.getText())) {
+                        currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
+                        currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
+                        cache.set(currentGroup);
+                        cache.reload();
+                    }else
+                        JOptionPane.showMessageDialog(null, "Помилка у введеному числі");
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
             } else
@@ -281,19 +250,19 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                     Product tempProd = currentGroup.get(table.getSelectedRow());
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
-                    if (tempProd.ableToSubtract(tempInt)){
+                    if (tempProd.ableToSubtract(tempInt)) {
                         tempProd.decrementCount(tempInt);
                         tempProd.addSold(tempInt);
+                        cache.set(currentGroup);
                         cache.reload();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "There are no as many products.");
                     }
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
             } else
                 JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-                //TODO use this separation in statistics; think about duplication
+            //TODO use this separation in statistics; think about duplication
         });
 
         writeOffButton.addActionListener(e -> {
@@ -301,12 +270,12 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                     Product tempProd = currentGroup.get(table.getSelectedRow());
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
-                    if (tempProd.ableToSubtract(tempInt)){
+                    if (tempProd.ableToSubtract(tempInt)) {
                         tempProd.decrementCount(tempInt);
                         tempProd.addWrittenOff(tempInt);
+                        cache.set(currentGroup);
                         cache.reload();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "There are no as many products.");
                     }
                 } else
@@ -331,6 +300,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     currentGroup.remove(table.getSelectedRow());
+                    cache.set(currentGroup);
                     cache.reload();
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -462,7 +432,6 @@ public class MainFrame extends JFrame implements Reloader {
 
     void setCurrentGroup(ProductGroup group) {
         currentGroup = group;
-        System.out.println(currentGroup);
         reload();
         currentGroupLabel.setText("Поточна група: " + currentGroup.getName());
     }
@@ -470,6 +439,4 @@ public class MainFrame extends JFrame implements Reloader {
     public ProductGroup getCurrentGroup() {
         return currentGroup;
     }
-
-
 }

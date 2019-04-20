@@ -16,15 +16,9 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
     private IDatabase db;
     private Logger log = new Logger(Cache.class.getName());
 
-    public Cache() {}
-
     public Cache(IDatabase db){
         this.db = db;
         reload();
-    }
-
-    public Cache(Reloader ui){
-        this.ui = ui;
     }
 
     public Cache(Reloader ui, IDatabase db){

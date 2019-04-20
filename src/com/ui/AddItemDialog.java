@@ -23,7 +23,6 @@ public class AddItemDialog extends JDialog {
         super(parentFrame, Dialog.ModalityType.APPLICATION_MODAL);
         this.cache = cache;
         this.parentFrame = parentFrame;
-
         this.setPreferredSize(new Dimension(300, 400));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.add(mainPanel);
@@ -37,65 +36,57 @@ public class AddItemDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
             if (StringRegExChecker.checkName(newProductName)) {
-                if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
-                    if (cache.prodNameIsUnique(newProductName)) {
-                        parentFrame.getCurrentGroup().add(new Product(newProductName, productDescTextPane.getText(),
-                                productManufacturerTextField.getText(), Integer.parseInt(productCountTextField.getText()),
-                                Double.parseDouble(productPriceTextField.getText())));
-                        dispose();
-                        parentFrame.reload();
-                      //  parentFrame.cache.reload();
+                if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+                    if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
+                        if (cache.prodNameIsUnique(newProductName)) {
+                            if (StringRegExChecker.checkInteger(productCountTextField.getText())) {
+                                parentFrame.getCurrentGroup().add(new Product(newProductName, productDescTextPane.getText(),
+                                        productManufacturerTextField.getText(), Integer.parseInt(productCountTextField.getText()),
+                                        Double.parseDouble(productPriceTextField.getText())));
+                                dispose();
+                                cache.set(parentFrame.getCurrentGroup());
+                                parentFrame.reload();
+                            } else
+                                JOptionPane.showMessageDialog(null, "Помилка в кількості товару", "Помилка!",
+                                        JOptionPane.ERROR_MESSAGE);
+                        } else
+                            JOptionPane.showMessageDialog(null, "Продукт з даним ім'ям вже існує!", "Помилка!",
+                                    JOptionPane.ERROR_MESSAGE);
                     } else
-                        JOptionPane.showMessageDialog(null, "Продукт з даним ім'ям вже існує!", "Помилка!",
+                        JOptionPane.showMessageDialog(null, "Помилка в ціні товару", "Помилка!",
                                 JOptionPane.ERROR_MESSAGE);
                 } else
-                    JOptionPane.showMessageDialog(null, "Помилка в ціні продукта", "Помилка!",
+                    JOptionPane.showMessageDialog(null, "Помилка в назві виробника товару", "Помилка!",
                             JOptionPane.ERROR_MESSAGE);
             } else
-                JOptionPane.showMessageDialog(null, "Помилка в імені продукта", "Помилка!",
+                JOptionPane.showMessageDialog(null, "Помилка в імені товару", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);
         });
     }
 
-    @SuppressWarnings("Duplicates")
     private void createUIComponents() {
         productPriceTextField = new JTextField() {
             @Override
             public void processKeyEvent(KeyEvent ev) {
-                if (Character.isDigit(ev.getKeyChar()) || ev.getKeyCode() == KeyEvent.VK_BACK_SPACE || ev.getKeyCode() == KeyEvent.VK_PERIOD) {
+                char ch = ev.getKeyChar();
+                if (Character.isDigit(ch) || ch == KeyEvent.VK_BACK_SPACE ||
+                        ch == KeyEvent.VK_PERIOD) {
                     super.processKeyEvent(ev);
                 }
                 ev.consume();
                 return;
-            }
-
-            Long getNumber() {
-                Long result = null;
-                String text = getText();
-                if (text != null && !"".equals(text)) {
-                    result = Long.valueOf(text);
-                }
-                return result;
             }
         };
 
-        productCountTextField = new JTextField(){
+        productCountTextField = new JTextField() {
             @Override
             public void processKeyEvent(KeyEvent ev) {
-                if (Character.isDigit(ev.getKeyChar()) || ev.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                char ch = ev.getKeyChar();
+                if (Character.isDigit(ch) || ch == KeyEvent.VK_BACK_SPACE) {
                     super.processKeyEvent(ev);
                 }
                 ev.consume();
                 return;
-            }
-
-            Long getNumber() {
-                Long result = null;
-                String text = getText();
-                if (text != null && !"".equals(text)) {
-                    result = Long.valueOf(text);
-                }
-                return result;
             }
         };
     }

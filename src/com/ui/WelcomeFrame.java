@@ -32,6 +32,7 @@ public class WelcomeFrame extends JFrame {
             DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
                 if (valid) {
                     Workspace.launch();
+                    dispose();
                 } else {
                     //TODO: display path error to user
                 }

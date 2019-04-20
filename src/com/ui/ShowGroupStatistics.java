@@ -27,6 +27,7 @@ public class ShowGroupStatistics extends JFrame{
         contentTable.getColumnModel().getColumn(0).setPreferredWidth(250);
     }
 
+    @SuppressWarnings("Duplicates")
     private void fillWithInfo(String[][] info, ProductGroup pg){
         int counter = 0;
         Product[] products = pg.getProducts();

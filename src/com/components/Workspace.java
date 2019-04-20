@@ -12,23 +12,7 @@ public class Workspace {
 
     static JFrame mainFrame;
 
-   public static void main(String[] args) {
-//        String separtor = System.getProperty("file.separator");
-//        System.out.println(System.getProperty("os.name"));
-//        switch (System.getProperty("os.name")) {
-//            case "Mac OS X":
-//                DatabaseManager.getInstance().setPath("/Users/user/Documents/Development/Study/Java P2/L2/test_data");
-//                break;
-//            case "Unix":
-//                DatabaseManager.getInstance().setPath("home/yaroslav/cache");
-//                break;
-//            case "Windows":
-//                DatabaseManager.getInstance().setPath("C:\\Cache");
-//                break;
-//        }
-//      Cache cache = new Cache(DatabaseManager.getInstance());
-
-
+    public static void main(String[] args) {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         JFrame welcome = new WelcomeFrame();
         welcome.setVisible(true);
@@ -40,7 +24,8 @@ public class Workspace {
         mainFrame.setVisible(true);
     }
 
-    public static String askPath(JDialog dialog){
+    @SuppressWarnings("Duplicates")
+    public static String askPath(JDialog dialog) {
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
@@ -53,14 +38,15 @@ public class Workspace {
             filePicker.setAcceptAllFileFilterUsed(false);
             filePicker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             filePicker.setCurrentDirectory(new File("."));
-            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION){
+            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
                 path = filePicker.getSelectedFile().getAbsolutePath();
             }
         }
         return path;
     }
 
-    public static String askPath(JFrame dialog){
+    @SuppressWarnings("Duplicates")
+    public static String askPath(JFrame dialog) {
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
@@ -73,7 +59,7 @@ public class Workspace {
             filePicker.setAcceptAllFileFilterUsed(false);
             filePicker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             filePicker.setCurrentDirectory(new File("."));
-            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION){
+            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
                 path = filePicker.getSelectedFile().getAbsolutePath();
             }
         }

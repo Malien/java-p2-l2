@@ -9,11 +9,11 @@ public class DescFrame extends JFrame {
     private JTextArea descTextArea;
     private JLabel itemTypeLabel;
 
-    DescFrame(String typeOfItem, String desc){
+    DescFrame(String typeOfItem, String desc) {
         this.setPreferredSize(new Dimension(320, 300));
         this.setMinimumSize(new Dimension(320, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setup(typeOfItem,desc);
+        setup(typeOfItem, desc);
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -28,8 +28,8 @@ public class DescFrame extends JFrame {
     }
 
     private void addListeners() {
-        exitButton.addActionListener(e -> {
-            dispose();
-        });
+        exitButton.addActionListener(e ->
+                dispose()
+        );
     }
 }

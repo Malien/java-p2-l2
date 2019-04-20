@@ -33,11 +33,23 @@ public class EditProductDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
             if (StringRegExChecker.checkName(productNameTextField.getText())) {
-                currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
-                        productManufacturerTextField.getText(), Double.parseDouble(productPriceTextField.getText()));
-                dispose();
-                parentFrame.reload();
-             //   parentFrame.cache.reload();
+                if (parentFrame.cache.prodNameIsUnique(newProductName)) {
+                    if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+                        if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
+                            currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
+                                    productManufacturerTextField.getText(), Double.parseDouble(productPriceTextField.getText()));
+                            dispose();
+                            parentFrame.cache.set(parentFrame.getCurrentGroup());
+                            parentFrame.reload();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Помилка в ціні товару", "Помилка!",
+                                    JOptionPane.ERROR_MESSAGE);
+                    } else
+                        JOptionPane.showMessageDialog(null, "Помилка в імені виробника товару", "Помилка!",
+                                JOptionPane.ERROR_MESSAGE);
+                } else
+                    JOptionPane.showMessageDialog(null, "Товар з даним іменем вже існує", "Помилка!",
+                            JOptionPane.ERROR_MESSAGE);
             } else
                 JOptionPane.showMessageDialog(null, "Помилка в імені товару", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);
@@ -50,6 +62,4 @@ public class EditProductDialog extends JDialog {
         productManufacturerTextField.setText(currentProduct.getManufacturer());
         productPriceTextField.setText(String.valueOf(currentProduct.getPrice()));
     }
-
-
 }
