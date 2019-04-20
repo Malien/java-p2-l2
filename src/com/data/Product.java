@@ -7,6 +7,9 @@ public class Product {
     private String manufacturer;
     private int count;
     private double price;
+    private int produced;
+    private int sold;
+    private int writtenOff;
 
     public Product(String name, String description, String manufacturer, int count, double price) {
         this.name = name;
@@ -85,5 +88,29 @@ public class Product {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void addProduced(int produced){
+        this.produced += produced;
+    }
+
+    public void addSold(int sold){
+        this.sold +=sold;
+    }
+
+    public void addWrittenOff(int writtenOff){
+        this.writtenOff += writtenOff;
+    }
+
+    public int getProduced(){
+        return produced;
+    }
+
+    public int getSold(){
+        return sold;
+    }
+
+    public int getWrittenOff(){
+        return writtenOff;
     }
 }

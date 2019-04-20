@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 
@@ -179,7 +181,7 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         showStorageStatistics.addActionListener(e -> {
-            System.out.println("showStorageStatistics");
+            StorageStatistics sst = new StorageStatistics(cache);
         });
 
         numberChangeTextField.addKeyListener(new KeyAdapter() {
@@ -206,16 +208,24 @@ public class MainFrame extends JFrame implements Reloader {
             public void menuSelected(MenuEvent e) {
                 allGroupsList.setListData(cache.getCache().toArray(new ProductGroup[0]));
             }
-
             @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
+            public void menuDeselected(MenuEvent e) {}
             @Override
-            public void menuCanceled(MenuEvent e) {
-
+            public void menuCanceled(MenuEvent e) {}
+        });
+        allGroupsList.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ShowGroupStatistics sgs = new ShowGroupStatistics((ProductGroup) allGroupsList.getSelectedValue());
             }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
         });
     }
 
@@ -245,6 +255,7 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                     int selectedRow = table.getSelectedRow();
                     currentGroup.get(table.getSelectedRow()).incrementCount();
+                    currentGroup.get(table.getSelectedRow()).addProduced(1);
                     reload();
                     table.setRowSelectionInterval(selectedRow, selectedRow);
                 } else
@@ -259,6 +270,7 @@ public class MainFrame extends JFrame implements Reloader {
                     if (currentGroup.get(table.getSelectedRow()).getCount() != 0) {
                         int selectedRow = table.getSelectedRow();
                         currentGroup.get(table.getSelectedRow()).decrementCount();
+                        currentGroup.get(table.getSelectedRow()).addSold(1);
                         reload();
                         table.setRowSelectionInterval(selectedRow, selectedRow);
                     }
@@ -272,6 +284,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (!currentGroup.getName().equals("null")) {
                 if (table.getSelectedRow() != -1) {
                             currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
+                    currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
                             reload();
 
                 } else
@@ -287,6 +300,7 @@ public class MainFrame extends JFrame implements Reloader {
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
                     if (tempProd.ableToSubtract(tempInt)){
                         tempProd.decrementCount(tempInt);
+                        tempProd.addSold(tempInt);
                         reload();
                     }
                     else{
@@ -296,7 +310,6 @@ public class MainFrame extends JFrame implements Reloader {
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
             } else
                 JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-//TODO use this separation in statistics; think about duplication
         });
 
         writeOffButton.addActionListener(e -> {
@@ -306,6 +319,7 @@ public class MainFrame extends JFrame implements Reloader {
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
                     if (tempProd.ableToSubtract(tempInt)){
                         tempProd.decrementCount(tempInt);
+                        tempProd.addWrittenOff(tempInt);
                         reload();
                     }
                     else{

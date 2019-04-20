@@ -75,7 +75,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="&lt;html&gt;&lt;center&gt;Додати&lt;br&gt;товар(и)&lt;/center&gt;&lt;/html&gt;"/>
+                  <text value="&lt;html&gt;&lt;center&gt;Виробити&lt;br&gt;товар(и)&lt;/center&gt;&lt;/html&gt;"/>
                 </properties>
               </component>
             </children>
