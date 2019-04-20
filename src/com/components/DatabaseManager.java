@@ -28,7 +28,8 @@ public class DatabaseManager implements Runnable, IDatabase {
     private static final DatabaseManager instance = new DatabaseManager();
     private Thread dataThread = new Thread(this, "DatabaseManager");
     private Logger log = new Logger("DatabaseManager");
-    private String workspacePath = "/";
+    private String systemSeparator = System.getProperty("file.separator");
+    private String workspacePath = systemSeparator;
 
     //TODO: think about that arbitrary 512 queue depth
     private LinkedBlockingQueue<DatabaseRequest> queue = new LinkedBlockingQueue<>(512);
@@ -52,6 +53,10 @@ public class DatabaseManager implements Runnable, IDatabase {
         if (!wrksp.isDirectory()) return false;
         workspacePath = path;
         return true;
+    }
+
+    public String path(){
+        return workspacePath;
     }
 
     private ProductGroup[] getProductGroups() throws IOException {
@@ -88,7 +93,7 @@ public class DatabaseManager implements Runnable, IDatabase {
 
     private ProductGroup getProductGroup(String path) throws IOException {
         try {
-            File groupFile = new File(workspacePath + "/" + path + ".prg");
+            File groupFile = new File(workspacePath + systemSeparator + path + ".prg");
             return getProductGroup(groupFile);
         } catch (FileNotFoundException e) {
             return null;
@@ -109,7 +114,7 @@ public class DatabaseManager implements Runnable, IDatabase {
             return true;
         }
         if (found == null) {
-            found = new File(workspacePath + "/" + path + ".prg");
+            found = new File(workspacePath + systemSeparator + path + ".prg");
             found.createNewFile();
         }
 

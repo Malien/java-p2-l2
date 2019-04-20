@@ -1,33 +1,46 @@
 package com.ui;
 
+import com.components.DatabaseManager;
+import com.components.Workspace;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class WelcomeFrame extends JFrame {
     private JButton startButton;
     private JPanel welcomePanel;
-    private JComboBox pathComboBox;
     private JButton quitButton;
-    private JButton button1;
-    ArrayList<String> pathCache;
+    private JButton fileSelectorButton;
+    private JTextField pathField;
 
     public WelcomeFrame() {
         setupFrame();
-        setupComboBox();
         setupButtons();
     }
 
     private void setupButtons() {
-    }
-
-    private void setupComboBox() {
-        pathComboBox.setEditable(true);
-        String pathCacheTest = "test1";
-        pathComboBox.addItem(pathCacheTest);
+        fileSelectorButton.addActionListener( e -> {
+            String path = Workspace.askPath(this);
+            if (path != null) {
+                pathField.setText(path);
+            }
+        });
+        quitButton.addActionListener( e -> {
+            dispose();
+        });
+        startButton.addActionListener( e -> {
+            DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
+                if (valid) {
+                    Workspace.launch();
+                } else {
+                    //TODO: display path error to user
+                }
+            });
+        });
     }
 
     private void setupFrame() {
+        this.setTitle("Select workspace");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(500, 130));
 

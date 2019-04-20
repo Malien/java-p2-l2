@@ -15,7 +15,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 
 public class MainFrame extends JFrame implements Reloader {
@@ -43,8 +42,6 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem showStorageStatistics;
     private JMenu showGroupStatistics;
- //   private JMenuItem countWarehousePriceMenuItem;
- //   private JMenuItem countGroupPriceMenuItem;
 
     private JScrollPane tableScrollPane;
     private JList allGroupsList;
@@ -53,10 +50,9 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton addProductButton;
     private JButton sellProductButton;
     private JTextField numberChangeTextField;
-    private Cache cache;
+    Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
-    //private Product currentProduct;
     private JMenu searchMenu;
 
     public MainFrame(Cache cache) {
@@ -64,7 +60,6 @@ public class MainFrame extends JFrame implements Reloader {
         this.cache.setUI(this);
         this.currentGroup = new ProductGroup("null", "empty group");
         this.setResizable(false);
-        addTestGroupList();
         if (!System.getProperty("os.name").equals("Mac OS X")) {
             setupUILook();
         }
@@ -73,7 +68,6 @@ public class MainFrame extends JFrame implements Reloader {
         addButtonListeners();
         addMenuListeners();
         setupFrame();
-        //this.cache.reload();
     }
 
     private void setupMargins() {
@@ -157,27 +151,15 @@ public class MainFrame extends JFrame implements Reloader {
         }
     }
 
-    private void addTestGroupList() {
-        cache.set(new ProductGroup("first group", "fdfd"));
-        cache.set(new ProductGroup("second group", "someDesk"));
-        cache.get(0).add(new Product("product 1.1", "desc for 1.1", "man", 1, 10));
-        cache.get(0).add(new Product("product 1.2", "desc for 1.2", "manuf", 2, 12));
-        cache.get(1).add(new Product("product 2.1", "desc for 2.1", "manufac", 3, 15));
-        cache.get(1).add(new Product("product 2.2", "desc for 2.2", "manufacturer", 4, 23));
-    }
-
     private void addMenuListeners() {
         reloadMenuItem.addActionListener(e -> {
             cache.reload();
         });
 
         changeWorkspaceMenuItem.addActionListener(e -> {
-            System.out.println("changeWorkspaceMenuItem");
-            //TODO: ask user new workspace path
-        });
-
-        helpMenuItem.addActionListener(e -> {
-            System.out.println("helpMenuItem");
+            JDialog pathChanger = new PathChangeDialog(cache.getDb());
+            pathChanger.setVisible(true);
+            cache.reload();
         });
 
         showStorageStatistics.addActionListener(e -> {
@@ -193,7 +175,7 @@ public class MainFrame extends JFrame implements Reloader {
                     if (!currentGroup.getName().equals("null")) {
                         if (table.getSelectedRow() != -1) {
                             currentGroup.get(table.getSelectedRow()).setCount(Integer.valueOf(numberChangeTextField.getText()));
-                            reload();
+                            cache.reload();
                         } else
                             JOptionPane.showMessageDialog(null, "Виберіть товар!");
                     } else
@@ -256,7 +238,7 @@ public class MainFrame extends JFrame implements Reloader {
                     int selectedRow = table.getSelectedRow();
                     currentGroup.get(table.getSelectedRow()).incrementCount();
                     currentGroup.get(table.getSelectedRow()).addProduced(1);
-                    reload();
+                    cache.reload();
                     table.setRowSelectionInterval(selectedRow, selectedRow);
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
@@ -271,7 +253,7 @@ public class MainFrame extends JFrame implements Reloader {
                         int selectedRow = table.getSelectedRow();
                         currentGroup.get(table.getSelectedRow()).decrementCount();
                         currentGroup.get(table.getSelectedRow()).addSold(1);
-                        reload();
+                        cache.reload();
                         table.setRowSelectionInterval(selectedRow, selectedRow);
                     }
                 } else
@@ -285,7 +267,8 @@ public class MainFrame extends JFrame implements Reloader {
                 if (table.getSelectedRow() != -1) {
                             currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
                     currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
-                            reload();
+                    currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
+                    cache.reload();
 
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
@@ -301,7 +284,7 @@ public class MainFrame extends JFrame implements Reloader {
                     if (tempProd.ableToSubtract(tempInt)){
                         tempProd.decrementCount(tempInt);
                         tempProd.addSold(tempInt);
-                        reload();
+                        cache.reload();
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "There are no as many products.");
@@ -310,6 +293,7 @@ public class MainFrame extends JFrame implements Reloader {
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
             } else
                 JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
+                //TODO use this separation in statistics; think about duplication
         });
 
         writeOffButton.addActionListener(e -> {
@@ -320,7 +304,7 @@ public class MainFrame extends JFrame implements Reloader {
                     if (tempProd.ableToSubtract(tempInt)){
                         tempProd.decrementCount(tempInt);
                         tempProd.addWrittenOff(tempInt);
-                        reload();
+                        cache.reload();
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "There are no as many products.");
@@ -347,7 +331,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     currentGroup.remove(table.getSelectedRow());
-                    reload();
+                    cache.reload();
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
             } else

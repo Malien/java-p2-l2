@@ -44,6 +44,7 @@ public class AddItemDialog extends JDialog {
                                 Double.parseDouble(productPriceTextField.getText())));
                         dispose();
                         parentFrame.reload();
+                      //  parentFrame.cache.reload();
                     } else
                         JOptionPane.showMessageDialog(null, "Продукт з даним ім'ям вже існує!", "Помилка!",
                                 JOptionPane.ERROR_MESSAGE);
