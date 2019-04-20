@@ -20,11 +20,10 @@ public class WelcomeFrame extends JFrame {
 
     private void setupButtons() {
         fileSelectorButton.addActionListener( e -> {
-            System.setProperty("apple.awt.fileDialogForDirectories", "true");
-            FileDialog filePicker = new FileDialog(this, "Select workspace");
-            filePicker.setVisible(true);
-            pathField.setText(filePicker.getDirectory() + filePicker.getFile());
-            System.setProperty("apple.awt.fileDialogForDirectories", "false");
+            String path = Workspace.askPath(this);
+            if (path != null) {
+                pathField.setText(path);
+            }
         });
         quitButton.addActionListener( e -> {
             dispose();

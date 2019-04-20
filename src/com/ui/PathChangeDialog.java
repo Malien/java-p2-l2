@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.components.IDatabase;
+import com.components.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,11 +34,10 @@ public class PathChangeDialog extends JDialog {
         });
 
         filePickerButton.addActionListener(e -> {
-            System.setProperty("apple.awt.fileDialogForDirectories", "true");
-            FileDialog filePicker = new FileDialog(this, "Select workspace");
-            filePicker.setVisible(true);
-            pathField.setText(filePicker.getDirectory() + filePicker.getFile());
-            System.setProperty("apple.awt.fileDialogForDirectories", "false");
+            String path = Workspace.askPath(this);
+            if (path != null) {
+                pathField.setText(path);
+            }
         });
 
         // call onCancel() when cross is clicked
