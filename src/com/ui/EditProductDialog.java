@@ -37,6 +37,7 @@ public class EditProductDialog extends JDialog {
                         productManufacturerTextField.getText(), Double.parseDouble(productPriceTextField.getText()));
                 dispose();
                 parentFrame.reload();
+             //   parentFrame.cache.reload();
             } else
                 JOptionPane.showMessageDialog(null, "Помилка в імені товару", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);

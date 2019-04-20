@@ -48,7 +48,7 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton addProductButton;
     private JButton sellProductButton;
     private JTextField numberChangeTextField;
-    private Cache cache;
+    Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
     private JMenu searchMenu;

@@ -20,6 +20,7 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
 
     public Cache(IDatabase db){
         this.db = db;
+        reload();
     }
 
     public Cache(Reloader ui){

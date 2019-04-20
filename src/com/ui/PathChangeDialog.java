@@ -21,6 +21,7 @@ public class PathChangeDialog extends JDialog {
         setPreferredSize(new Dimension(500, 130));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setLocationRelativeTo(null);
 
         this.db = db;
 
