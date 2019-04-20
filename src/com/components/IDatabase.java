@@ -20,5 +20,7 @@ public interface IDatabase {
     void delete(String path, Callback<Boolean> callback);
 
     void delete(String path);
+
+    String path();
     
 }

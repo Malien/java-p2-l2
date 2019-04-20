@@ -1,30 +1,43 @@
 package com.ui;
 
+import com.components.IDatabase;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
-public class PathSelector extends JDialog {
+public class PathChangeDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private JButton button1;
+    private JTextField pathField;
+    private JButton filePickerButton;
 
-    public PathSelector() {
+    private IDatabase db;
+
+    public PathChangeDialog(IDatabase db) {
         setContentPane(contentPane);
+        pack();
+        setPreferredSize(new Dimension(500, 130));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
+        this.db = db;
+
+        buttonOK.addActionListener(e -> {
+            onOK();
         });
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
+        buttonCancel.addActionListener(e -> {
+            onCancel();
+        });
+
+        filePickerButton.addActionListener(e -> {
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
+            FileDialog filePicker = new FileDialog(this, "Select workspace");
+            filePicker.setVisible(true);
+            pathField.setText(filePicker.getDirectory() + filePicker.getFile());
+            System.setProperty("apple.awt.fileDialogForDirectories", "false");
         });
 
         // call onCancel() when cross is clicked
@@ -45,7 +58,9 @@ public class PathSelector extends JDialog {
 
     private void onOK() {
         // add your code here
-        dispose();
+        db.setPath(pathField.getText(), valid -> {
+            if (valid) dispose();
+        });
     }
 
     private void onCancel() {
@@ -53,10 +68,4 @@ public class PathSelector extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        PathSelector dialog = new PathSelector();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

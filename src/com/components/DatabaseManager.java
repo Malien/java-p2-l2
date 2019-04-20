@@ -54,6 +54,10 @@ public class DatabaseManager implements Runnable, IDatabase {
         return true;
     }
 
+    public String path(){
+        return workspacePath;
+    }
+
     private ProductGroup[] getProductGroups() throws IOException {
         ArrayList<ProductGroup> groups = new ArrayList<>();
         for (File file : workspaceFiles()) {

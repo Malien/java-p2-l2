@@ -7,8 +7,6 @@ import com.util.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
 
 
 public class Cache implements Reloader, Iterable<ProductGroup>{
@@ -65,6 +63,10 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
 
     public ProductGroup get(int index) {
         return cache.get(index);
+    }
+
+    public void save(int index){
+        db.set(cache.get(index));
     }
 
     /**
@@ -146,5 +148,9 @@ public class Cache implements Reloader, Iterable<ProductGroup>{
             }
         }
         throw new Exception("ProductNotFound!");
+    }
+
+    public IDatabase getDb() {
+        return db;
     }
 }
