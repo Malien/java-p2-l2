@@ -12,7 +12,7 @@ public class Workspace {
 
     static JFrame mainFrame;
 
-    public static void main(String[] args) {
+   public static void main(String[] args) {
 //        String separtor = System.getProperty("file.separator");
 //        System.out.println(System.getProperty("os.name"));
 //        switch (System.getProperty("os.name")) {
@@ -26,7 +26,9 @@ public class Workspace {
 //                DatabaseManager.getInstance().setPath("C:\\Cache");
 //                break;
 //        }
-//        Cache cache = new Cache(DatabaseManager.getInstance());
+//      Cache cache = new Cache(DatabaseManager.getInstance());
+
+
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         JFrame welcome = new WelcomeFrame();
         welcome.setVisible(true);
