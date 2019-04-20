@@ -10,25 +10,9 @@ import java.io.File;
 
 public class Workspace {
 
-    static JFrame mainFrame;
+    private static JFrame mainFrame;
 
-   public static void main(String[] args) {
-//        String separtor = System.getProperty("file.separator");
-//        System.out.println(System.getProperty("os.name"));
-//        switch (System.getProperty("os.name")) {
-//            case "Mac OS X":
-//                DatabaseManager.getInstance().setPath("/Users/user/Documents/Development/Study/Java P2/L2/test_data");
-//                break;
-//            case "Unix":
-//                DatabaseManager.getInstance().setPath("home/yaroslav/cache");
-//                break;
-//            case "Windows":
-//                DatabaseManager.getInstance().setPath("C:\\Cache");
-//                break;
-//        }
-//      Cache cache = new Cache(DatabaseManager.getInstance());
-
-
+    public static void main(String[] args) {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         JFrame welcome = new WelcomeFrame();
         welcome.setVisible(true);
@@ -60,11 +44,11 @@ public class Workspace {
         return path;
     }
 
-    public static String askPath(JFrame dialog){
+    public static String askPath(JFrame frame){
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
-            FileDialog filePicker = new FileDialog(dialog, "Select workspace");
+            FileDialog filePicker = new FileDialog(frame, "Select workspace");
             filePicker.setVisible(true);
             path = filePicker.getDirectory() + filePicker.getFile();
             System.setProperty("apple.awt.fileDialogForDirectories", "false");
@@ -73,7 +57,7 @@ public class Workspace {
             filePicker.setAcceptAllFileFilterUsed(false);
             filePicker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             filePicker.setCurrentDirectory(new File("."));
-            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION){
+            if (filePicker.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION){
                 path = filePicker.getSelectedFile().getAbsolutePath();
             }
         }
