@@ -112,6 +112,18 @@ public class MainFrame extends JFrame implements Reloader {
         }
     }
 
+    public void cleanTable(){
+        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю ($)"};
+        ArrayList<String[]> data = new ArrayList<>();
+        tableModel = new DefaultTableModel(data.toArray(new String[0][]), column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.setModel(tableModel);
+    }
+
     private void addMenuListeners() {
         reloadMenuItem.addActionListener(e -> {
             cache.reload();
