@@ -6,14 +6,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class GroupChooserFrame extends JFrame {
+public class GroupChooserDialog extends JDialog {
     private Cache cache;
     private JButton submitButton;
     private JTable table;
     private JPanel mainPanel;
     private MainFrame parentFrame;
 
-    GroupChooserFrame(MainFrame parentFrame, Cache cache) {
+    GroupChooserDialog(MainFrame parentFrame, Cache cache) {
+        super(parentFrame, Dialog.ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.cache = cache;
         this.setPreferredSize(new Dimension(320, 300));

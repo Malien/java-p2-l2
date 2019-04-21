@@ -45,6 +45,10 @@ public class ProductGroup implements Iterable<Product>{
         products.remove(index);
     }
 
+    public void remove(Product product){
+        products.remove(product);
+    }
+
     public int indexOf(Product product){
         return products.indexOf(product);
     }

@@ -33,8 +33,10 @@ public class EditProductDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
             if (StringRegExChecker.checkName(productNameTextField.getText())) {
+                parentFrame.getCurrentGroup().remove(currentProduct);
                 if (parentFrame.cache.prodNameIsUnique(newProductName)) {
                     if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+                        parentFrame.getCurrentGroup().add(currentProduct);
                         if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                             currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
                                     productManufacturerTextField.getText(), Float.parseFloat(productPriceTextField.getText()));
