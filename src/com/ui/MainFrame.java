@@ -67,7 +67,6 @@ public class MainFrame extends JFrame implements Reloader {
             public void windowDeiconified(WindowEvent e) {}
             public void windowActivated(WindowEvent e) {}
             public void windowDeactivated(WindowEvent e) {}
-
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
@@ -93,10 +92,7 @@ public class MainFrame extends JFrame implements Reloader {
 
             String searchFilter = searchField.getText();
             for (Product product : currentGroup) {
-                if (product.getName().contains(searchFilter)
-                        || product.getDescription().contains(searchFilter)
-                        || product.getManufacturer().contains(searchFilter)
-                ) {
+                if (product.getName().contains(searchFilter) || product.getManufacturer().contains(searchFilter)){
                     String[] row = new String[] {
                             product.getName(),
                             product.getManufacturer(),
