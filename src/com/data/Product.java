@@ -6,7 +6,7 @@ public class Product {
     private String description;
     private String manufacturer;
     private int count;
-    private double price;
+    private float price;
     private int produced;
     private int sold;
     private int writtenOff;
@@ -34,7 +34,7 @@ public class Product {
         return name;
     }
 
-    public void productRefactor(String name, String description, String manufacturer, double price) {
+    public void productRefactor(String name, String description, String manufacturer, float price) {
         this.name = name;
         this.description = description;
         this.manufacturer = manufacturer;
@@ -57,31 +57,28 @@ public class Product {
         this.count = count;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public void incrementCount(){
         count++;
     }
-
     public void incrementCount(int inc){
         count+=inc;
     }
     public void decrementCount(){
         count--;
     }
-
     public boolean ableToSubtract(int subs){
         return count >= subs;
     }
-
     public void decrementCount(int dec){
         count -= dec;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     @Override
@@ -111,5 +108,11 @@ public class Product {
 
     public int getWrittenOff(){
         return writtenOff;
+    }
+
+    public void resetStats() {
+        produced = 0;
+        sold = 0;
+        writtenOff = 0;
     }
 }
