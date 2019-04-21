@@ -1,7 +1,9 @@
 package com.ui;
 
+import com.components.DatabaseManager;
 import com.components.IDatabase;
 import com.components.Workspace;
+import com.data.ProductGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +15,11 @@ public class PathChangeDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField pathField;
     private JButton filePickerButton;
+    private MainFrame parentFrame;
 
-    private IDatabase db;
-
-    public PathChangeDialog(IDatabase db) {
+    public PathChangeDialog(MainFrame parentFrame) {
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
+        this.parentFrame = parentFrame;
         setContentPane(contentPane);
         pack();
         setTitle("Зміна робочої області");
@@ -24,14 +27,12 @@ public class PathChangeDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setLocationRelativeTo(null);
-        this.db = db;
-
         buttonOK.addActionListener(e ->
-            onOK()
+                onOK()
         );
 
         buttonCancel.addActionListener(e ->
-            onCancel()
+                onCancel()
         );
 
         filePickerButton.addActionListener(e -> {
@@ -58,10 +59,16 @@ public class PathChangeDialog extends JDialog {
     }
 
     private void onOK() {
-        db.setPath(pathField.getText(), valid -> {
-            if (valid) dispose();
-            else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
 
+        DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
+            if (valid) {
+                dispose();
+                parentFrame.dispose();
+                Workspace.launch();
+                parentFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
+                parentFrame.reload();
+            }
+            else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
         });
     }
 

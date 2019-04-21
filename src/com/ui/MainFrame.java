@@ -52,6 +52,7 @@ public class MainFrame extends JFrame implements Reloader {
         this.cache = cache;
         this.cache.setUI(this);
         this.currentGroup = new ProductGroup("null", "empty group");
+        currentGroupLabel.setText("Поточна група: не вибрана");
         this.setResizable(false);
         setTitle("Робоче місце");
         setupMenuBar();
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame implements Reloader {
 
     @Override
     public void reload() {
-        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю"};
+        String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю ($)"};
         int index = cache.indexOf(currentGroup);
         if (index != -1) {
             currentGroup = cache.get(index);
@@ -121,9 +122,8 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         changeWorkspaceMenuItem.addActionListener(e -> {
-            JDialog pathChanger = new PathChangeDialog(cache.getDb());
+            PathChangeDialog pathChanger = new PathChangeDialog(this);
             pathChanger.setVisible(true);
-            cache.reload();
         });
 
         showStorageStatistics.addActionListener(e -> {
@@ -159,7 +159,7 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         editGroupsButton.addActionListener(e -> {
-            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(cache);
+            EditGroupsFrame editGroupsFrame = new EditGroupsFrame(this,cache);
             editGroupsFrame.setVisible(true);
         });
 

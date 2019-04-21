@@ -114,6 +114,14 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
         }
         return true;
     }
+    public int groupNameUniqueCount(String name) {
+        int val = 0;
+        for (ProductGroup group : this) {
+            if (group.getName().equals(name))
+                val++;
+        }
+        return val;
+    }
 
     public boolean prodNameIsUnique(String name) {
         for (ProductGroup g : this) {

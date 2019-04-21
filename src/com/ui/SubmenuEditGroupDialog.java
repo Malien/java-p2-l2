@@ -17,7 +17,7 @@ public class SubmenuEditGroupDialog extends JDialog {
     private EditGroupsFrame parentFrame;
 
     SubmenuEditGroupDialog(EditGroupsFrame parentFrame, Cache cache, ProductGroup productGroup) {
-        super(parentFrame,ModalityType.APPLICATION_MODAL);
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.productGroup = productGroup;
         this.cache = cache;
@@ -34,12 +34,24 @@ public class SubmenuEditGroupDialog extends JDialog {
     private void addListeners() {
         saveChangesButton.addActionListener(e -> {
             if (!nameTextField.getText().isEmpty()) {
-                java.util.List temp = productGroup.getProductList();
-                cache.remove(productGroup);
-                cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText(), temp));
-                cache.reload();
-                parentFrame.listRefresh();
-                dispose();
+                if (nameTextField.getText().equals(productGroup.getName())) {
+                    java.util.List temp = productGroup.getProductList();
+                    cache.remove(productGroup);
+                    cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText(), temp));
+                    cache.reload();
+                    parentFrame.listRefresh();
+                    dispose();
+                } else if (cache.groupNameIsUnique(nameTextField.getText())) {
+                    java.util.List temp = productGroup.getProductList();
+                    cache.remove(productGroup);
+                    cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText(), temp));
+                    cache.reload();
+                    parentFrame.listRefresh();
+                    dispose();
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "Група з даним іменем уже існує", "Помилка",
+                            JOptionPane.ERROR_MESSAGE);
             } else
                 JOptionPane.showMessageDialog(null, "Помилка в імені групи", "Помилка!",
                         JOptionPane.ERROR_MESSAGE);

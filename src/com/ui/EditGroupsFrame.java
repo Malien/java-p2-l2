@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.data.Cache;
+import com.data.ProductGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +13,11 @@ public class EditGroupsFrame extends JFrame {
     private JButton editSelectedGroupButton;
     JList list;
     private Cache cache;
+    private MainFrame mainFrame;
 
-    EditGroupsFrame(Cache cache) {
+    EditGroupsFrame(MainFrame mainFrame,Cache cache) {
         this.cache = cache;
+        this.mainFrame = mainFrame;
         setTitle("Редагування групи");
         this.setPreferredSize(new Dimension(350, 300));
         this.setMinimumSize(new Dimension(350, 300));
@@ -44,6 +47,8 @@ public class EditGroupsFrame extends JFrame {
         removeSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
                 cache.remove(list.getSelectedIndex());
+                cache.reload();
+                mainFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
                 listRefresh();
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як видалити її");

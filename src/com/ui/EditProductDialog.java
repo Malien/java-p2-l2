@@ -25,19 +25,32 @@ public class EditProductDialog extends JDialog {
         this.add(mainPanel);
         this.pack();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setPreferredSize(new Dimension(600, 600));
+        this.setPreferredSize(new Dimension(800, 600));
         this.setLocationRelativeTo(null);
         addListener();
     }
 
+    @SuppressWarnings("Duplicates")
     private void addListener() {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
             if (!productNameTextField.getText().isEmpty()) {
-                parentFrame.getCurrentGroup().remove(currentProduct);
-                if (parentFrame.cache.prodNameIsUnique(newProductName)) {
+                if (currentProduct.getName().equals(newProductName)) {
                     if (!productManufacturerTextField.getText().isEmpty()) {
-                        parentFrame.getCurrentGroup().add(currentProduct);
+                        if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
+                            currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
+                                    productManufacturerTextField.getText(), Float.parseFloat(productPriceTextField.getText()));
+                            dispose();
+                            parentFrame.cache.set(parentFrame.getCurrentGroup());
+                            parentFrame.reload();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Помилка в ціні товару", "Помилка!",
+                                    JOptionPane.ERROR_MESSAGE);
+                    } else
+                        JOptionPane.showMessageDialog(null, "Помилка в імені виробника товару", "Помилка!",
+                                JOptionPane.ERROR_MESSAGE);
+                } else if (parentFrame.cache.prodNameIsUnique(newProductName)) {
+                    if (!productManufacturerTextField.getText().isEmpty()) {
                         if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                             currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
                                     productManufacturerTextField.getText(), Float.parseFloat(productPriceTextField.getText()));

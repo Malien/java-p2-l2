@@ -38,7 +38,7 @@ public class StorageStatistics extends JFrame{
 
     private void getStatistics() {
         initTable.setFillsViewportHeight(true);
-        String[] forHeader = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
+        String[] forHeader = {"Назва товару", "Ціна ($)", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
         String[][] forBody = new String[cache.getNumOfProducts()][7];
         fillWithInfo(forBody);
         DefaultTableModel model = (DefaultTableModel) initTable.getModel();
