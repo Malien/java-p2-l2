@@ -3,13 +3,14 @@ package com.ui;
 import javax.swing.*;
 import java.awt.*;
 
-public class DescFrame extends JFrame {
+public class DescDialog extends JDialog {
     private JPanel mainPanel;
     private JButton exitButton;
     private JTextArea descTextArea;
     private JLabel itemTypeLabel;
 
-    DescFrame(String typeOfItem, String desc) {
+    DescDialog(JFrame parentFrame, String typeOfItem, String desc) {
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.setPreferredSize(new Dimension(320, 300));
         this.setMinimumSize(new Dimension(320, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -11,7 +11,7 @@ public class Product {
     private int sold;
     private int writtenOff;
 
-    public Product(String name, String description, String manufacturer, int count, double price) {
+    public Product(String name, String manufacturer, String description, int count, double price) {
         this.name = name;
         this.description = description;
         this.manufacturer = manufacturer;
@@ -50,22 +50,23 @@ public class Product {
         return price;
     }
 
-    public void incrementCount(){
+    public void incrementCount() {
         count++;
     }
 
-    public void incrementCount(int inc){
-        count+=inc;
+    public void incrementCount(int inc) {
+        count += inc;
     }
-    public void decrementCount(){
+
+    public void decrementCount() {
         count--;
     }
 
-    public boolean ableToSubtract(int subs){
+    public boolean ableToSubtract(int subs) {
         return count >= subs;
     }
 
-    public void decrementCount(int dec){
+    public void decrementCount(int dec) {
         count -= dec;
     }
 
@@ -78,27 +79,27 @@ public class Product {
         return name;
     }
 
-    public void addProduced(int produced){
+    public void addProduced(int produced) {
         this.produced += produced;
     }
 
-    public void addSold(int sold){
-        this.sold +=sold;
+    public void addSold(int sold) {
+        this.sold += sold;
     }
 
-    public void addWrittenOff(int writtenOff){
+    public void addWrittenOff(int writtenOff) {
         this.writtenOff += writtenOff;
     }
 
-    public int getProduced(){
+    public int getProduced() {
         return produced;
     }
 
-    public int getSold(){
+    public int getSold() {
         return sold;
     }
 
-    public int getWrittenOff(){
+    public int getWrittenOff() {
         return writtenOff;
     }
 }

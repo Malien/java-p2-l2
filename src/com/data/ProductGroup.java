@@ -44,6 +44,10 @@ public class ProductGroup {
         products.remove(index);
     }
 
+    public void remove(Product product){
+        products.remove(product);
+    }
+
     public int indexOf(Product product){
         return products.indexOf(product);
     }

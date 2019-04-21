@@ -172,8 +172,8 @@ public class MainFrame extends JFrame implements Reloader {
     @SuppressWarnings("Duplicates")
     private void addButtonListeners() {
         choseGroupButton.addActionListener(e -> {
-            GroupChooserFrame groupChooserFrame = new GroupChooserFrame(this, cache);
-            groupChooserFrame.setVisible(true);
+            GroupChooserDialog groupChooserDialog = new GroupChooserDialog(this, cache);
+            groupChooserDialog.setVisible(true);
         });
 
         editGroupsButton.addActionListener(e -> {
@@ -197,7 +197,7 @@ public class MainFrame extends JFrame implements Reloader {
                         currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
                         cache.set(currentGroup);
                         cache.reload();
-                    }else
+                    } else
                         JOptionPane.showMessageDialog(null, "Помилка у введеному числі");
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
@@ -248,7 +248,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this, currentGroup.get(table.getSelectedRow()));
+                            new EditProductDialog(this,currentGroup.get(table.getSelectedRow()));
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -272,9 +272,9 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     Product currentProduct = currentGroup.get(table.getSelectedRow());
-                    DescFrame descFrame = new DescFrame("Товар: " + currentProduct.getName(),
+                    DescDialog descDialog = new DescDialog(this, "Товар: " + currentProduct.getName(),
                             currentProduct.getDescription());
-                    descFrame.setVisible(true);
+                    descDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
             } else
@@ -283,8 +283,8 @@ public class MainFrame extends JFrame implements Reloader {
 
         currentGroupDescButton.addActionListener(e -> {
             if (!currentGroup.getName().equals("null")) {
-                DescFrame descFrame = new DescFrame("Група: " + currentGroup.getName(), currentGroup.getDesc());
-                descFrame.setVisible(true);
+                DescDialog descDialog = new DescDialog(this, "Група: " + currentGroup.getName(), currentGroup.getDesc());
+                descDialog.setVisible(true);
             } else
                 JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
