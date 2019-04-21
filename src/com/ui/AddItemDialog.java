@@ -35,8 +35,8 @@ public class AddItemDialog extends JDialog {
     private void addListeners() {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
-            if (StringRegExChecker.checkName(newProductName)) {
-                if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+            if (!newProductName.isEmpty()) {
+                if (!productManufacturerTextField.getText().isEmpty()) {
                     if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                         if (cache.prodNameIsUnique(newProductName)) {
                             if (StringRegExChecker.checkInteger(productCountTextField.getText())) {

@@ -2,7 +2,6 @@ package com.ui;
 
 import com.data.Cache;
 import com.data.ProductGroup;
-import com.util.StringRegExChecker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class SubmenuEditGroupFrame extends JFrame {
 
     private void addListeners() {
         saveChangesButton.addActionListener(e -> {
-            if (StringRegExChecker.checkName(nameTextField.getText())) {
+            if (!nameTextField.getText().isEmpty()) {
                 cache.remove(productGroup);
                 cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText()));
                 cache.reload();

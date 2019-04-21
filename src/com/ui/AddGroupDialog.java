@@ -2,7 +2,6 @@ package com.ui;
 
 import com.data.Cache;
 import com.data.ProductGroup;
-import com.util.StringRegExChecker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +32,7 @@ public class AddGroupDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newGroupName = groupNameTextField.getText();
             if (cache.groupNameIsUnique(newGroupName)) {
-                if (StringRegExChecker.checkName(newGroupName)) {
+                if (!newGroupName.isEmpty()) {
                     cache.set(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
                     dispose();
                     parentFrame.listRefresh();
