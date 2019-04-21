@@ -15,6 +15,7 @@ public class AddGroupDialog extends JDialog {
 
     AddGroupDialog(EditGroupsFrame parentFrame, Cache cache) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
+        setTitle("Додати групу");
         this.cache = cache;
         this.parentFrame = parentFrame;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

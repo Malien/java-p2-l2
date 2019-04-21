@@ -17,6 +17,7 @@ public class GroupChooserDialog extends JDialog {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.cache = cache;
+        setTitle("Вибір групи");
         this.setPreferredSize(new Dimension(320, 300));
         this.setMinimumSize(new Dimension(320, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -15,6 +15,7 @@ public class EditGroupsFrame extends JFrame {
 
     EditGroupsFrame(Cache cache) {
         this.cache = cache;
+        setTitle("Редагування групи");
         this.setPreferredSize(new Dimension(350, 300));
         this.setMinimumSize(new Dimension(350, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

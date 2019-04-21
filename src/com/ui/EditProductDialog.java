@@ -21,6 +21,7 @@ public class EditProductDialog extends JDialog {
         this.parentFrame = parentFrame;
         this.currentProduct = currentProduct;
         setupTextFields();
+        setTitle("Редагування продукту " + currentProduct.getName());
         this.add(mainPanel);
         this.pack();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

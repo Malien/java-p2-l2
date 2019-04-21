@@ -22,6 +22,7 @@ public class AddItemDialog extends JDialog {
     public AddItemDialog(MainFrame parentFrame, Cache cache) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.cache = cache;
+        setTitle("Додати продукт");
         this.parentFrame = parentFrame;
         this.setPreferredSize(new Dimension(300, 400));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

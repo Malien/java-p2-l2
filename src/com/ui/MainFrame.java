@@ -56,6 +56,7 @@ public class MainFrame extends JFrame implements Reloader {
         this.cache.setUI(this);
         this.currentGroup = new ProductGroup("null", "empty group");
         this.setResizable(false);
+        setTitle("Робоче місце");
         setupMenuBar();
         addButtonListeners();
         addMenuListeners();

@@ -21,6 +21,7 @@ public class SubmenuEditGroupDialog extends JDialog {
         this.parentFrame = parentFrame;
         this.productGroup = productGroup;
         this.cache = cache;
+        setTitle("Редагування групи " + productGroup.getName());
         setMinimumSize(new Dimension(300, 300));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup();

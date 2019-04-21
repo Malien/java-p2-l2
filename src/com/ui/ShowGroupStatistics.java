@@ -16,6 +16,7 @@ public class ShowGroupStatistics extends JFrame {
     private int totalCost;
 
     public ShowGroupStatistics(ProductGroup pg) {
+        setTitle("Статистика групи " + pg.getName());
         contentTable.setFillsViewportHeight(true);
         String[] header = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
         String[][] body = new String[pg.getProducts().length][7];

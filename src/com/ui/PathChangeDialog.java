@@ -19,6 +19,7 @@ public class PathChangeDialog extends JDialog {
     public PathChangeDialog(IDatabase db) {
         setContentPane(contentPane);
         pack();
+        setTitle("Зміна робочої області");
         setPreferredSize(new Dimension(500, 130));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
