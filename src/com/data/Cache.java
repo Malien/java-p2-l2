@@ -162,4 +162,21 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
             });
         }
     }
+
+    /**
+     *
+     * @param name
+     * @return tuple of 2 elements: 1st is group, 2nd is product
+     * @throws RuntimeException
+     */
+    public Tuple findProductByName(String name) throws RuntimeException {
+        for(ProductGroup group : this){
+            for (Product product : group.getProducts()) {
+                if (product.getName().equals(name)) {
+                    return new Tuple<>(group, product);
+                }
+            }
+        }
+        throw new RuntimeException("ProductNotFound!");
+    }
 }

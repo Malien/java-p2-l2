@@ -71,6 +71,10 @@ public class ProductGroup implements Iterable<Product>{
         return name;
     }
 
+    public int indexOf(Product product){
+        return products.indexOf(product);
+    }
+
     /**
      * Returns an iterator over elements of type {@code T}.
      *
