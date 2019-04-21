@@ -3,12 +3,18 @@ package com.ui;
 import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
+import com.data.Tuple;
 import com.util.StringRegExChecker;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,6 +41,9 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem showStorageStatistics;
     private JMenu showGroupStatistics;
+    private JMenu searchMenu;
+    private JTextField searchField;
+    private JButton searchButton;
 
     private JScrollPane tableScrollPane;
     private JTable table;
@@ -42,8 +51,6 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton addProductButton;
     private JButton sellProductButton;
     private JTextField numberChangeTextField;
-    private JTextField searchField;
-    private JButton searchButton;
     Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
@@ -129,20 +136,49 @@ public class MainFrame extends JFrame implements Reloader {
         numberChangeTextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                char c = e.getKeyChar();
-                if (c == KeyEvent.VK_ENTER) {
-                    if (!currentGroup.getName().equals("null")) {
-                        if (table.getSelectedRow() != -1) {
-                            currentGroup.get(table.getSelectedRow()).setCount(Integer.valueOf(numberChangeTextField.getText()));
-                            cache.set(currentGroup);
-                            reload();
-                        } else
-                            JOptionPane.showMessageDialog(null, "Виберіть товар!");
+            super.keyTyped(e);
+            char c = e.getKeyChar();
+            if (c == KeyEvent.VK_ENTER) {
+                if (!currentGroup.getName().equals("null")) {
+                    if (table.getSelectedRow() != -1) {
+                        currentGroup.get(table.getSelectedRow()).setCount(Integer.valueOf(numberChangeTextField.getText()));
+                        cache.set(currentGroup);
+                        reload();
                     } else
-                        JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-                } else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE))
-                    e.consume();
+                        JOptionPane.showMessageDialog(null, "Виберіть товар!");
+                } else
+                    JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
+            } else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE))
+            e.consume();
+            }
+        });
+        searchMenuButton.addActionListener(e -> {
+            String productName = searchMenuTextField.getText();
+            try {
+                Tuple productInfo = cache.findProductByName(productName);
+                ProductGroup foundGroup = (ProductGroup) productInfo.first;
+                Product foundProduct = (Product) productInfo.second;
+                this.setCurrentGroup(foundGroup);
+                table.setRowSelectionInterval(foundGroup.indexOf(foundProduct), foundGroup.indexOf(foundProduct));
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(null, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        //TODO: think about focus
+        searchMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                searchMenuTextField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+                searchMenuTextField.requestFocus();
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
             }
         });
     }
@@ -279,6 +315,7 @@ public class MainFrame extends JFrame implements Reloader {
         menuBar = new JMenuBar();
         addDataBaseMenu();
         addStatisticsMenu();
+        addSearchMenu();
         this.setJMenuBar(menuBar);
     }
 
@@ -289,6 +326,25 @@ public class MainFrame extends JFrame implements Reloader {
         dataBaseMenu.add(reloadMenuItem);
         dataBaseMenu.add(changeWorkspaceMenuItem);
         menuBar.add(dataBaseMenu);
+    }
+
+    private void addSearchMenu() {
+        searchMenu = new JMenu("Пошук");
+        searchMenu.setMnemonic('g');
+        JPanel searchMenuPanel = new JPanel();
+        searchMenuPanel.setPreferredSize(new Dimension(200, 25));
+        searchMenuPanel.setLayout(new BorderLayout());
+        searchMenuTextField = new JTextField();
+        searchMenuButton = new JButton("Find");
+        searchMenuButton.setMnemonic('f');
+        searchMenuButton.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        searchMenuPanel.add(searchMenuTextField, BorderLayout.CENTER);
+        searchMenuPanel.add(searchMenuButton, BorderLayout.EAST);
+        searchMenuPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        searchMenu.add(searchMenuPanel);
+        if (!System.getProperty("os.name").equals("Mac OS X")) {
+            menuBar.add(searchMenu);
+        }
     }
 
     private void addStatisticsMenu() {
