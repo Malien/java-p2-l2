@@ -159,14 +159,17 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
         return res;
     }
 
+    //Hlyba said it works 10 times faster
     public void removeStats(AtomicBoolean lock) {
         AtomicInteger count = new AtomicInteger(0);
         if (getCache().size() == 0) lock.set(true);
-        for (ProductGroup group : this){
-            for (Product product : group){
-                product.resetStats();
+        ProductGroup pg;
+        for (int i = 0; i < cache.size(); i++){
+            pg = cache.get(i);
+            for (int j = 0; j < pg.getProducts().length; j++){
+                pg.getProducts()[j].resetStats();
             }
-            db.set(group, done -> {
+            db.set(pg, done -> {
                 int c = count.addAndGet(1);
                 if (c == this.getCache().size()){
                     lock.set(true);

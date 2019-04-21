@@ -30,7 +30,7 @@ public class StorageStatistics extends JFrame{
         add(rootPanel);
         pack();
         setLocationRelativeTo(null);
-        productsCostLabel.setText("Вартість усієї продукції: " + totalCost);
+        productsCostLabel.setText("Вартість усієї продукції: " + getCost(totalCost));
         setVisible(true);
     }
 
@@ -59,10 +59,17 @@ public class StorageStatistics extends JFrame{
                 content[counter][3] = String.valueOf(prod.getProduced());
                 content[counter][4] = String.valueOf(prod.getSold());
                 content[counter][5] = String.valueOf(prod.getWrittenOff());
-                content[counter++][6] =  String.valueOf((prod.getSold()-prod.getWrittenOff())*prod.getPrice());
+                content[counter++][6] = (getCost((prod.getSold()-prod.getWrittenOff())*prod.getPrice()));
                 totalCost += prod.getCount()*prod.getPrice();
             }
         }
+    }
+
+    public static String getCost(double total){
+        String rowNum = String.valueOf(total);
+        int index = rowNum.indexOf(".");
+        if (rowNum.length() >= index+3) return rowNum.substring(0, index+3);
+        return rowNum.substring(0, index+2);
     }
 
 }

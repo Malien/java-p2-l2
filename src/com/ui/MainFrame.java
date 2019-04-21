@@ -8,10 +8,7 @@ import com.util.StringRegExChecker;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -220,7 +217,7 @@ public class MainFrame extends JFrame implements Reloader {
                         cache.set(currentGroup);
                         cache.reload();
                     } else {
-                        JOptionPane.showMessageDialog(null, "There are no as many products.");
+                        JOptionPane.showMessageDialog(null, "Тут нема стільк продуктів.");
                     }
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");

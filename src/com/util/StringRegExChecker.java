@@ -5,12 +5,12 @@ import java.util.regex.Pattern;
 
 public class StringRegExChecker {
     public static boolean checkName(String toCheck){
-        Pattern pattern = Pattern.compile("([А-Яа-яА-ЯєіїґЄІЇҐ\\d\\w])+([а-яА-Яа-яА-Я`'єіїґЄІЇҐ\\d\\w]*\\s*)*");
+        Pattern pattern = Pattern.compile("\\s*");
         Matcher matcher = pattern.matcher(toCheck);
-        return matcher.matches();
+        return !matcher.matches();
     }
     public static boolean checkDouble(String toCheck){
-        Pattern pattern = Pattern.compile("[\\d]+[.]?[\\d]+");
+        Pattern pattern = Pattern.compile("[\\d]+(.\\d\\d?)?");
         Matcher matcher = pattern.matcher(toCheck);
         return matcher.matches();
     }

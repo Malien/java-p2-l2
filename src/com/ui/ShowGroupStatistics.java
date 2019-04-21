@@ -13,9 +13,10 @@ public class ShowGroupStatistics extends JFrame {
     private JTable contentTable;
     private JPanel rootPanel;
     private JScrollPane tableScroll;
-    private int totalCost;
+    private double totalCost;
 
-    public ShowGroupStatistics(ProductGroup pg) {
+    public ShowGroupStatistics(ProductGroup pg){
+        groupName.setText(pg.getName());
         contentTable.setFillsViewportHeight(true);
         String[] header = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
         String[][] body = new String[pg.getProducts().length][7];
@@ -40,14 +41,16 @@ public class ShowGroupStatistics extends JFrame {
             info[counter][3] = String.valueOf(prod.getProduced());
             info[counter][4] = String.valueOf(prod.getSold());
             info[counter][5] = String.valueOf(prod.getWrittenOff());
-            info[counter++][6] = String.valueOf((prod.getSold() - prod.getWrittenOff()) * prod.getPrice());
+            info[counter++][6] = StorageStatistics.getCost((prod.getSold() - prod.getWrittenOff()) * prod.getPrice());
             totalCost += prod.getCount() * prod.getPrice();
         }
+        totalCostGroup.setText("Загальна вартість: "+ StorageStatistics.getCost(totalCost));
     }
 
     private void setInit() {
-        setMinimumSize(new Dimension(700, 400));
+        setSize(700, 400);
         add(rootPanel);
         setLocationRelativeTo(null);
+        setResizable(true);
     }
 }

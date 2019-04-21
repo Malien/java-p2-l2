@@ -1,11 +1,13 @@
 package com.ui;
 
 import com.data.Cache;
+import com.data.Product;
 import com.data.ProductGroup;
 import com.util.StringRegExChecker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 
 public class SubmenuEditGroupDialog extends JDialog {
@@ -34,8 +36,9 @@ public class SubmenuEditGroupDialog extends JDialog {
     private void addListeners() {
         saveChangesButton.addActionListener(e -> {
             if (StringRegExChecker.checkName(nameTextField.getText())) {
+                java.util.List temp = productGroup.getProductList();
                 cache.remove(productGroup);
-                cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText()));
+                cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText(), temp));
                 cache.reload();
                 parentFrame.listRefresh();
                 dispose();

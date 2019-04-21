@@ -17,6 +17,12 @@ public class ProductGroup implements Iterable<Product>{
         this.products = new ArrayList<>();
     }
 
+    public ProductGroup(String name, String desc, List<Product> products){
+        this.name = name;
+        this.desc = desc;
+        this.products = products;
+    }
+
     public String getName() {
         return name;
     }
@@ -41,6 +47,8 @@ public class ProductGroup implements Iterable<Product>{
         return products.toArray(new Product[0]);
     }
 
+    public List<Product> getProductList(){return products;}
+
     public void remove(int index){
         products.remove(index);
     }
@@ -52,6 +60,10 @@ public class ProductGroup implements Iterable<Product>{
     public int indexOf(Product product){
         return products.indexOf(product);
     }
+
+    public void setName(String name){this.name = name;}
+
+    public void setDesc(String desc){this.desc = desc;}
 
     @Override
     public boolean equals(Object o) {

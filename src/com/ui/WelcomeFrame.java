@@ -31,10 +31,10 @@ public class WelcomeFrame extends JFrame {
         startButton.addActionListener( e -> {
             DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
                 if (valid) {
-                    Workspace.launch();
                     dispose();
+                    Workspace.launch();
                 } else {
-                    //TODO: display path error to user
+                    JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
                 }
             });
         });

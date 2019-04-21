@@ -61,6 +61,8 @@ public class PathChangeDialog extends JDialog {
         // add your code here
         db.setPath(pathField.getText(), valid -> {
             if (valid) dispose();
+            else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
+
         });
     }
 
