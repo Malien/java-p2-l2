@@ -5,7 +5,6 @@ import com.data.Cache;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class EditGroupsFrame extends JFrame {
     private JPanel mainPanel;
     private JButton addGroupButton;

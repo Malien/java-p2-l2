@@ -18,7 +18,7 @@ public class SubmenuEditGroupDialog extends JDialog {
     private EditGroupsFrame parentFrame;
 
     SubmenuEditGroupDialog(EditGroupsFrame parentFrame, Cache cache, ProductGroup productGroup) {
-        super(parentFrame,Dialog.ModalityType.APPLICATION_MODAL);
+        super(parentFrame,ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.productGroup = productGroup;
         this.cache = cache;
