@@ -161,6 +161,7 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
 
     public void removeStats(AtomicBoolean lock) {
         AtomicInteger count = new AtomicInteger(0);
+        if (getCache().size() == 0) lock.set(true);
         for (ProductGroup group : this){
             for (Product product : group){
                 product.resetStats();
