@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+@SuppressWarnings("Duplicates")
 public class Workspace {
 
     private static JFrame mainFrame;
@@ -24,7 +25,7 @@ public class Workspace {
         mainFrame.setVisible(true);
     }
 
-    public static String askPath(JDialog dialog){
+    public static String askPath(JDialog dialog) {
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
@@ -37,14 +38,14 @@ public class Workspace {
             filePicker.setAcceptAllFileFilterUsed(false);
             filePicker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             filePicker.setCurrentDirectory(new File("."));
-            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION){
+            if (filePicker.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
                 path = filePicker.getSelectedFile().getAbsolutePath();
             }
         }
         return path;
     }
 
-    public static String askPath(JFrame frame){
+    public static String askPath(JFrame frame) {
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
@@ -57,7 +58,7 @@ public class Workspace {
             filePicker.setAcceptAllFileFilterUsed(false);
             filePicker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             filePicker.setCurrentDirectory(new File("."));
-            if (filePicker.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION){
+            if (filePicker.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
                 path = filePicker.getSelectedFile().getAbsolutePath();
             }
         }

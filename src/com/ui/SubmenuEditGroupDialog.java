@@ -1,13 +1,10 @@
 package com.ui;
 
 import com.data.Cache;
-import com.data.Product;
 import com.data.ProductGroup;
-import com.util.StringRegExChecker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 
 public class SubmenuEditGroupDialog extends JDialog {
@@ -20,10 +17,11 @@ public class SubmenuEditGroupDialog extends JDialog {
     private EditGroupsFrame parentFrame;
 
     SubmenuEditGroupDialog(EditGroupsFrame parentFrame, Cache cache, ProductGroup productGroup) {
-        super(parentFrame,Dialog.ModalityType.APPLICATION_MODAL);
+        super(parentFrame,ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.productGroup = productGroup;
         this.cache = cache;
+        setTitle("Редагування групи " + productGroup.getName());
         setMinimumSize(new Dimension(300, 300));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup();
@@ -35,7 +33,7 @@ public class SubmenuEditGroupDialog extends JDialog {
 
     private void addListeners() {
         saveChangesButton.addActionListener(e -> {
-            if (StringRegExChecker.checkName(nameTextField.getText())) {
+            if (!nameTextField.getText().isEmpty()) {
                 java.util.List temp = productGroup.getProductList();
                 cache.remove(productGroup);
                 cache.set(new ProductGroup(nameTextField.getText(), descTextArea.getText(), temp));

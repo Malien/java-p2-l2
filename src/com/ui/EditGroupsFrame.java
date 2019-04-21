@@ -5,7 +5,6 @@ import com.data.Cache;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class EditGroupsFrame extends JFrame {
     private JPanel mainPanel;
     private JButton addGroupButton;
@@ -13,10 +12,10 @@ public class EditGroupsFrame extends JFrame {
     private JButton editSelectedGroupButton;
     JList list;
     private Cache cache;
-    public DefaultListModel<String> listModel = new DefaultListModel<>();
 
     EditGroupsFrame(Cache cache) {
         this.cache = cache;
+        setTitle("Редагування групи");
         this.setPreferredSize(new Dimension(350, 300));
         this.setMinimumSize(new Dimension(350, 300));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

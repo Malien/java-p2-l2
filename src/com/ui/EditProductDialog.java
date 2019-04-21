@@ -21,6 +21,7 @@ public class EditProductDialog extends JDialog {
         this.parentFrame = parentFrame;
         this.currentProduct = currentProduct;
         setupTextFields();
+        setTitle("Редагування продукту " + currentProduct.getName());
         this.add(mainPanel);
         this.pack();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -32,10 +33,10 @@ public class EditProductDialog extends JDialog {
     private void addListener() {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
-            if (StringRegExChecker.checkName(productNameTextField.getText())) {
+            if (!productNameTextField.getText().isEmpty()) {
                 parentFrame.getCurrentGroup().remove(currentProduct);
                 if (parentFrame.cache.prodNameIsUnique(newProductName)) {
-                    if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+                    if (!productManufacturerTextField.getText().isEmpty()) {
                         parentFrame.getCurrentGroup().add(currentProduct);
                         if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                             currentProduct.productRefactor(newProductName, productDescTextArea.getText(),

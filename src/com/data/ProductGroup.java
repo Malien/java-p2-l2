@@ -35,10 +35,6 @@ public class ProductGroup implements Iterable<Product>{
         return products.get(index);
     }
 
-    public void set(int index, Product product) {
-        products.set(index, product);
-    }
-
     public void add(Product product) {
         products.add(product);
     }
@@ -56,14 +52,6 @@ public class ProductGroup implements Iterable<Product>{
     public void remove(Product product){
         products.remove(product);
     }
-
-    public int indexOf(Product product){
-        return products.indexOf(product);
-    }
-
-    public void setName(String name){this.name = name;}
-
-    public void setDesc(String desc){this.desc = desc;}
 
     @Override
     public boolean equals(Object o) {

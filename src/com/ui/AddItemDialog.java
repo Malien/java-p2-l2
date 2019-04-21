@@ -20,8 +20,9 @@ public class AddItemDialog extends JDialog {
     private MainFrame parentFrame;
 
     public AddItemDialog(MainFrame parentFrame, Cache cache) {
-        super(parentFrame, Dialog.ModalityType.APPLICATION_MODAL);
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.cache = cache;
+        setTitle("Додати продукт");
         this.parentFrame = parentFrame;
         this.setPreferredSize(new Dimension(300, 400));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -35,8 +36,8 @@ public class AddItemDialog extends JDialog {
     private void addListeners() {
         submitButton.addActionListener(e -> {
             String newProductName = productNameTextField.getText();
-            if (StringRegExChecker.checkName(newProductName)) {
-                if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
+            if (!newProductName.isEmpty()) {
+                if (!productManufacturerTextField.getText().isEmpty()) {
                     if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                         if (cache.prodNameIsUnique(newProductName)) {
                             if (StringRegExChecker.checkInteger(productCountTextField.getText())) {

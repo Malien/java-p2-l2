@@ -24,6 +24,7 @@ public class StorageStatistics extends JFrame{
 
     public StorageStatistics(Cache cache){
         this.cache = cache;
+        setTitle("Статистика складу");
         getStatistics();
         setMinimumSize(new Dimension(700, 400));
         setResizable(true);

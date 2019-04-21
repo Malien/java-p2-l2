@@ -15,7 +15,8 @@ public class ShowGroupStatistics extends JFrame {
     private JScrollPane tableScroll;
     private double totalCost;
 
-    public ShowGroupStatistics(ProductGroup pg){
+    public ShowGroupStatistics(ProductGroup pg) {
+        setTitle("Статистика групи " + pg.getName());
         groupName.setText(pg.getName());
         contentTable.setFillsViewportHeight(true);
         String[] header = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
@@ -51,6 +52,5 @@ public class ShowGroupStatistics extends JFrame {
         setSize(700, 400);
         add(rootPanel);
         setLocationRelativeTo(null);
-        setResizable(true);
     }
 }

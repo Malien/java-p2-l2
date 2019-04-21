@@ -12,6 +12,7 @@ public class DescDialog extends JDialog {
     DescDialog(JFrame parentFrame, String typeOfItem, String desc) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.setMinimumSize(new Dimension(320, 300));
+        setTitle("Опис");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup(typeOfItem, desc);
         this.add(mainPanel);

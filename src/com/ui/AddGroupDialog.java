@@ -2,10 +2,8 @@ package com.ui;
 
 import com.data.Cache;
 import com.data.ProductGroup;
-import com.util.StringRegExChecker;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class AddGroupDialog extends JDialog {
     private JPanel mainPanel;
@@ -17,11 +15,9 @@ public class AddGroupDialog extends JDialog {
 
     AddGroupDialog(EditGroupsFrame parentFrame, Cache cache) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
-
+        setTitle("Додати групу");
         this.cache = cache;
         this.parentFrame = parentFrame;
-
-        setPreferredSize(new Dimension(300, 300));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         add(mainPanel);
         pack();
@@ -33,7 +29,7 @@ public class AddGroupDialog extends JDialog {
         submitButton.addActionListener(e -> {
             String newGroupName = groupNameTextField.getText();
             if (cache.groupNameIsUnique(newGroupName)) {
-                if (StringRegExChecker.checkName(newGroupName)) {
+                if (!newGroupName.isEmpty()) {
                     cache.set(new ProductGroup(groupNameTextField.getText(), groupDescTextField.getText()));
                     dispose();
                     parentFrame.listRefresh();

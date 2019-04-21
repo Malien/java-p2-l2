@@ -19,20 +19,20 @@ public class PathChangeDialog extends JDialog {
     public PathChangeDialog(IDatabase db) {
         setContentPane(contentPane);
         pack();
+        setTitle("Зміна робочої області");
         setPreferredSize(new Dimension(500, 130));
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setLocationRelativeTo(null);
-
         this.db = db;
 
-        buttonOK.addActionListener(e -> {
-            onOK();
-        });
+        buttonOK.addActionListener(e ->
+            onOK()
+        );
 
-        buttonCancel.addActionListener(e -> {
-            onCancel();
-        });
+        buttonCancel.addActionListener(e ->
+            onCancel()
+        );
 
         filePickerButton.addActionListener(e -> {
             String path = Workspace.askPath(this);
@@ -58,7 +58,6 @@ public class PathChangeDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
         db.setPath(pathField.getText(), valid -> {
             if (valid) dispose();
             else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
@@ -67,7 +66,6 @@ public class PathChangeDialog extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 
