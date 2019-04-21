@@ -342,7 +342,7 @@ public class MainFrame extends JFrame implements Reloader {
             }
         });
 
-//TODO think about focus
+        //TODO: think about focus
         searchMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -365,7 +365,6 @@ public class MainFrame extends JFrame implements Reloader {
         addDataBaseMenu();
         addSearchMenu();
         addStatisticsMenu();
-        addHelpMenu();
         this.setJMenuBar(menuBar);
     }
 
@@ -378,6 +377,7 @@ public class MainFrame extends JFrame implements Reloader {
         menuBar.add(dataBaseMenu);
     }
 
+    //FIXME: JPanel and other custom views doesn't work in mac OS menu bar
     private void addSearchMenu() {
         searchMenu = new JMenu("Пошук");
         searchMenu.setMnemonic('g');
@@ -395,13 +395,6 @@ public class MainFrame extends JFrame implements Reloader {
         menuBar.add(searchMenu);
     }
 
-    private void addHelpMenu() {
-        JMenu helpMenu = new JMenu("Довідка");
-        menuBar.add(helpMenu);
-        helpMenuItem = new JMenuItem("sample");
-        helpMenu.add(helpMenuItem);
-    }
-
     private void addStatisticsMenu() {
         JMenu statisticsMenu = new JMenu("Статистика");
 
@@ -411,6 +404,7 @@ public class MainFrame extends JFrame implements Reloader {
         statisticsMenu.add(showStorageStatistics);
         statisticsMenu.add(showGroupStatistics);
 
+        //FIXME: JScrollPane and other custom views doesn't work in mac OS menu bar
         allGroupsList = new JList(cache.getCache().toArray(new ProductGroup[0]));
         JScrollPane scroll = new JScrollPane(allGroupsList);
         scroll.setPreferredSize(new Dimension(120, 200));

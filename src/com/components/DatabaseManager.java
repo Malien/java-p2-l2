@@ -81,7 +81,7 @@ public class DatabaseManager implements Runnable, IDatabase {
                 String name = data.readUTF();
                 String manufacturer = data.readUTF();
                 String description = data.readUTF();
-                Product prd = new Product(name, manufacturer, description, amount, price);
+                Product prd = new Product(name, description, manufacturer, amount, price);
                 group.add(prd);
             } catch (EOFException e) {
                 break;
