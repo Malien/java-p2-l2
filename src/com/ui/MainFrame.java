@@ -13,8 +13,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 
 public class MainFrame extends JFrame implements Reloader {
@@ -42,7 +40,6 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenu showGroupStatistics;
 
     private JScrollPane tableScrollPane;
-    private JList allGroupsList;
     private JTable table;
     private JLabel currentGroupLabel;
     private JButton addProductButton;
@@ -168,43 +165,6 @@ public class MainFrame extends JFrame implements Reloader {
                         JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
                 } else if (!(Character.isDigit(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_BACK_SPACE))
                     e.consume();
-            }
-        });
-
-        showGroupStatistics.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                allGroupsList.setListData(cache.getCache().toArray(new ProductGroup[0]));
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-            }
-        });
-        allGroupsList.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                ShowGroupStatistics sgs = new ShowGroupStatistics((ProductGroup) allGroupsList.getSelectedValue());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
             }
         });
     }
@@ -399,19 +359,10 @@ public class MainFrame extends JFrame implements Reloader {
         JMenu statisticsMenu = new JMenu("Статистика");
 
         showStorageStatistics = new JMenuItem("На складі");
-        showGroupStatistics = new JMenu("У групі...");
+        showGroupStatistics = new GroupMenu("У групі...", cache);
 
         statisticsMenu.add(showStorageStatistics);
         statisticsMenu.add(showGroupStatistics);
-
-        //FIXME: JScrollPane and other custom views doesn't work in mac OS menu bar
-        allGroupsList = new JList(cache.getCache().toArray(new ProductGroup[0]));
-        JScrollPane scroll = new JScrollPane(allGroupsList);
-        scroll.setPreferredSize(new Dimension(120, 200));
-        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        showGroupStatistics.add(scroll);
 
         menuBar.add(statisticsMenu);
     }
