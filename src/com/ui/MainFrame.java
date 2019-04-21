@@ -311,7 +311,7 @@ public class MainFrame extends JFrame implements Reloader {
     }
 
     private void setupFrame() {
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(800, 600));
         this.add(mainPanel);
         this.pack();

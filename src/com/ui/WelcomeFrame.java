@@ -42,9 +42,8 @@ public class WelcomeFrame extends JFrame {
 
     private void setupFrame() {
         this.setTitle("Select workspace");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(500, 130));
-
         this.add(welcomePanel);
         this.pack();
         this.setLocationRelativeTo(null);

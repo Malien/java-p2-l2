@@ -35,8 +35,8 @@ public class EditGroupsFrame extends JFrame {
 
         editSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
-                SubmenuEditGroupFrame editGroupsFrame =
-                        new SubmenuEditGroupFrame(this, cache, cache.get(list.getSelectedIndex()));
+                SubmenuEditGroupDialog editGroupsFrame =
+                        new SubmenuEditGroupDialog(this, cache, cache.get(list.getSelectedIndex()));
                 editGroupsFrame.setVisible(true);
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як редагувати її");

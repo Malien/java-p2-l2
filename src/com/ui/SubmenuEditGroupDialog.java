@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class SubmenuEditGroupFrame extends JFrame {
+public class SubmenuEditGroupDialog extends JDialog {
     private JPanel mainPanel;
     private ProductGroup productGroup;
     private JButton saveChangesButton;
@@ -17,10 +17,12 @@ public class SubmenuEditGroupFrame extends JFrame {
     private Cache cache;
     private EditGroupsFrame parentFrame;
 
-    SubmenuEditGroupFrame(JFrame parentFrame, Cache cache, ProductGroup productGroup) {
+    SubmenuEditGroupDialog(EditGroupsFrame parentFrame, Cache cache, ProductGroup productGroup) {
+        super(parentFrame,Dialog.ModalityType.APPLICATION_MODAL);
+        this.parentFrame = parentFrame;
         this.productGroup = productGroup;
         this.cache = cache;
-        setPreferredSize(new Dimension(300, 300));
+        setMinimumSize(new Dimension(300, 300));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setup();
         add(mainPanel);
