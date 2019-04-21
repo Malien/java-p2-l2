@@ -3,8 +3,8 @@ package com.data;
 import com.components.IDatabase;
 import com.ui.Reloader;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cache implements Reloader, Iterable<ProductGroup> {
 
-    private ArrayList<ProductGroup> cache = new ArrayList<>();
+    private HashMap<String, ProductGroup> cache = new HashMap<>();
     private Reloader ui;
     private IDatabase db;
 
@@ -33,7 +33,10 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
-            cache = new ArrayList<>(Arrays.asList(groups));
+            cache = new HashMap<>();
+            for (ProductGroup group : groups) {
+                cache.put(group.getName(), group);
+            }
             if (ui != null) {
                 ui.reload();
             }
@@ -48,16 +51,16 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
         this.db = db;
     }
 
-    public ArrayList<ProductGroup> getCache() {
-        return cache;
+    public Collection<ProductGroup> getCache() {
+        return cache.values();
     }
 
-    public ProductGroup get(int index) {
+    public ProductGroup get(String index) {
         return cache.get(index);
     }
 
-    public void save(int index){
-        db.set(cache.get(index));
+    public boolean contains(ProductGroup group){
+        return cache.containsKey(group.getName());
     }
 
     /**
@@ -67,9 +70,7 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
      */
     public void set(ProductGroup group){
         db.set(group);
-        int index = cache.indexOf(group);
-        if (index == -1) cache.add(group);
-        else cache.set(index, group);
+        cache.put(group.getName(), group);
     }
 
     /**
@@ -78,20 +79,16 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
      */
     public void remove(ProductGroup group){
         db.delete(group.getName());
-        cache.remove(cache.indexOf(group));
+        cache.remove(group.getName());
     }
 
     /**
      * Deletes group in cache witch has the provided name
      * @param index name of the group to be deleted
      */
-    public void remove(int index) {
-        db.delete(cache.get(index).getName());
+    public void remove(String index) {
+        db.delete(index);
         cache.remove(index);
-    }
-
-    public int indexOf(ProductGroup group){
-        return cache.indexOf(group);
     }
 
     /**
@@ -100,7 +97,7 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
      */
     @Override
     public Iterator<ProductGroup> iterator() {
-        return cache.iterator();
+        return cache.values().iterator();
     }
 
     /**
@@ -138,8 +135,8 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
 
     public int getNumOfProducts() {
         int res = 0;
-        for (int i = 0; i < cache.size(); i++) {
-            res += cache.get(i).getProducts().length;
+        for (ProductGroup group : this) {
+            res += group.getProducts().length;
         }
         return res;
     }
@@ -148,9 +145,7 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
     public void removeStats(AtomicBoolean lock) {
         AtomicInteger count = new AtomicInteger(0);
         if (getCache().size() == 0) lock.set(true);
-        ProductGroup pg;
-        for (int i = 0; i < cache.size(); i++){
-            pg = cache.get(i);
+        for (ProductGroup pg : this){
             for (int j = 0; j < pg.getProducts().length; j++){
                 pg.getProducts()[j].resetStats();
             }

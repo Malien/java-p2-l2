@@ -5,6 +5,7 @@ import com.data.ProductGroup;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class EditGroupsFrame extends JFrame {
     private JPanel mainPanel;
@@ -37,8 +38,9 @@ public class EditGroupsFrame extends JFrame {
 
         editSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
+                String groupName = (String) list.getSelectedValue();
                 SubmenuEditGroupDialog editGroupsFrame =
-                        new SubmenuEditGroupDialog(this, cache, cache.get(list.getSelectedIndex()));
+                        new SubmenuEditGroupDialog(this, cache, cache.get(groupName));
                 editGroupsFrame.setVisible(true);
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як редагувати її");
@@ -46,7 +48,7 @@ public class EditGroupsFrame extends JFrame {
 
         removeSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
-                cache.remove(list.getSelectedIndex());
+                cache.remove((String) list.getSelectedValue());
                 cache.reload();
                 mainFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
                 mainFrame.cleanTable();
@@ -57,13 +59,13 @@ public class EditGroupsFrame extends JFrame {
     }
 
     void listRefresh() {
-        String[] listData = new String[cache.getCache().size()];
+        ArrayList<String> listData = new ArrayList<>(cache.getCache().size());
 
-        for (int i = 0; i < cache.getCache().size(); i++) {
-            listData[i] = cache.get(i).getName();
+        for (ProductGroup group : cache) {
+            listData.add(group.getName());
         }
 
-        list.setListData(listData);
+        list.setListData(listData.toArray(new String[0]));
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 }

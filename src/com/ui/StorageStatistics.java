@@ -7,7 +7,6 @@ import com.data.ProductGroup;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class StorageStatistics extends JFrame{
     private JPanel rootPanel;
@@ -49,9 +48,8 @@ public class StorageStatistics extends JFrame{
     @SuppressWarnings("Duplicates")
     private void fillWithInfo (String[][] content){
         int counter = 0;
-        ArrayList<ProductGroup> groups = cache.getCache();
-        for (int i = 0; i < groups.size(); i++){
-            Product[] products = groups.get(i).getProducts();
+        for (ProductGroup group : cache){
+            Product[] products = group.getProducts();
             for(int j = 0; j < products.length; j++){
                 Product prod = products[j];
                 content[counter][0] = prod.getName();

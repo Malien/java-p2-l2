@@ -92,9 +92,8 @@ public class MainFrame extends JFrame implements Reloader {
     @Override
     public void reload() {
         String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю ($)"};
-        int index = cache.indexOf(currentGroup);
-        if (index != -1) {
-            currentGroup = cache.get(index);
+        if (cache.contains(currentGroup)) {
+            currentGroup = cache.get(currentGroup.getName());
             ArrayList<String[]> data = new ArrayList<>();
 
             String searchFilter = searchField.getText();
@@ -121,8 +120,7 @@ public class MainFrame extends JFrame implements Reloader {
 
     public void cleanTable(){
         String[] column = {"Назва", "Виробник", "Кількість на складі", "Ціна за одиницю ($)"};
-        ArrayList<String[]> data = new ArrayList<>();
-        tableModel = new DefaultTableModel(data.toArray(new String[0][]), column) {
+        tableModel = new DefaultTableModel(new String[0][0], column) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -153,7 +151,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (c == KeyEvent.VK_ENTER) {
                 if (!currentGroup.getName().equals("null")) {
                     if (table.getSelectedRow() != -1) {
-                        currentGroup.get(table.getSelectedRow()).setCount(Integer.valueOf(numberChangeTextField.getText()));
+                        getSelectedProduct().setCount(Integer.valueOf(numberChangeTextField.getText()));
                         cache.set(currentGroup);
                         reload();
                     } else
@@ -219,8 +217,9 @@ public class MainFrame extends JFrame implements Reloader {
             if (!currentGroup.getName().equals("null")) {
                 if (table.getSelectedRow() != -1) {
                     if (StringRegExChecker.checkIntegerWithoutZero(numberChangeTextField.getText())) {
-                        currentGroup.get(table.getSelectedRow()).incrementCount(Integer.valueOf(numberChangeTextField.getText()));
-                        currentGroup.get(table.getSelectedRow()).addProduced(Integer.valueOf(numberChangeTextField.getText()));
+                        Product product = getSelectedProduct();
+                        product.incrementCount(Integer.valueOf(numberChangeTextField.getText()));
+                        product.addProduced(Integer.valueOf(numberChangeTextField.getText()));
                         cache.set(currentGroup);
                         cache.reload();
                     } else
@@ -234,7 +233,7 @@ public class MainFrame extends JFrame implements Reloader {
         sellProductButton.addActionListener(e -> {
             if (!currentGroup.getName().equals("null")) {
                 if (table.getSelectedRow() != -1) {
-                    Product tempProd = currentGroup.get(table.getSelectedRow());
+                    Product tempProd = getSelectedProduct();
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
                     if (tempProd.ableToSubtract(tempInt)) {
                         tempProd.decrementCount(tempInt);
@@ -253,7 +252,7 @@ public class MainFrame extends JFrame implements Reloader {
         writeOffButton.addActionListener(e -> {
             if (!currentGroup.getName().equals("null")) {
                 if (table.getSelectedRow() != -1) {
-                    Product tempProd = currentGroup.get(table.getSelectedRow());
+                    Product tempProd = getSelectedProduct();
                     int tempInt = Integer.valueOf(numberChangeTextField.getText());
                     if (tempProd.ableToSubtract(tempInt)) {
                         tempProd.decrementCount(tempInt);
@@ -273,7 +272,7 @@ public class MainFrame extends JFrame implements Reloader {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
                     EditProductDialog editProductDialog =
-                            new EditProductDialog(this,currentGroup.get(table.getSelectedRow()));
+                            new EditProductDialog(this, getSelectedProduct());
                     editProductDialog.setVisible(true);
                 } else
                     JOptionPane.showMessageDialog(null, "Необхідно вибрати продукт!");
@@ -296,7 +295,7 @@ public class MainFrame extends JFrame implements Reloader {
         itemDescButton.addActionListener(e -> {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
-                    Product currentProduct = currentGroup.get(table.getSelectedRow());
+                    Product currentProduct = getSelectedProduct();
                     DescDialog descDialog = new DescDialog(this, "Товар: " + currentProduct.getName(),
                             currentProduct.getDescription());
                     descDialog.setVisible(true);
@@ -387,5 +386,13 @@ public class MainFrame extends JFrame implements Reloader {
 
     public ProductGroup getCurrentGroup() {
         return currentGroup;
+    }
+
+    private Product getSelectedProduct() {
+        String productName = (String) table.getValueAt(table.getSelectedRow(), 0);
+        for (Product product : currentGroup){
+            if (product.getName().equals(productName)) return product;
+        }
+        return null;
     }
 }

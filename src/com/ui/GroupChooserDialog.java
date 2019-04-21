@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.data.Cache;
+import com.data.ProductGroup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -31,7 +32,8 @@ public class GroupChooserDialog extends JDialog {
     private void addListeners() {
         submitButton.addActionListener(e -> {
             if (table.getSelectedRow() != -1) {
-                parentFrame.setCurrentGroup(cache.get(table.getSelectedRow()));
+                String groupName = (String) table.getValueAt(table.getSelectedRow(), 0);
+                parentFrame.setCurrentGroup(cache.get(groupName));
                 dispose();
             } else
                 JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
@@ -42,9 +44,10 @@ public class GroupChooserDialog extends JDialog {
         String[] column = {"Назва", "Опис"};
         String[][] data = new String[cache.getCache().size()][2];
 
-        for (int i = 0; i < cache.getCache().size(); i++) {
-            data[i][0] = cache.get(i).getName();
-            data[i][1] = cache.get(i).getDesc();
+        int i = 0;
+        for (ProductGroup group : cache) {
+            data[i][0] = group.getName();
+            data[i++][1] = group.getDesc();
         }
 
         DefaultTableModel model = new DefaultTableModel(data, column) {
