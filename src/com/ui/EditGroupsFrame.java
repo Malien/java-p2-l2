@@ -49,6 +49,7 @@ public class EditGroupsFrame extends JFrame {
                 cache.remove(list.getSelectedIndex());
                 cache.reload();
                 mainFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
+                mainFrame.cleanTable();
                 listRefresh();
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як видалити її");
