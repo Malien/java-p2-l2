@@ -3,18 +3,16 @@ package com.ui;
 import com.data.Cache;
 import com.data.Product;
 import com.data.ProductGroup;
-import com.data.Tuple;
 import com.util.StringRegExChecker;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -37,7 +35,6 @@ public class MainFrame extends JFrame implements Reloader {
     private JMenuItem reloadMenuItem;
     private JMenuItem changeWorkspaceMenuItem;
     private JMenuItem statisticsMainStorageMenuItem;
-    private JMenuItem helpMenuItem;
     private JMenuItem statisticsGroupMenuItem;
     private JMenuItem showStorageStatistics;
     private JMenu showGroupStatistics;
@@ -48,10 +45,11 @@ public class MainFrame extends JFrame implements Reloader {
     private JButton addProductButton;
     private JButton sellProductButton;
     private JTextField numberChangeTextField;
+    private JTextField searchField;
+    private JButton searchButton;
     Cache cache;
     private ProductGroup currentGroup;
     private DefaultTableModel tableModel;
-    private JMenu searchMenu;
 
     public MainFrame(Cache cache) {
         this.cache = cache;
@@ -64,10 +62,12 @@ public class MainFrame extends JFrame implements Reloader {
         setupFrame();
 
         this.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
+            public void windowOpened(WindowEvent e) {}
+            public void windowClosed(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {}
 
             @Override
             public void windowClosing(WindowEvent e) {
@@ -81,31 +81,6 @@ public class MainFrame extends JFrame implements Reloader {
                     ex.printStackTrace();
                 }
             }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
         });
     }
 
@@ -115,16 +90,24 @@ public class MainFrame extends JFrame implements Reloader {
         int index = cache.indexOf(currentGroup);
         if (index != -1) {
             currentGroup = cache.get(index);
-            String[][] data = new String[currentGroup.getProducts().length][4];
+            ArrayList<String[]> data = new ArrayList<>();
 
-            for (int i = 0; i < currentGroup.getProducts().length; i++) {
-                Product tempProduct = currentGroup.get(i);
-                data[i][0] = tempProduct.getName();
-                data[i][1] = tempProduct.getManufacturer();
-                data[i][2] = String.valueOf(tempProduct.getCount());
-                data[i][3] = String.valueOf(tempProduct.getPrice());
+            String searchFilter = searchField.getText();
+            for (Product product : currentGroup) {
+                if (product.getName().contains(searchFilter)
+                        || product.getDescription().contains(searchFilter)
+                        || product.getManufacturer().contains(searchFilter)
+                ) {
+                    String[] row = new String[] {
+                            product.getName(),
+                            product.getManufacturer(),
+                            String.valueOf(product.getCount()),
+                            String.valueOf(product.getPrice())
+                    };
+                    data.add(row);
+                }
             }
-            tableModel = new DefaultTableModel(data, column) {
+            tableModel = new DefaultTableModel(data.toArray(new String[0][]), column) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -290,70 +273,29 @@ public class MainFrame extends JFrame implements Reloader {
                 JOptionPane.showMessageDialog(null, "Необхідно вибрати групу!");
         });
 
-        searchMenuButton.addActionListener(e -> {
-            String productName = searchMenuTextField.getText();
-            try {
-                Tuple productInfo = cache.findProductByName(productName);
-                ProductGroup foundGroup = (ProductGroup) productInfo.first;
-                Product foundProduct = (Product) productInfo.second;
-                this.setCurrentGroup(foundGroup);
-                table.setRowSelectionInterval(foundGroup.indexOf(foundProduct), foundGroup.indexOf(foundProduct));
-            } catch (Exception exc) {
-                JOptionPane.showMessageDialog(null, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        searchButton.addActionListener(e -> {
+            reload();
         });
 
-        //TODO: think about focus
-        searchMenu.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                searchMenuTextField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-                searchMenuTextField.requestFocus();
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-            }
+        searchField.addActionListener(e -> {
+            reload();
         });
     }
 
     private void setupMenuBar() {
         menuBar = new JMenuBar();
         addDataBaseMenu();
-        addSearchMenu();
         addStatisticsMenu();
         this.setJMenuBar(menuBar);
     }
 
     private void addDataBaseMenu() {
         JMenu dataBaseMenu = new JMenu("База даних");
-        reloadMenuItem = new JMenuItem("Reload");
-        changeWorkspaceMenuItem = new JMenuItem("Change workspace...");
+        reloadMenuItem = new JMenuItem("Оновити");
+        changeWorkspaceMenuItem = new JMenuItem("Змінити робочу область...");
         dataBaseMenu.add(reloadMenuItem);
         dataBaseMenu.add(changeWorkspaceMenuItem);
         menuBar.add(dataBaseMenu);
-    }
-
-    //FIXME: JPanel and other custom views doesn't work in mac OS menu bar
-    private void addSearchMenu() {
-        searchMenu = new JMenu("Пошук");
-        searchMenu.setMnemonic('g');
-        JPanel searchMenuPanel = new JPanel();
-        searchMenuPanel.setPreferredSize(new Dimension(200, 25));
-        searchMenuPanel.setLayout(new BorderLayout());
-        searchMenuTextField = new JTextField();
-        searchMenuButton = new JButton("Find");
-        searchMenuButton.setMnemonic('f');
-        searchMenuButton.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        searchMenuPanel.add(searchMenuTextField, BorderLayout.CENTER);
-        searchMenuPanel.add(searchMenuButton, BorderLayout.EAST);
-        searchMenuPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        searchMenu.add(searchMenuPanel);
-        menuBar.add(searchMenu);
     }
 
     private void addStatisticsMenu() {
