@@ -261,7 +261,7 @@ public class MainFrame extends JFrame implements Reloader {
                         cache.set(currentGroup);
                         cache.reload();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Тут нема стільк продуктів.");
+                        JOptionPane.showMessageDialog(null, "Тут нема стільки продуктів.");
                     }
                 } else
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
