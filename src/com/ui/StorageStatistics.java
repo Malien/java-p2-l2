@@ -6,6 +6,7 @@ import com.data.ProductGroup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class StorageStatistics extends JFrame{
@@ -22,25 +23,23 @@ public class StorageStatistics extends JFrame{
     private double totalCost;
 
     public StorageStatistics(Cache cache){
-        super();
         this.cache = cache;
-        getStatistics(this);
+        getStatistics();
+        setMinimumSize(new Dimension(700, 400));
+        setResizable(true);
+        add(rootPanel);
+        pack();
+        setLocationRelativeTo(null);
         productsCostLabel.setText("Вартість усієї продукції: " + totalCost);
-        this.pack();
+        setVisible(true);
     }
 
 
-    private void getStatistics(JFrame fr) {
-        fr.setVisible(true);
-        fr.setResizable(false);
-        fr.setSize(700, 400);
-        fr.add(rootPanel);
-
+    private void getStatistics() {
         initTable.setFillsViewportHeight(true);
         String[] forHeader = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
         String[][] forBody = new String[cache.getNumOfProducts()][7];
         fillWithInfo(forBody);
-
         DefaultTableModel model = (DefaultTableModel) initTable.getModel();
         model.setDataVector(forBody, forHeader);
         initTable.getColumnModel().getColumn(0).setPreferredWidth(250);

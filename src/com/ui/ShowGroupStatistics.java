@@ -5,8 +5,9 @@ import com.data.ProductGroup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
-public class ShowGroupStatistics extends JFrame{
+public class ShowGroupStatistics extends JFrame {
     private JLabel groupName;
     private JLabel totalCostGroup;
     private JTable contentTable;
@@ -14,24 +15,24 @@ public class ShowGroupStatistics extends JFrame{
     private JScrollPane tableScroll;
     private int totalCost;
 
-    public ShowGroupStatistics(ProductGroup pg){
-        super();
-        setInit(this);
+    public ShowGroupStatistics(ProductGroup pg) {
         contentTable.setFillsViewportHeight(true);
         String[] header = {"Назва товару", "Ціна", "На складі", "Вироблено", "Продано", "Списано", "Заробіток"};
         String[][] body = new String[pg.getProducts().length][7];
         fillWithInfo(body, pg);
-
+        setLocationRelativeTo(null);
         DefaultTableModel model = (DefaultTableModel) contentTable.getModel();
         model.setDataVector(body, header);
         contentTable.getColumnModel().getColumn(0).setPreferredWidth(250);
+        setInit();
+        setVisible(true);
     }
 
     @SuppressWarnings("Duplicates")
-    private void fillWithInfo(String[][] info, ProductGroup pg){
+    private void fillWithInfo(String[][] info, ProductGroup pg) {
         int counter = 0;
         Product[] products = pg.getProducts();
-        for(int j = 0; j < products.length; j++){
+        for (int j = 0; j < products.length; j++) {
             Product prod = products[j];
             info[counter][0] = prod.getName();
             info[counter][1] = String.valueOf(prod.getPrice());
@@ -39,15 +40,14 @@ public class ShowGroupStatistics extends JFrame{
             info[counter][3] = String.valueOf(prod.getProduced());
             info[counter][4] = String.valueOf(prod.getSold());
             info[counter][5] = String.valueOf(prod.getWrittenOff());
-            info[counter++][6] =  String.valueOf((prod.getSold()-prod.getWrittenOff())*prod.getPrice());
-            totalCost += prod.getCount()*prod.getPrice();
+            info[counter++][6] = String.valueOf((prod.getSold() - prod.getWrittenOff()) * prod.getPrice());
+            totalCost += prod.getCount() * prod.getPrice();
         }
     }
 
-    private void setInit(JFrame frame){
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.setSize(700, 400);
-        frame.add(rootPanel);
+    private void setInit() {
+        setMinimumSize(new Dimension(700, 400));
+        add(rootPanel);
+        setLocationRelativeTo(null);
     }
 }
