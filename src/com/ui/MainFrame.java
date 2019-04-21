@@ -13,6 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class MainFrame extends JFrame implements Reloader {
@@ -55,57 +58,55 @@ public class MainFrame extends JFrame implements Reloader {
         this.cache.setUI(this);
         this.currentGroup = new ProductGroup("null", "empty group");
         this.setResizable(false);
-        if (!System.getProperty("os.name").equals("Mac OS X")) {
-            setupUILook();
-        }
         setupMenuBar();
         addButtonListeners();
         addMenuListeners();
         setupFrame();
-    }
 
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
 
-    @SuppressWarnings("Duplicates")
-    private void setupUILook() {
-       /* choseGroupButton.setBackground(UIConstants.MaterialBlue);
-        choseGroupButton.setForeground(Color.WHITE);
-        choseGroupButton.setBorderPainted(false);
+            }
 
-        addProductButton.setBackground(UIConstants.MaterialBlue);
-        addProductButton.setForeground(Color.WHITE);
-        addProductButton.setBorderPainted(false);
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    AtomicBoolean lock = new AtomicBoolean(false);
+                    cache.removeStats(lock);
+                    while (!lock.get()){
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException ex){
+                    ex.printStackTrace();
+                }
+            }
 
-        sellProductButton.setBackground(UIConstants.MaterialBlue);
-        sellProductButton.setForeground(Color.WHITE);
-        sellProductButton.setBorderPainted(false);
+            @Override
+            public void windowClosed(WindowEvent e) {
 
-        editGroupsButton.setBackground(UIConstants.MaterialBlue);
-        editGroupsButton.setForeground(Color.WHITE);
-        editGroupsButton.setBorderPainted(false);
+            }
 
-        addItemsButton.setBackground(UIConstants.MaterialBlue);
-        addItemsButton.setForeground(Color.WHITE);
-        addItemsButton.setBorderPainted(false);
+            @Override
+            public void windowIconified(WindowEvent e) {
 
-        writeOffButton.setBackground(UIConstants.MaterialBlue);
-        writeOffButton.setForeground(Color.WHITE);
-        writeOffButton.setBorderPainted(false);
+            }
 
-        currentGroupDescButton.setBackground(UIConstants.MaterialBlue);
-        currentGroupDescButton.setForeground(Color.WHITE);
-        currentGroupDescButton.setBorderPainted(false);
+            @Override
+            public void windowDeiconified(WindowEvent e) {
 
-        editItemButton.setBackground(UIConstants.MaterialBlue);
-        editItemButton.setForeground(Color.WHITE);
-        editItemButton.setBorderPainted(false);
+            }
 
-        removeItemButton.setBackground(UIConstants.MaterialBlue);
-        removeItemButton.setForeground(Color.WHITE);
-        removeItemButton.setBorderPainted(false);
+            @Override
+            public void windowActivated(WindowEvent e) {
 
-        itemDescButton.setBackground(UIConstants.MaterialBlue);
-        itemDescButton.setForeground(Color.WHITE);
-        itemDescButton.setBorderPainted(false);*/
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
     }
 
     @Override

@@ -37,7 +37,7 @@ public class EditProductDialog extends JDialog {
                     if (StringRegExChecker.checkName(productManufacturerTextField.getText())) {
                         if (StringRegExChecker.checkDouble(productPriceTextField.getText())) {
                             currentProduct.productRefactor(newProductName, productDescTextArea.getText(),
-                                    productManufacturerTextField.getText(), Double.parseDouble(productPriceTextField.getText()));
+                                    productManufacturerTextField.getText(), Float.parseFloat(productPriceTextField.getText()));
                             dispose();
                             parentFrame.cache.set(parentFrame.getCurrentGroup());
                             parentFrame.reload();

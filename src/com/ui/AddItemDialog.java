@@ -42,7 +42,7 @@ public class AddItemDialog extends JDialog {
                             if (StringRegExChecker.checkInteger(productCountTextField.getText())) {
                                 parentFrame.getCurrentGroup().add(new Product(newProductName, productDescTextPane.getText(),
                                         productManufacturerTextField.getText(), Integer.parseInt(productCountTextField.getText()),
-                                        Double.parseDouble(productPriceTextField.getText())));
+                                        Float.parseFloat(productPriceTextField.getText())));
                                 dispose();
                                 cache.set(parentFrame.getCurrentGroup());
                                 parentFrame.reload();

@@ -21,8 +21,8 @@ public class DatabaseManager implements Runnable, IDatabase {
     String(description)|Product|Product|... EOF
 
     Product
-    parameters: ||  amount ||  price  ||   name    |  0x0   || manufacturer |  0x0   || description |  0x0   ||
-    block len:  || 4 bytes || 4 bytes || variable  | 1 byte ||   variable   | 1 byte ||   variable  | 1 byte ||
+    parameters: ||  amount ||  price  || produced||   sold  ||written off||   name    |  0x0   || manufacturer |  0x0   || description |  0x0   ||
+    block len:  || 4 bytes || 4 bytes || 4 bytes || 4 bytes ||  4 bytes  || variable  | 1 byte ||   variable   | 1 byte ||   variable  | 1 byte ||
      */
 
     private static final DatabaseManager instance = new DatabaseManager();
@@ -78,10 +78,13 @@ public class DatabaseManager implements Runnable, IDatabase {
             try {
                 int amount = data.readInt();
                 float price = data.readFloat();
+                int produced = data.readInt();
+                int sold = data.readInt();
+                int writtenOff = data.readInt();
                 String name = data.readUTF();
                 String manufacturer = data.readUTF();
                 String description = data.readUTF();
-                Product prd = new Product(name, description, manufacturer, amount, price);
+                Product prd = new Product(name, description, manufacturer, amount, price, produced, sold, writtenOff);
                 group.add(prd);
             } catch (EOFException e) {
                 break;
@@ -120,9 +123,12 @@ public class DatabaseManager implements Runnable, IDatabase {
 
         DataOutputStream stream = new DataOutputStream(new FileOutputStream(found));
         stream.writeUTF(group.getDesc());
-        for (Product product : group.getProducts()) {
+        for (Product product : group) {
             stream.writeInt(product.getCount());
-            stream.writeFloat((float) product.getPrice());
+            stream.writeFloat(product.getPrice());
+            stream.writeInt(product.getProduced());
+            stream.writeInt(product.getSold());
+            stream.writeInt(product.getWrittenOff());
             stream.writeUTF(product.getName());
             stream.writeUTF(product.getManufacturer());
             stream.writeUTF(product.getDescription());

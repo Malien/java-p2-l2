@@ -6,12 +6,12 @@ public class Product {
     private String description;
     private String manufacturer;
     private int count;
-    private double price;
+    private float price;
     private int produced;
     private int sold;
     private int writtenOff;
 
-    public Product(String name, String description, String manufacturer, int count, double price) {
+    public Product(String name, String description, String manufacturer, int count, float price) {
         this.name = name;
         this.description = description;
         this.manufacturer = manufacturer;
@@ -19,11 +19,22 @@ public class Product {
         this.price = price;
     }
 
+    public Product(String name, String description, String manufacturer, int count, float price, int produced, int sold, int writtenOff) {
+        this.name = name;
+        this.description = description;
+        this.manufacturer = manufacturer;
+        this.count = count;
+        this.price = price;
+        this.produced = produced;
+        this.sold = sold;
+        this.writtenOff = writtenOff;
+    }
+
     public String getName() {
         return name;
     }
 
-    public void productRefactor(String name, String description, String manufacturer, double price) {
+    public void productRefactor(String name, String description, String manufacturer, float price) {
         this.name = name;
         this.description = description;
         this.manufacturer = manufacturer;
@@ -46,7 +57,7 @@ public class Product {
         this.count = count;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -69,7 +80,7 @@ public class Product {
         count -= dec;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -100,5 +111,11 @@ public class Product {
 
     public int getWrittenOff(){
         return writtenOff;
+    }
+
+    public void resetStats() {
+        produced = 0;
+        sold = 0;
+        writtenOff = 0;
     }
 }

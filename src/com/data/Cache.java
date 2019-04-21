@@ -7,6 +7,8 @@ import com.util.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Cache implements Reloader, Iterable<ProductGroup> {
@@ -132,17 +134,17 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
      *
      * @param name
      * @return tuple of 2 elements: 1st is group, 2nd is product
-     * @throws Exception
+     * @throws RuntimeException
      */
-    public Tuple findProductByName(String name) throws Exception {
+    public Tuple findProductByName(String name) throws RuntimeException {
         for(ProductGroup group : this){
             for (Product product : group.getProducts()) {
                 if (product.getName().equals(name)) {
-                   return new Tuple(group, product);
+                   return new Tuple<>(group, product);
                 }
             }
         }
-        throw new Exception("ProductNotFound!");
+        throw new RuntimeException("ProductNotFound!");
     }
 
     public IDatabase getDb() {
@@ -155,5 +157,20 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
             res += cache.get(i).getProducts().length;
         }
         return res;
+    }
+
+    public void removeStats(AtomicBoolean lock) {
+        AtomicInteger count = new AtomicInteger(0);
+        for (ProductGroup group : this){
+            for (Product product : group){
+                product.resetStats();
+            }
+            db.set(group, done -> {
+                int c = count.addAndGet(1);
+                if (c == this.getCache().size()){
+                    lock.set(true);
+                }
+            });
+        }
     }
 }
