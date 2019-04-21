@@ -5,7 +5,6 @@ import com.data.Cache;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class EditGroupsFrame extends JFrame {
     private JPanel mainPanel;
     private JButton addGroupButton;
@@ -13,7 +12,6 @@ public class EditGroupsFrame extends JFrame {
     private JButton editSelectedGroupButton;
     JList list;
     private Cache cache;
-    public DefaultListModel<String> listModel = new DefaultListModel<>();
 
     EditGroupsFrame(Cache cache) {
         this.cache = cache;
@@ -35,8 +33,8 @@ public class EditGroupsFrame extends JFrame {
 
         editSelectedGroupButton.addActionListener(e -> {
             if (list.getSelectedIndex() != -1) {
-                SubmenuEditGroupFrame editGroupsFrame =
-                        new SubmenuEditGroupFrame(this, cache, cache.get(list.getSelectedIndex()));
+                SubmenuEditGroupDialog editGroupsFrame =
+                        new SubmenuEditGroupDialog(this, cache, cache.get(list.getSelectedIndex()));
                 editGroupsFrame.setVisible(true);
             } else
                 JOptionPane.showMessageDialog(null, "Вам необхідно вибрати групу, перед тим як редагувати її");

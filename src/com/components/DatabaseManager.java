@@ -4,7 +4,6 @@ import com.data.Product;
 import com.data.ProductGroup;
 import com.requests.Callback;
 import com.requests.DatabaseRequest;
-import com.util.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class DatabaseManager implements Runnable, IDatabase {
 
     private static final DatabaseManager instance = new DatabaseManager();
     private Thread dataThread = new Thread(this, "DatabaseManager");
-    private Logger log = new Logger("DatabaseManager");
     private String systemSeparator = System.getProperty("file.separator");
     private String workspacePath = systemSeparator;
 

@@ -20,7 +20,7 @@ public class AddItemDialog extends JDialog {
     private MainFrame parentFrame;
 
     public AddItemDialog(MainFrame parentFrame, Cache cache) {
-        super(parentFrame, Dialog.ModalityType.APPLICATION_MODAL);
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.cache = cache;
         this.parentFrame = parentFrame;
         this.setPreferredSize(new Dimension(300, 400));

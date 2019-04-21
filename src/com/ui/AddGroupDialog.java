@@ -16,10 +16,8 @@ public class AddGroupDialog extends JDialog {
 
     AddGroupDialog(EditGroupsFrame parentFrame, Cache cache) {
         super(parentFrame, ModalityType.APPLICATION_MODAL);
-
         this.cache = cache;
         this.parentFrame = parentFrame;
-
         setPreferredSize(new Dimension(300, 300));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         add(mainPanel);

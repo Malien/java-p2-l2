@@ -14,7 +14,7 @@ public class GroupChooserDialog extends JDialog {
     private MainFrame parentFrame;
 
     GroupChooserDialog(MainFrame parentFrame, Cache cache) {
-        super(parentFrame, Dialog.ModalityType.APPLICATION_MODAL);
+        super(parentFrame, ModalityType.APPLICATION_MODAL);
         this.parentFrame = parentFrame;
         this.cache = cache;
         this.setPreferredSize(new Dimension(320, 300));

@@ -5,8 +5,6 @@ import com.requests.Callback;
 
 public interface IDatabase {
 
-    void get(String path, Callback<ProductGroup> callback);
-
     void getAll(Callback<ProductGroup[]> callback);
         
     void set(ProductGroup group, Callback<Boolean> callback);
@@ -15,12 +13,5 @@ public interface IDatabase {
 
     void setPath(String path, Callback<Boolean> callback);
 
-    void setPath(String path);
-
-    void delete(String path, Callback<Boolean> callback);
-
     void delete(String path);
-
-    String path();
-    
 }

@@ -129,7 +129,7 @@ public class MainFrame extends JFrame implements Reloader {
         });
 
         showStorageStatistics.addActionListener(e -> {
-            StorageStatistics sst = new StorageStatistics(cache);
+            new StorageStatistics(cache);
         });
 
         numberChangeTextField.addKeyListener(new KeyAdapter() {
@@ -206,7 +206,6 @@ public class MainFrame extends JFrame implements Reloader {
                     JOptionPane.showMessageDialog(null, "Виберіть товар!");
             } else
                 JOptionPane.showMessageDialog(null, "Виберіть спочатку групу !");
-            //TODO use this separation in statistics; think about duplication
         });
 
         writeOffButton.addActionListener(e -> {
@@ -311,7 +310,7 @@ public class MainFrame extends JFrame implements Reloader {
     }
 
     private void setupFrame() {
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(800, 600));
         this.add(mainPanel);
         this.pack();

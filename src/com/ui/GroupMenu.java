@@ -20,16 +20,10 @@ public class GroupMenu extends JMenu implements Reloader {
             public void menuSelected(MenuEvent e) {
                 reload();
             }
-
             @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
+            public void menuDeselected(MenuEvent e) {}
             @Override
-            public void menuCanceled(MenuEvent e) {
-
-            }
+            public void menuCanceled(MenuEvent e) {}
         });
     }
 
