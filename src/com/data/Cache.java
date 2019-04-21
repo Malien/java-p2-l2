@@ -2,7 +2,6 @@ package com.data;
 
 import com.components.IDatabase;
 import com.ui.Reloader;
-import com.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
     private ArrayList<ProductGroup> cache = new ArrayList<>();
     private Reloader ui;
     private IDatabase db;
-    private Logger log = new Logger(Cache.class.getName());
 
     public Cache(IDatabase db){
         this.db = db;
@@ -32,16 +30,12 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
     @Override
     public void reload() {
         if (db == null) {
-            log.error("Tried to reload, but database manager is not found");
             return;
         }
         db.getAll((ProductGroup[] groups) -> {
             cache = new ArrayList<>(Arrays.asList(groups));
             if (ui != null) {
                 ui.reload();
-            }
-            else {
-                log.warn("UI component is not connected. Ui won't be refreshed");
             }
         });
     }
@@ -128,23 +122,6 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
             }
         }
         return true;
-    }
-
-    /**
-     *
-     * @param name
-     * @return tuple of 2 elements: 1st is group, 2nd is product
-     * @throws RuntimeException
-     */
-    public Tuple findProductByName(String name) throws RuntimeException {
-        for(ProductGroup group : this){
-            for (Product product : group.getProducts()) {
-                if (product.getName().equals(name)) {
-                   return new Tuple<>(group, product);
-                }
-            }
-        }
-        throw new RuntimeException("ProductNotFound!");
     }
 
     public IDatabase getDb() {

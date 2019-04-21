@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+@SuppressWarnings("Duplicates")
 public class Workspace {
 
     private static JFrame mainFrame;
@@ -24,7 +25,6 @@ public class Workspace {
         mainFrame.setVisible(true);
     }
 
-    @SuppressWarnings("Duplicates")
     public static String askPath(JDialog dialog) {
         String path = null;
         if (System.getProperty("os.name").equals("Mac OS X")) {

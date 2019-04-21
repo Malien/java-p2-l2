@@ -61,22 +61,14 @@ public class Product {
         return price;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public void incrementCount(){
-        count++;
-    }
     public void incrementCount(int inc){
         count+=inc;
     }
-    public void decrementCount(){
-        count--;
-    }
+
     public boolean ableToSubtract(int subs){
         return count >= subs;
     }
+
     public void decrementCount(int dec){
         count -= dec;
     }

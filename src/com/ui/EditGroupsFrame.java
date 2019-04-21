@@ -12,7 +12,6 @@ public class EditGroupsFrame extends JFrame {
     private JButton editSelectedGroupButton;
     JList list;
     private Cache cache;
-    public DefaultListModel<String> listModel = new DefaultListModel<>();
 
     EditGroupsFrame(Cache cache) {
         this.cache = cache;
