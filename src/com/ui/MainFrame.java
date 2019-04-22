@@ -283,7 +283,7 @@ public class MainFrame extends JFrame implements Reloader {
         removeItemButton.addActionListener(e -> {
             if (currentGroup != null) {
                 if (table.getSelectedRow() != -1) {
-                    currentGroup.remove(table.getSelectedRow());
+                    currentGroup.remove(getSelectedProduct());
                     cache.set(currentGroup);
                     cache.reload();
                 } else

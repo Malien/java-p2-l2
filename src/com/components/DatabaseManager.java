@@ -88,7 +88,7 @@ public class DatabaseManager implements Runnable, IDatabase {
                 break;
             }
         }
-
+        data.close();
         return group;
     }
 
