@@ -158,6 +158,15 @@ public class Cache implements Reloader, Iterable<ProductGroup> {
         }
     }
 
+    public void removeStats(){
+        for (ProductGroup group : this){
+            for (Product product : group){
+                product.resetStats();
+            }
+            db.set(group);
+        }
+    }
+
     /**
      *
      * @param name

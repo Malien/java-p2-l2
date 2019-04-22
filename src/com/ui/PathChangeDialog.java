@@ -1,13 +1,13 @@
 package com.ui;
 
 import com.components.DatabaseManager;
-import com.components.IDatabase;
 import com.components.Workspace;
 import com.data.ProductGroup;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class PathChangeDialog extends JDialog {
     private JPanel contentPane;
@@ -59,17 +59,21 @@ public class PathChangeDialog extends JDialog {
     }
 
     private void onOK() {
-
-        DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
-            if (valid) {
-                dispose();
-                parentFrame.dispose();
-                Workspace.launch();
-                parentFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
-                parentFrame.reload();
-            }
-            else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
-        });
+        File dir = new File(pathField.getText());
+        if (dir.exists() && dir.isDirectory()) {
+            parentFrame.cache.removeStats();
+            DatabaseManager.getInstance().setPath(pathField.getText(), valid -> {
+                if (valid) {
+                    dispose();
+                    parentFrame.dispose();
+                    Workspace.launch();
+                    parentFrame.setCurrentGroup(new ProductGroup("не вибрана", "empty group"));
+                    parentFrame.reload();
+                } else JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
+            });
+        } else {
+            JOptionPane.showMessageDialog(null, "Хибний шлях!", "Помилка", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
